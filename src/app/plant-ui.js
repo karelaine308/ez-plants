@@ -119,7 +119,7 @@ function updateUrl(state) {
  * the ordinary reach-for-it gesture, and is not, because which way a sheet was
  * left is not a property of the plant being looked at.
  */
-function setupSheet(panel, grip) {
+function setupSheet(panel, grip, header) {
   if (!grip) return;
   // Matches the CSS that renders the grip: whichever way the phone is held,
   // there is not room for the panel to simply be open.
@@ -134,9 +134,15 @@ function setupSheet(panel, grip) {
     );
   }
 
-  grip.addEventListener('click', () =>
-    apply(!panel.classList.contains('bc-peeked')),
-  );
+  const toggle = () => apply(!panel.classList.contains('bc-peeked'));
+  grip.addEventListener('click', toggle);
+  // The grip is a thin strip above the title, and the title is what people
+  // actually tap. Make the whole header open and close the sheet, as the
+  // field page's header does, leaving its own buttons (the ×) alone.
+  header?.addEventListener('click', (event) => {
+    if (!sheet.matches || event.target.closest('button, a, input')) return;
+    toggle();
+  });
   // Rotating a phone into landscape gives the sheet room; rotating back does
   // not, so the state follows the viewport until the visitor overrides it.
   sheet.addEventListener('change', (event) => apply(event.matches));
@@ -480,7 +486,11 @@ export function setupPlantUI({
     render();
   });
 
-  setupSheet(panel, container.querySelector('[data-action="toggle-sheet"]'));
+  setupSheet(
+    panel,
+    container.querySelector('[data-action="toggle-sheet"]'),
+    container.querySelector('.bc-header'),
+  );
 
   const pruneButton = container.querySelector('[data-action="prune"]');
   pruneButton?.addEventListener('click', () => {

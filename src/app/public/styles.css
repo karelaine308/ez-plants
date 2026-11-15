@@ -746,6 +746,11 @@ input {
     border-bottom: 0;
     padding-top: 6px;
   }
+
+  /* The header opens and closes the sheet; say so to the pointer. */
+  .bc-panel .bc-header {
+    cursor: pointer;
+  }
 }
 
 @media (max-height: 560px) and (min-width: 801px) {
