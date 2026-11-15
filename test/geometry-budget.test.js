@@ -155,6 +155,12 @@ const RECORDED = Object.freeze({
   // path for every organ kind it has.
   echinacea: { triangles: [8172, 4340, 2206], draws: [3, 3, 3] },
 
+  // Three parts at every band for the reason Echinacea gives above: a
+  // herbaceous plant has no wood, so its stems are an instanced kind, and
+  // dropping them past band 0 leaves the arrays floating 1.8 m up in the air
+  // over a clump of leaves. Inside the triangle budget at every band.
+  eutrochium: { triangles: [21124, 7564, 4384], draws: [3, 3, 3] },
+
   // Bands 1 and 2 came down when the culms stopped thinning: their segments
   // now stay put at every band and drop from a six-triangle tube to a
   // two-triangle card, so a coarse band is the fine band with nothing moved.

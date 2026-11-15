@@ -132,6 +132,26 @@ export {
   evaluateMagnusModel,
 } from './plants/echinacea/model.js';
 
+export { Eutrochium } from './plants/eutrochium/eutrochium.js';
+export {
+  MACULATUM_PROFILE,
+  MACULATUM_RENDER_ASSUMPTIONS,
+  MACULATUM_SOURCES,
+} from './plants/eutrochium/maculatum.js';
+export {
+  getMaculatumPhenology,
+  getMaculatumCareHints,
+  getMaculatumCalendar,
+  MACULATUM_CALENDAR,
+  MACULATUM_CALENDAR_PROVENANCE,
+  MACULATUM_PHASE_ASSUMPTIONS,
+  MACULATUM_SEASON_PROFILES,
+} from './plants/eutrochium/phenology.js';
+export {
+  createMaculatumModel,
+  evaluateMaculatumModel,
+} from './plants/eutrochium/model.js';
+
 export { Cherrylaurel } from './plants/cherrylaurel/cherrylaurel.js';
 export {
   ROTUNDIFOLIA_PROFILE,

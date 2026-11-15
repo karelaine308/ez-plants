@@ -159,6 +159,16 @@ const PEAKS = Object.freeze({
     triangles: [8172, 4340, 2206],
     draws: [3, 3, 3],
   },
+  // Swept over ages 0-12, every tenth day and four seeds: worst in mid-July,
+  // with every whorl out and every cluster showing. Band 2 sits at 4,384 of
+  // 5,000 on this seed and 4,472 at its cross-seed worst; it is the band to
+  // watch if the clusters gain cards.
+  eutrochium: {
+    age: 5,
+    day: 195,
+    triangles: [21124, 7564, 4384],
+    draws: [3, 3, 3],
+  },
   pennisetum: {
     age: 8,
     day: 220,

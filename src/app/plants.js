@@ -2,6 +2,7 @@ import {
   Blackcurrant,
   Cherrylaurel,
   Echinacea,
+  Eutrochium,
   Forsythia,
   HAMELN_PROFILE,
   HAMELN_SOURCES,
@@ -16,6 +17,8 @@ import {
   MALEPARTUS_PROFILE,
   MALEPARTUS_SOURCES,
   Miscanthus,
+  MACULATUM_PROFILE,
+  MACULATUM_SOURCES,
   MAGNUS_PROFILE,
   MAGNUS_SOURCES,
   Pennisetum,
@@ -603,6 +606,72 @@ export const PLANTS = Object.freeze({
       return new Echinacea({
         cultivar: 'Magnus',
         seed: state.seed ?? 1985,
+        leafWind: state.leafWind,
+        maxYears: 20,
+        ageYears: state.age,
+        dayOfYear: state.day,
+        seasonProfile: state.phenologyProfile,
+      });
+    },
+  }),
+
+  eutrochium: Object.freeze({
+    id: 'eutrochium',
+    label: 'Spotted Joe Pye weed',
+    labelPl: 'Sadziec plamisty',
+    cultivar: 'Species',
+    species: MACULATUM_PROFILE.species,
+    kicker: 'Garden digital twin · Sproutline 01',
+    profile: MACULATUM_PROFILE,
+    sources: MACULATUM_SOURCES,
+    defaults: Object.freeze({ age: 5, day: 212 }),
+    maxYears: 20,
+    size: Object.freeze({
+      heightM: MACULATUM_PROFILE.architecture.matureHeightM,
+      radiusM: MACULATUM_PROFILE.architecture.matureRadiusM,
+    }),
+    bedRadiusM: 0.7,
+    profileControl: Object.freeze({
+      key: 'seasonProfile',
+      label: 'Season timing',
+      options: Object.freeze([
+        ['typical', 'Typical'],
+        ['early', 'Early'],
+        ['late', 'Late'],
+      ]),
+    }),
+    seasons: Object.freeze([
+      { label: 'Winter stems', day: 25 },
+      { label: 'Cut back', day: 80 },
+      { label: 'Emerging', day: 125 },
+      { label: 'Buds', day: 185 },
+      { label: 'Peak bloom', day: 212 },
+      { label: 'Seed heads', day: 270 },
+      { label: 'Winter', day: 340 },
+    ]),
+    stats: Object.freeze([
+      { key: 'visibleStems', label: 'Stems' },
+      { key: 'visibleLeaves', label: 'Leaves' },
+      { key: 'visibleFlowers', label: 'Open arrays' },
+      { key: 'visibleFlowerBuds', label: 'Bud arrays' },
+      { key: 'visibleSeedHeads', label: 'Seed heads' },
+    ]),
+    yieldLine: Object.freeze({
+      label: 'Modelled height × spread',
+      key: 'dimensions',
+      unit: 'm',
+      format: (value) =>
+        value
+          ? `${value.heightM.toFixed(2)} × ${value.spreadM.toFixed(2)} m`
+          : '—',
+      note: 'Each flat-topped array is one instance of a card-built corymb; the fuzzy florets live in a generated texture.',
+    }),
+    actions: Object.freeze([]),
+    modelNote:
+      '<strong>A persistent crown, entirely annual top growth.</strong> Tall purple-spotted stems carry whorls of four or five toothed leaves and end in flat dusky-pink arrays in mid-summer. The arrays turn to fluffy tan seed, then stand bronze through winter until the late-winter cutback.',
+    create(state) {
+      return new Eutrochium({
+        seed: state.seed ?? 1818,
         leafWind: state.leafWind,
         maxYears: 20,
         ageYears: state.age,
