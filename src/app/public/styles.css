@@ -87,8 +87,6 @@ input {
     0 24px 70px rgba(20, 30, 22, 0.26),
     0 2px 8px rgba(20, 30, 22, 0.18);
   pointer-events: auto;
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
-  backdrop-filter: blur(18px) saturate(1.15);
 }
 
 .bc-header {
@@ -526,8 +524,6 @@ input {
   border: 1px solid rgba(37, 53, 41, 0.14);
   border-radius: 7px;
   cursor: pointer;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
 }
 
 .bc-icon-button:hover,
@@ -600,8 +596,6 @@ input {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
 }
 
 .overlay.active {
