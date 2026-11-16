@@ -161,6 +161,12 @@ const RECORDED = Object.freeze({
   // over a clump of leaves. Inside the triangle budget at every band.
   eutrochium: { triangles: [21124, 7564, 4384], draws: [3, 3, 3] },
 
+  // Three parts at every band for the reason Echinacea gives above: a
+  // herbaceous plant has no wood, so its stems are an instanced kind, and
+  // dropping them past band 0 leaves the heads floating over a clump of
+  // leaves. Far inside the triangle budget at every band: about a tenth of it.
+  ratibida: { triangles: [3100, 1426, 1046], draws: [3, 3, 3] },
+
   // Bands 1 and 2 came down when the culms stopped thinning: their segments
   // now stay put at every band and drop from a six-triangle tube to a
   // two-triangle card, so a coarse band is the fine band with nothing moved.

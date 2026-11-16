@@ -169,6 +169,16 @@ const PEAKS = Object.freeze({
     triangles: [21124, 7564, 4384],
     draws: [3, 3, 3],
   },
+  // Swept over ages 0-12 and every tenth day on the budget seed: worst in
+  // mid-summer with the stems fully leafy and the heads open. A light plant,
+  // about a tenth of the allowance, with the third coarse draw argued for in
+  // the sibling file.
+  ratibida: {
+    age: 5,
+    day: 205,
+    triangles: [3100, 1426, 1046],
+    draws: [3, 3, 3],
+  },
   pennisetum: {
     age: 8,
     day: 220,

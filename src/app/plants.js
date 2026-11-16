@@ -21,7 +21,10 @@ import {
   MACULATUM_SOURCES,
   MAGNUS_PROFILE,
   MAGNUS_SOURCES,
+  PINNATA_PROFILE,
+  PINNATA_SOURCES,
   Pennisetum,
+  Ratibida,
   ROTUNDIFOLIA_PROFILE,
   ROTUNDIFOLIA_SOURCES,
   SMARAGD_PROFILE,
@@ -672,6 +675,72 @@ export const PLANTS = Object.freeze({
     create(state) {
       return new Eutrochium({
         seed: state.seed ?? 1818,
+        leafWind: state.leafWind,
+        maxYears: 20,
+        ageYears: state.age,
+        dayOfYear: state.day,
+        seasonProfile: state.phenologyProfile,
+      });
+    },
+  }),
+
+  ratibida: Object.freeze({
+    id: 'ratibida',
+    label: 'Gray-headed coneflower',
+    labelPl: 'Rudbekia pierzasta',
+    cultivar: 'Species',
+    species: PINNATA_PROFILE.species,
+    kicker: 'Garden digital twin · Sproutline 02',
+    profile: PINNATA_PROFILE,
+    sources: PINNATA_SOURCES,
+    defaults: Object.freeze({ age: 5, day: 205 }),
+    maxYears: 20,
+    size: Object.freeze({
+      heightM: PINNATA_PROFILE.architecture.matureHeightM,
+      radiusM: PINNATA_PROFILE.architecture.matureRadiusM,
+    }),
+    bedRadiusM: 0.5,
+    profileControl: Object.freeze({
+      key: 'seasonProfile',
+      label: 'Season timing',
+      options: Object.freeze([
+        ['typical', 'Typical'],
+        ['early', 'Early'],
+        ['late', 'Late'],
+      ]),
+    }),
+    seasons: Object.freeze([
+      { label: 'Winter stems', day: 25 },
+      { label: 'Cut back', day: 105 },
+      { label: 'Emerging', day: 125 },
+      { label: 'Buds', day: 175 },
+      { label: 'Peak bloom', day: 205 },
+      { label: 'Cones ripening', day: 265 },
+      { label: 'Winter', day: 340 },
+    ]),
+    stats: Object.freeze([
+      { key: 'visibleStems', label: 'Stems' },
+      { key: 'visibleLeaves', label: 'Leaves' },
+      { key: 'visibleFlowers', label: 'Open heads' },
+      { key: 'visibleFlowerBuds', label: 'Buds' },
+      { key: 'visibleSeedHeads', label: 'Seed cones' },
+    ]),
+    yieldLine: Object.freeze({
+      label: 'Modelled height × spread',
+      key: 'dimensions',
+      unit: 'm',
+      format: (value) =>
+        value
+          ? `${value.heightM.toFixed(2)} × ${value.spreadM.toFixed(2)} m`
+          : '—',
+      note: 'Each head is one instance: a cone with nine drooping rays that fold in under it as the head goes to seed.',
+    }),
+    actions: Object.freeze([]),
+    modelNote:
+      '<strong>A persistent crown and a green rosette that stays all year.</strong> Slender leafy stems carry cut, rough leaves up to a long bare stalk and one head of drooping yellow rays around a brown cone. Heads open in turn from July to October, then stand as black cones through winter until the April cutback.',
+    create(state) {
+      return new Ratibida({
+        seed: state.seed ?? 1822,
         leafWind: state.leafWind,
         maxYears: 20,
         ageYears: state.age,

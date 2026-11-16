@@ -152,6 +152,26 @@ export {
   evaluateMaculatumModel,
 } from './plants/eutrochium/model.js';
 
+export { Ratibida } from './plants/ratibida/ratibida.js';
+export {
+  PINNATA_PROFILE,
+  PINNATA_RENDER_ASSUMPTIONS,
+  PINNATA_SOURCES,
+} from './plants/ratibida/pinnata.js';
+export {
+  getPinnataPhenology,
+  getPinnataCareHints,
+  getPinnataCalendar,
+  PINNATA_CALENDAR,
+  PINNATA_CALENDAR_PROVENANCE,
+  PINNATA_PHASE_ASSUMPTIONS,
+  PINNATA_SEASON_PROFILES,
+} from './plants/ratibida/phenology.js';
+export {
+  createPinnataModel,
+  evaluatePinnataModel,
+} from './plants/ratibida/model.js';
+
 export { Cherrylaurel } from './plants/cherrylaurel/cherrylaurel.js';
 export {
   ROTUNDIFOLIA_PROFILE,
