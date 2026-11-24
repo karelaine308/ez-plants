@@ -56,16 +56,16 @@ const STEM_GREEN = new THREE.Color(0x7d9a52);
 const STEM_DRY = new THREE.Color(0x8c7650);
 const STEM_WEATHERED = new THREE.Color(0x7d6c55);
 
-const LEAF_EMERGING = new THREE.Color(0x9bb17a);
-const LEAF_SPRING = new THREE.Color(0x93ad6e);
-const LEAF_SUMMER = new THREE.Color(0x839f68);
+const LEAF_EMERGING = new THREE.Color(0xb0bb52);
+const LEAF_SPRING = new THREE.Color(0xa1b436);
+const LEAF_SUMMER = new THREE.Color(0x8c9c26);
 const LEAF_YELLOW = new THREE.Color(0xc2b05a);
 const LEAF_BROWN = new THREE.Color(0x8a6a45);
 const LEAF_DEAD = new THREE.Color(0x8c7350);
 const LEAF_FALLEN = new THREE.Color(0x7a6244);
 const LEAF_FALLEN_SUMMER = new THREE.Color(0x9a8450);
-const ROSETTE_SUMMER = new THREE.Color(0x7b9a5f);
-const ROSETTE_WINTER = new THREE.Color(0x4f6a3b);
+const ROSETTE_SUMMER = new THREE.Color(0x90a02e);
+const ROSETTE_WINTER = new THREE.Color(0x536b2c);
 
 // Head tints multiply the authored vertex colours: white leaves the yellow rays
 // and the tan cone as drawn, green turns the cone into a gray-green bud, and
