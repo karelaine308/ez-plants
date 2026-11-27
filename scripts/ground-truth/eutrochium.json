@@ -12,7 +12,7 @@
     "height": "dimensions.heightM",
     "spread": "dimensions.spreadM"
   },
-  "note": "Draft ground truth, review of a plant whose model was built before the process existed; written blind (no model code read) on 2026-11-27 by a research agent. Ranges are sourced overlaps with tolerances I chose; every check records its origin. Karen's chart gives height 4-6 ft and bloom July to September; the sourced height overlap is 4.9-6 ft so the two agree. Age 0 is a plug. No source gives stem or array counts by age; counts are from four photographs of unknown age and are advisory. Bloom checks are advisory because only 21 annotated flowering observations exist for Ohio. peakDay 218 is August 6, the iNaturalist median week. Stats are left for the orchestrator. Owner statement 27 Nov 2026: her clump is about 10 years old, divided about 5 years ago; the 15 Nov bed photograph shows roughly 15 to 25 stems splayed wide (a rough reading, not a count). The model holds flat from age 5, so age 5 is the right model age for this plant. Review changes 27 Nov 2026: stems range now 10 to 30 from the owner's photograph; array check reworded to side clusters per stem; leaf-whorl check moved to by-eye; bloom end moved in the model from 9 Sep to 20 Sep.",
+  "note": "Draft ground truth, review of a plant whose model was built before the process existed; written blind (no model code read) on 2026-11-27 by a research agent. Ranges are sourced overlaps with tolerances I chose; every check records its origin. Karen's chart gives height 4-6 ft and bloom July to September; the sourced height overlap is 4.9-6 ft so the two agree. Age 0 is a plug. No source gives stem or array counts by age; counts are from four photographs of unknown age and are advisory. Bloom checks are advisory because only 21 annotated flowering observations exist for Ohio. peakDay 218 is August 6, the iNaturalist median week. Stats are left for the orchestrator. Owner statement 27 Nov 2026: her clump is about 10 years old, divided about 5 years ago; the 15 Nov bed photograph shows roughly 15 to 25 stems splayed wide (a rough reading, not a count). The model holds flat from age 5, so age 5 is the right model age for this plant. Review changes 27 Nov 2026: stems range now 10 to 30 from the owner's photograph; array check reworded to side clusters per stem; leaf-whorl check moved to by-eye; bloom end moved in the model from 9 Sep to 20 Sep. The winter-leaves check was added after the leaf-litter fix; its 0.8 share was set after measuring 0.87, because dried leaves hang on the standing stems.",
   "sources": [
     {
       "id": "ncsu",
@@ -689,6 +689,22 @@
       ],
       "params": {
         "max": 0.3
+      }
+    },
+    {
+      "id": "winter-leaves",
+      "label": "winter: leaves or litter stay low to the ground (no tidy) (range set after measuring: dried leaves hang on standing stems)",
+      "type": "winterLeaves",
+      "tier": "advisory",
+      "origin": "owner",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "day": 20,
+        "minCount": 10,
+        "maxHeightM": 0.3,
+        "minShare": 0.8
       }
     }
   ],

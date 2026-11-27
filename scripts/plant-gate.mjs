@@ -196,6 +196,18 @@ const TYPES = {
     const m = mean(r);
     return [f(m), inRange(m, range), range.join(' to '), 'culm tip height over the 95th percentile leaf tip'];
   },
+  // Leaves left on the plant or on the ground in winter. The owner does not tidy beds, so a plant that sheds
+  // its leaves keeps them as litter until spring, and a basal rosette stays. Needs _snapshot leaves.
+  winterLeaves({ day = 20, minCount = 10, maxHeightM, minShare = 0.9 }) {
+    const r = each(SEEDS.slice(0, 6), PA, day, (p) => {
+      const lv = p._snapshot?.leaves;
+      if (!lv) throw new NotChecked('_snapshot has no leaves');
+      const drawn = lv.filter((l) => l.visible !== false);
+      return { n: drawn.length, share: drawn.length ? drawn.filter((l) => l.position.y <= maxHeightM).length / drawn.length : 0 };
+    });
+    const n = median(r.map((x) => x.n)), share = median(r.map((x) => x.share));
+    return [`${f(n, 0)} leaves, ${f(share)} within ${maxHeightM} m of the ground`, n >= minCount && share >= minShare, `>= ${minCount} leaves and >= ${minShare} within ${maxHeightM} m`, `day ${day}, age ${PA}`];
+  },
   winterStanding({ stat, day, min }) { const v = mean(each(SEEDS, PA, day, (p) => statVal(p, stat))); return [f(v, 1), v >= min, `>= ${min}`]; }
 };
 

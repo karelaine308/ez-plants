@@ -711,6 +711,22 @@
           41
         ]
       }
+    },
+    {
+      "id": "winter-leaves",
+      "label": "winter: leaves or litter stay low to the ground (no tidy)",
+      "type": "winterLeaves",
+      "tier": "advisory",
+      "origin": "owner",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "day": 20,
+        "minCount": 10,
+        "maxHeightM": 0.25,
+        "minShare": 0.9
+      }
     }
   ],
   "visual": [
