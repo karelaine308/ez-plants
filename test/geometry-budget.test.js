@@ -165,7 +165,7 @@ const RECORDED = Object.freeze({
   // herbaceous plant has no wood, so its stems are an instanced kind, and
   // dropping them past band 0 leaves the heads floating over a clump of
   // leaves. Far inside the triangle budget at every band: about a tenth of it.
-  ratibida: { triangles: [3100, 1426, 1046], draws: [3, 3, 3] },
+  ratibida: { triangles: [15038, 7626, 3426], draws: [3, 3, 3] },
 
   // Bands 1 and 2 came down when the culms stopped thinning: their segments
   // now stay put at every band and drop from a six-triangle tube to a

@@ -4,7 +4,6 @@ import {
   add,
   axisRng,
   clamp01,
-  cross,
   deepFreeze,
   lerp,
   normalize,
@@ -17,41 +16,21 @@ import {
   tangentAt,
   vector,
 } from '../../model-math.js';
-import {
-  getPinnataCareHints,
-  getPinnataPhenology,
-  PINNATA_PHASE_ASSUMPTIONS,
-} from './phenology.js';
-import {
-  PINNATA_PROFILE,
-  PINNATA_RENDER_ASSUMPTIONS,
-  PINNATA_SOURCES,
-} from './pinnata.js';
+import { getPinnataCareHints, getPinnataPhenology } from './phenology.js';
+import { PINNATA_PROFILE, PINNATA_RENDER_ASSUMPTIONS, PINNATA_SOURCES } from './pinnata.js';
 
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const UP = vector(0, 1, 0);
 const MODEL_KIND = 'ratibida-pinnata-growth-model';
+const ARCH = PINNATA_PROFILE.architecture;
+const STEM = PINNATA_PROFILE.stem;
+const LEAF = PINNATA_PROFILE.leaf;
+const MATURE_AGE = 5;
+const LATE_HEAD_EVERY = 11;
+const LEAF_NODES = 10;
 
-/** Share of frost-killed stem leaves that stay on until the spring cutback. */
-const DEAD_LEAF_RETAINED = 0.03;
-
-function ageAtCount(anchors, target) {
-  if (target <= anchors[0][1]) return anchors[0][0];
-  for (let index = 1; index < anchors.length; index += 1) {
-    const [startAge, startCount] = anchors[index - 1];
-    const [endAge, endCount] = anchors[index];
-    if (target <= endCount) {
-      return Math.ceil(
-        lerp(
-          startAge,
-          endAge,
-          (target - startCount) / Math.max(1, endCount - startCount),
-        ),
-      );
-    }
-  }
-  return anchors.at(-1)[0];
-}
+/** Days later than a mature clump that a young clump blooms (assumption). */
+const bloomDelayDays = (ageYears) => (ageYears <= 1 ? 7 : ageYears === 2 ? 3 : 0);
 
 function axisFromGrowth({ seed, id, origin, direction, length, radius, sectionCount, gnarliness }) {
   const sections = growWoodyAxis({
@@ -61,293 +40,292 @@ function axisFromGrowth({ seed, id, origin, direction, length, radius, sectionCo
     radius,
     sectionCount,
     gnarliness,
-    taper: 0.5,
-    force: { direction: UP, strength: radius * 0.012 },
+    taper: 0.45,
+    force: { direction: UP, strength: radius * 0.002 },
     rng: axisRng(seed, id),
   });
   return {
-    points: sections.map((section) =>
-      vector(section.origin.x, section.origin.y, section.origin.z),
-    ),
-    radii: sections.map((section) => section.radius),
+    points: sections.map((s) => vector(s.origin.x, s.origin.y, s.origin.z)),
+    radii: sections.map((s) => s.radius),
   };
 }
 
-/** Stem leaves are largest low on the stem and shrink toward the head. */
-function leafSizeFactor(fraction) {
-  const leaf = PINNATA_PROFILE.leaf;
-  if (fraction < 0.3) return lerp(leaf.lowerScale, 1, fraction / 0.3);
-  return lerp(1, leaf.upperScale, (fraction - 0.3) / 0.7);
+/** Per-age counts for stems, heads and basal leaves, varied by seed. */
+function countsByAge(seed, maxYears) {
+  const stemFactor = randomRange(seed, ['stem-factor'], 0.88, 1.12);
+  // Two draws summed: a median of 1 with a range of 0.7 to 1.3.
+  const headFactor =
+    1 + 0.3 * (keyedRandom(seed, 'head-factor', 1) + keyedRandom(seed, 'head-factor', 2) - 1);
+  const leafFactor = randomRange(seed, ['basal-factor'], 0.9, 1.1);
+  const stems = [];
+  const heads = [];
+  const basal = [];
+  for (let age = 0; age <= maxYears; age += 1) {
+    const at = Math.min(age, MATURE_AGE);
+    const s = Math.max(stems.at(-1) ?? 0, Math.round(sampleAnchors(ARCH.shootCountAnchors, at) * stemFactor));
+    stems.push(Math.min(s, ARCH.maximumPrimaryShoots));
+    const h = Math.round(sampleAnchors(ARCH.headCountAnchors, at) * headFactor);
+    heads.push(Math.max(heads.at(-1) ?? 0, h, s));
+    basal.push(Math.max(basal.at(-1) ?? 0, Math.round(sampleAnchors(ARCH.basalLeafCountAnchors, at) * leafFactor)));
+  }
+  return { stems, heads, basal };
 }
 
-function makeStemLeaf(
-  seed,
-  { id, axisId, pointIndex, azimuth, fraction, birthAgeYears, sizeScale = 1 },
-) {
-  const leaf = PINNATA_PROFILE.leaf;
-  const outward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
-  const sideways = vector(-outward.z, 0, outward.x);
-  // Leaves climb the stem: spread wide low down, held closer to it above.
-  const lift = lerp(0.3, 0.85, fraction) + randomRange(seed, [id, 'lift'], -0.12, 0.12);
-  const direction = normalize(
-    add(
-      add(outward, scale(UP, lift)),
-      scale(sideways, randomRange(seed, [id, 'side'], -0.1, 0.1)),
-    ),
-  );
-  const normal = normalize(
-    add(
-      cross(sideways, direction),
-      scale(sideways, randomRange(seed, [id, 'roll-normal'], -0.12, 0.12)),
-    ),
-  );
-  const size = leafSizeFactor(fraction) * sizeScale;
+/** Which stem carries each head, as the clump grows year by year. */
+function allocateHeads(seed, counts, maxYears) {
+  const stems = [];
+  let total = 0;
+  let headSequence = 0;
+  const newHead = (stem, age) => {
+    stem.heads.push({ slot: stem.heads.length, birthAgeYears: age, index: headSequence });
+    headSequence += 1;
+    total += 1;
+  };
+  for (let age = 1; age <= maxYears; age += 1) {
+    while (stems.length < counts.stems[age]) {
+      const stem = {
+        sequence: stems.length,
+        birthAgeYears: age,
+        weight: randomRange(seed, ['stem-weight', stems.length], 0.5, 1.5),
+        heads: [],
+      };
+      stems.push(stem);
+      newHead(stem, age);
+    }
+    let guard = 0;
+    while (total < counts.heads[age] && guard < 1000) {
+      guard += 1;
+      const open = stems.filter((s) => s.heads.length < STEM.maxHeadsPerStem);
+      if (open.length === 0) break;
+      const sum = open.reduce((acc, s) => acc + s.weight, 0);
+      let pick = keyedRandom(seed, 'alloc', age, total) * sum;
+      let chosen = open.at(-1);
+      for (const stem of open) {
+        pick -= stem.weight;
+        if (pick <= 0) {
+          chosen = stem;
+          break;
+        }
+      }
+      newHead(chosen, age);
+    }
+  }
+  return stems;
+}
+
+function makeLeaf(seed, { id, kind, axisId = null, pointIndex = 0, azimuth, fraction, birthAgeYears, elevationYoung, elevationMature, sizeFactor, root = null }) {
   return {
     id,
+    kind,
     axisId,
     pointIndex,
-    direction,
-    normal,
-    lengthM: randomRange(seed, [id, 'length'], ...leaf.stemLengthM) * size,
-    // Upper leaves narrow faster than they shorten, reading as plain lances.
-    widthM: randomRange(seed, [id, 'width'], ...leaf.stemWidthM) * size * (0.5 + 0.5 * size),
-    roll: randomRange(seed, [id, 'roll'], -0.25, 0.25),
+    azimuth,
     fraction,
     birthAgeYears,
-    rosette: false,
-  };
-}
-
-function makeRosetteLeaf(seed, { id, sequence, birthAgeYears }) {
-  const leaf = PINNATA_PROFILE.leaf;
-  const architecture = PINNATA_PROFILE.architecture;
-  const azimuth =
-    sequence * GOLDEN_ANGLE + randomRange(seed, [id, 'azimuth'], -0.2, 0.2);
-  const rootRadius =
-    architecture.matureCrownRadiusM *
-    Math.sqrt((sequence + 0.4) / architecture.maximumRosetteLeaves);
-  const root = vector(Math.cos(azimuth) * rootRadius, 0.012, Math.sin(azimuth) * rootRadius);
-  const outward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
-  const sideways = vector(-outward.z, 0, outward.x);
-  // Long-stalked leaves arch out of the crown at about 25-55 degrees up.
-  const lift = randomRange(seed, [id, 'lift'], 0.35, 0.85);
-  const direction = normalize(add(outward, scale(UP, lift)));
-  const normal = normalize(cross(sideways, direction));
-  return {
-    id,
-    sequence,
-    birthAgeYears,
+    elevationYoung,
+    elevationMature,
+    sizeFactor,
     root,
-    direction,
-    normal,
-    lengthM: randomRange(seed, [id, 'length'], ...leaf.rosetteLengthM),
-    widthM: randomRange(seed, [id, 'width'], ...leaf.rosetteWidthM),
     roll: randomRange(seed, [id, 'roll'], -0.3, 0.3),
-    weathering: keyedRandom(seed, id, 'rosette-age'),
+    dropOrder: keyedRandom(seed, id, 'drop-order'),
   };
 }
 
-function makeHead(
-  seed,
-  { id, axisId, birthAgeYears, firstFloweringAgeYears, lateral = false, depth = 0 },
-) {
-  const head = PINNATA_PROFILE.flowerHead;
+function makeHead(seed, stemId, axisId, head, leafHeadIndex) {
+  const id = `${axisId}:head`;
+  const late = head.index % LATE_HEAD_EVERY === 5;
+  const u = keyedRandom(seed, id, 'open');
+  // Opening dates (baseline day of year): most heads follow a skewed curve
+  // with its median near day 203; one in eleven opens late for the October tail.
+  const openDay = late ? 250 + 35 * u : 182 + 75 * Math.pow(u, 1.8);
+  const durationDays = late
+    ? randomRange(seed, [id, 'duration'], 14, 19)
+    : randomRange(seed, [id, 'duration'], ...PINNATA_PROFILE.flowering.openDurationDays);
   const tiltAzimuth = randomRange(seed, [id, 'tilt-azimuth'], 0, Math.PI * 2);
-  // Heads tilt a little outward from the stem rather than facing straight up.
-  const tilt = randomRange(seed, [id, 'tilt'], 0.08, 0.5);
+  const tilt = randomRange(seed, [id, 'tilt'], 0.02, 0.28);
   return {
     id,
+    stemId,
     axisId,
-    birthAgeYears,
-    firstFloweringAgeYears,
-    lateral,
-    spanM: randomRange(seed, [id, 'span'], ...head.horizontalSpanM),
-    direction: normalize(
-      vector(Math.cos(tiltAzimuth) * tilt, 1, Math.sin(tiltAzimuth) * tilt),
-    ),
+    slot: head.slot,
+    birthAgeYears: head.birthAgeYears,
+    openDay,
+    durationDays,
+    late,
+    tiltX: Math.cos(tiltAzimuth) * tilt,
+    tiltZ: Math.sin(tiltAzimuth) * tilt,
     spin: randomRange(seed, [id, 'spin'], 0, Math.PI * 2),
-    // The terminal heads open first; side heads follow over the next weeks,
-    // which is what stretches one plant's bloom from July to October.
-    bloomOffsetDays: lateral
-      ? 28 + depth * 14 + randomRange(seed, [id, 'bloom-offset'], 0, 18)
-      : 72 * Math.pow(keyedRandom(seed, id, 'bloom-order'), 1.5),
+    sizeScale: randomRange(seed, [id, 'size'], 0.9, 1.1),
     winterRetention: keyedRandom(seed, id, 'winter-retention'),
+    leafHeadIndex,
   };
 }
 
-function makeShoot(seed, sequence, birthAgeYears) {
-  const architecture = PINNATA_PROFILE.architecture;
-  const stem = PINNATA_PROFILE.stem;
-  const id = `pinnata:shoot:${String(sequence).padStart(2, '0')}`;
-  const radialFraction = Math.sqrt(
-    (sequence + 0.35) / architecture.maximumPrimaryShoots,
-  );
-  const azimuth =
-    sequence * GOLDEN_ANGLE + randomRange(seed, [id, 'azimuth'], -0.25, 0.25);
-  const rootRadius = architecture.matureCrownRadiusM * radialFraction;
+function makeStem(seed, plan) {
+  const id = `pinnata:stem:${String(plan.sequence).padStart(2, '0')}`;
+  const radialFraction = Math.sqrt((plan.sequence + 0.35) / ARCH.maximumPrimaryShoots);
+  const azimuth = plan.sequence * GOLDEN_ANGLE + randomRange(seed, [id, 'azimuth'], -0.25, 0.25);
+  const rootRadius = ARCH.matureCrownRadiusM * radialFraction;
   const root = vector(Math.cos(azimuth) * rootRadius, 0, Math.sin(azimuth) * rootRadius);
-  const outward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
-  // Mostly upright: a small outward lean, a little more for the outer stems.
-  const lean =
-    randomRange(seed, [id, 'lean'], 0.03, 0.07) + 0.18 * radialFraction * radialFraction;
-  const direction = normalize(add(UP, scale(outward, lean)));
-  const height = randomRange(seed, [id, 'height'], ...stem.targetHeightM);
-  const radius = randomRange(seed, [id, 'radius'], ...stem.baseRadiusM);
+  // Each stem leans outward from the crown centre in its own direction, with
+  // the tilt growing along the stem so the clump flares like a vase.
+  const leanAzimuth = azimuth + randomRange(seed, [id, 'lean-azimuth'], -0.35, 0.35);
+  const outward = vector(Math.cos(leanAzimuth), 0, Math.sin(leanAzimuth));
+  const tipTiltDegrees = Math.max(
+    0.5,
+    lerp(ARCH.leanTipDegreesCentre, ARCH.leanTipDegreesEdge, Math.pow(radialFraction, 1.5)) +
+      randomRange(seed, [id, 'lean-jitter'], -ARCH.leanJitterDeg, ARCH.leanJitterDeg),
+  );
+  const height = STEM.stemMaxHeightM * randomRange(seed, [id, 'height'], ...STEM.heightShare);
+  const radius = randomRange(seed, [id, 'radius'], ...STEM.baseRadiusM);
   const mainId = `${id}:axis:main`;
-  const mainAxis = {
+  const grown = axisFromGrowth({
+    seed,
+    id: mainId,
+    origin: root,
+    direction: UP,
+    length: height,
+    radius,
+    sectionCount: STEM.mainAxisSections,
+    gnarliness: 0.00012,
+  });
+  // Horizontal offset k * h * t^2: zero tilt at the base, tangent tan(tip) at the top.
+  const flare = (Math.tan((tipTiltDegrees * Math.PI) / 180) / 2) * height;
+  const lastIndex = grown.points.length - 1;
+  const main = {
     id: mainId,
     shootId: id,
     shootRoot: root,
     kind: 'main',
-    birthAgeYears,
+    birthAgeYears: plan.birthAgeYears,
     parentAxisId: null,
     parentPointIndex: null,
-    ...axisFromGrowth({
-      seed,
-      id: mainId,
-      origin: root,
-      direction,
-      length: height,
-      radius,
-      sectionCount: stem.mainAxisSections,
-      gnarliness: 0.0002,
-    }),
+    tipTiltDegrees,
+    points: grown.points.map((p, i) => add(p, scale(outward, flare * (i / lastIndex) ** 2))),
+    radii: grown.radii,
   };
+  const axes = [main];
+  const lastPoint = main.points.length - 1;
+  const tipY = main.points[lastPoint].y;
 
   const leaves = [];
-  const lastPoint = mainAxis.points.length - 1;
-  const leafyNodes = Math.min(stem.leafyNodes, lastPoint - 1);
-  for (let node = 1; node <= leafyNodes; node += 1) {
-    leaves.push(
-      makeStemLeaf(seed, {
-        id: `${id}:leaf:${node}`,
-        axisId: mainId,
-        pointIndex: node,
-        // Alternate: one leaf a node, each turned a golden angle from the last.
-        azimuth:
-          azimuth +
-          node * GOLDEN_ANGLE +
-          randomRange(seed, [id, 'leaf-jitter', node], -0.2, 0.2),
-        fraction: node / lastPoint,
-        birthAgeYears,
-      }),
-    );
-    // A smaller leaf tuft in the axil of the lower nodes thickens the foliage
-    // where sources put it; higher up the leaves are few and small.
-    if (node <= 4) {
+  const reachJitter = randomRange(seed, [id, 'reach'], -0.03, 0.03);
+  for (let node = 1; node <= LEAF_NODES; node += 1) {
+    const fraction = node / lastPoint;
+    let birth = null;
+    for (let age = 1; age <= MATURE_AGE; age += 1) {
+      if (sampleAnchors(STEM.leafReachAnchors, age) + reachJitter >= fraction) {
+        birth = age;
+        break;
+      }
+    }
+    if (birth === null) continue;
+    // Two leaves at the lowest nodes make the lower half leafy.
+    const perNode = node <= 3 ? 2 : 1;
+    for (let k = 0; k < perNode; k += 1) {
+      const leafId = `${id}:leaf:${node}:${k}`;
+      const lift = lerp(0.35, 0.9, clamp01(fraction / 0.6));
       leaves.push(
-        makeStemLeaf(seed, {
-          id: `${id}:leaf:${node}:axil`,
+        makeLeaf(seed, {
+          id: leafId,
+          kind: 'stem',
           axisId: mainId,
           pointIndex: node,
-          azimuth:
-            azimuth +
-            node * GOLDEN_ANGLE +
-            2.3 +
-            randomRange(seed, [id, 'axil-jitter', node], -0.3, 0.3),
-          fraction: node / lastPoint,
-          birthAgeYears,
-          sizeScale: 0.62,
+          azimuth: azimuth + node * 2.4 + k * Math.PI * 0.8 + randomRange(seed, [leafId, 'azimuth'], -0.3, 0.3),
+          fraction,
+          birthAgeYears: Math.max(birth, plan.birthAgeYears),
+          elevationYoung: Math.atan(lift),
+          elevationMature: Math.atan(lift),
+          sizeFactor:
+            randomRange(seed, [leafId, 'size'], 0.8, 1.1) *
+            lerp(...LEAF.stemLeafScaleLowTop, clamp01(fraction / 0.6)),
         }),
       );
     }
   }
 
-  const firstFloweringAgeYears = Math.max(1, birthAgeYears);
-  const axes = [mainAxis];
-  const heads = [
-    makeHead(seed, {
-      id: `${mainId}:head`,
-      axisId: mainId,
-      birthAgeYears,
-      firstFloweringAgeYears,
-    }),
-  ];
-
-  // Stems branch only near the top: about one in eight forks to carry a second
-  // head on a long bare stalk, a little lower than the terminal one.
-  const mainTop = mainAxis.points[lastPoint];
-  for (let depth = 1; depth <= 2; depth += 1) {
-    if (keyedRandom(seed, id, 'fork', depth) >= 0.12) continue;
-    const parentPointIndex = lastPoint - depth - 1;
-    const parent = mainAxis.points[parentPointIndex];
-    const lateralId = `${id}:axis:lateral:${depth}`;
-    const side =
-      azimuth +
-      Math.PI * (0.4 + depth * 0.7) +
-      randomRange(seed, [lateralId, 'side'], -0.3, 0.3);
-    const sideOut = vector(Math.cos(side), 0, Math.sin(side));
-    const reach =
-      Math.max(0.05, (mainTop.y - parent.y) * randomRange(seed, [lateralId, 'reach'], 0.78, 0.97)) /
-      0.9;
-    const lateralBirth = Math.max(1, birthAgeYears);
+  const heads = [];
+  const nodeFirst = Math.ceil(STEM.branchStartFraction * lastPoint);
+  plan.heads.forEach((head, order) => {
+    if (head.slot === 0) {
+      heads.push(makeHead(seed, id, mainId, head, order));
+      return;
+    }
+    const lateralId = `${id}:axis:lateral:${head.slot}`;
+    // A side stalk of 10-45 cm from a node at or above 65% of the height,
+    // carrying its head anywhere from 75% to 100% of the stem's height.
+    const targetY = tipY * randomRange(seed, [lateralId, 'height'], ...STEM.headZoneFractions);
+    const candidates = [];
+    for (let node = nodeFirst; node < lastPoint; node += 1) {
+      if (main.points[node].y <= targetY - 0.08) candidates.push(node);
+    }
+    const node = candidates.length
+      ? candidates[Math.floor(keyedRandom(seed, lateralId, 'node') * candidates.length)]
+      : nodeFirst;
+    const origin = main.points[node];
+    const side = randomRange(seed, [lateralId, 'side'], 0, Math.PI * 2);
+    const out = randomRange(seed, [lateralId, 'out'], ...STEM.stalkOutward);
+    const direction = normalize(add(scale(UP, 0.9), scale(vector(Math.cos(side), 0, Math.sin(side)), out)));
+    const length = Math.min(
+      STEM.stalkLengthM[1],
+      Math.max(STEM.stalkLengthM[0], (targetY - origin.y) / direction.y),
+    );
     const growth = axisFromGrowth({
       seed,
       id: lateralId,
-      origin: parent,
-      direction: normalize(
-        add(scale(UP, 0.9), scale(sideOut, randomRange(seed, [lateralId, 'out'], 0.25, 0.5))),
-      ),
-      length: reach,
-      radius: radius * 0.55,
-      sectionCount: stem.lateralAxisSections,
-      gnarliness: 0.00018,
+      origin,
+      direction,
+      length,
+      radius: STEM.pedunculeRadiusM,
+      sectionCount: STEM.lateralAxisSections,
+      gnarliness: 0.00008,
     });
     axes.push({
       id: lateralId,
       shootId: id,
       shootRoot: root,
       kind: 'lateral',
-      birthAgeYears: lateralBirth,
+      birthAgeYears: head.birthAgeYears,
       parentAxisId: mainId,
-      parentPointIndex,
+      parentPointIndex: node,
       ...growth,
     });
-    heads.push(
-      makeHead(seed, {
-        id: `${lateralId}:head`,
-        axisId: lateralId,
-        birthAgeYears: lateralBirth,
-        firstFloweringAgeYears: Math.max(firstFloweringAgeYears, lateralBirth),
-        lateral: true,
-        depth,
-      }),
-    );
-  }
+    heads.push(makeHead(seed, id, lateralId, head, order));
+  });
 
-  return { id, sequence, birthAgeYears, root, axes, leaves, heads };
+  return { id, sequence: plan.sequence, birthAgeYears: plan.birthAgeYears, root, axes, leaves, heads };
 }
 
-/** Build the finite all-ages crown, rosette and annual stem sites once. */
-export function createPinnataModel({
-  seed = 'pinnata-demo',
-  maxYears = PINNATA_PROFILE.architecture.modelHorizonYears,
-} = {}) {
-  if (!['string', 'number'].includes(typeof seed)) {
-    throw new TypeError('seed must be a string or number');
-  }
+/** Build the finite all-ages clump and annual shoot sites once. */
+export function createPinnataModel({ seed = 'pinnata-demo', maxYears = ARCH.modelHorizonYears } = {}) {
+  if (!['string', 'number'].includes(typeof seed)) throw new TypeError('seed must be a string or number');
   if (!Number.isInteger(maxYears) || maxYears < 1 || maxYears > 50) {
     throw new RangeError('maxYears must be an integer from 1 to 50');
   }
-  const architecture = PINNATA_PROFILE.architecture;
-  const shoots = [];
-  for (let sequence = 0; sequence < architecture.maximumPrimaryShoots; sequence += 1) {
-    const birthAgeYears = ageAtCount(architecture.shootCountAnchors, sequence + 1);
-    if (birthAgeYears > maxYears) continue;
-    shoots.push(makeShoot(seed, sequence, birthAgeYears));
-  }
-  const rosette = [];
-  for (let sequence = 0; sequence < architecture.maximumRosetteLeaves; sequence += 1) {
-    const birthAgeYears = ageAtCount(architecture.rosetteLeafAnchors, sequence + 1);
-    if (birthAgeYears > maxYears) continue;
-    rosette.push(
-      makeRosetteLeaf(seed, {
-        id: `pinnata:rosette:${String(sequence).padStart(2, '0')}`,
-        sequence,
-        birthAgeYears,
+  const counts = countsByAge(seed, maxYears);
+  const plans = allocateHeads(seed, counts, maxYears);
+  const shoots = plans.map((plan) => makeStem(seed, plan));
+
+  const basalLeaves = [];
+  for (let index = 0; index < counts.basal.at(-1); index += 1) {
+    let birth = 0;
+    while (counts.basal[birth] <= index) birth += 1;
+    const id = `pinnata:basal:${String(index).padStart(2, '0')}`;
+    basalLeaves.push(
+      makeLeaf(seed, {
+        id,
+        kind: 'basal',
+        azimuth: index * GOLDEN_ANGLE + randomRange(seed, [id, 'azimuth'], -0.2, 0.2),
+        fraction: 0,
+        birthAgeYears: birth,
+        elevationYoung: randomRange(seed, [id, 'el-young'], 1.0, 1.3),
+        elevationMature: randomRange(seed, [id, 'el-mature'], 0.4, 0.8),
+        sizeFactor: randomRange(seed, [id, 'size'], 0.75, 1),
+        root: Math.sqrt(keyedRandom(seed, id, 'root')),
       }),
     );
   }
+
   return deepFreeze({
     schemaVersion: 1,
     kind: MODEL_KIND,
@@ -356,409 +334,316 @@ export function createPinnataModel({
     seed: String(seed),
     maxYears,
     metresPerUnit: PINNATA_PROFILE.metresPerUnit,
+    counts,
     shoots,
-    rosette,
+    basalLeaves,
   });
 }
 
 function plantMode(phenology, ageYears) {
   const day = phenology.dayOfYear;
   if (day < phenology.calendar.cutbackEnd) {
-    return ageYears > 0 && phenology.standingDryVisibility > 0.01
-      ? 'previous-dry'
-      : 'dormant';
+    return ageYears > 0 && phenology.standingDryVisibility > 0.01 ? 'previous-dry' : 'dormant';
   }
   if (day >= phenology.calendar.dryFull) return 'current-dry';
   if (day >= phenology.calendar.emergenceStart) return 'current';
   return 'dormant';
 }
 
-/** Days since the stand went fully dry, continuous across New Year. */
 function overwinterWeathering(phenology) {
   const { dayOfYear: day, calendar } = phenology;
-  const elapsed =
-    day >= calendar.dryFull ? day - calendar.dryFull : day + 365 - calendar.dryFull;
+  const elapsed = day >= calendar.dryFull ? day - calendar.dryFull : day + 365 - calendar.dryFull;
   return clamp01(elapsed / 120);
 }
 
 function transformPrimaryAxis(axis, crownScale, stemScale) {
   const root = scale(axis.shootRoot, crownScale);
-  const points = axis.points.map((point) =>
-    add(root, scale(subtract(point, axis.shootRoot), stemScale)),
-  );
+  const points = axis.points.map((p) => add(root, scale(subtract(p, axis.shootRoot), stemScale)));
   return { ...axis, root, points };
 }
 
 function transformLateralAxis(axis, parent, branchScale) {
   const root = parent.points[axis.parentPointIndex];
   const sourceRoot = axis.points[0];
-  const points = axis.points.map((point) =>
-    add(root, scale(subtract(point, sourceRoot), branchScale)),
-  );
+  const points = axis.points.map((p) => add(root, scale(subtract(p, sourceRoot), branchScale)));
   return { ...axis, root, points };
 }
 
-/**
- * One head's own stage. A head opens, flowers for about three weeks, drops its
- * rays, and its cone darkens to near black over the next month. Heads on one
- * plant open over weeks of each other. Over winter the cones stand on bare
- * stems and the weakest break away.
- */
-function localHeadState(head, phenology, dryMode) {
+function localHeadState(head, phenology, cohortAgeYears, dryMode) {
   if (dryMode) {
     const weathering = overwinterWeathering(phenology);
     return {
-      // Most cones stay on their stems through winter (goldfinches take the
-      // seed, not the cone); a few break away.
-      visible: head.winterRetention > 0.1 + weathering * 0.4,
+      visible: head.winterRetention > 0.03 + weathering * 0.22,
       stage: 'winter',
       budProgress: 1,
       openProgress: 1,
       rayVisibility: 0,
-      darkenProgress: 1,
-      visualScale: lerp(0.98, 0.9, weathering),
+      maturity: 1,
+      visualScale: lerp(0.97, 0.9, weathering),
       weathering,
     };
   }
-  const { dayOfYear: day, calendar } = phenology;
-  const timing = PINNATA_PHASE_ASSUMPTIONS.head;
-  const offset = Math.round(head.bloomOffsetDays);
-  const openStart = calendar.floweringStart + offset;
-  const budStart = Math.min(calendar.budStart + Math.round(offset * 0.4), openStart - 14);
-  const bloomEnd = openStart + timing.bloomDays;
-  const dropEnd = bloomEnd + timing.dropDays;
+  const day = phenology.dayOfYear;
+  const open = head.openDay + phenology.shiftDays + bloomDelayDays(cohortAgeYears);
+  // Every bud is on the stalk, small, once the stems are up; each swells in the
+  // three weeks before its own opening.
+  const budStart = Math.min(open - 16, phenology.calendar.budStart + bloomDelayDays(cohortAgeYears));
   if (day < budStart) return { visible: false };
-
-  const budProgress = progress(day, budStart, openStart);
-  const openProgress = progress(day, openStart, openStart + timing.openDays);
-  const dropProgress = progress(day, bloomEnd, dropEnd);
-  const darkenProgress = progress(day, bloomEnd - 6, dropEnd + timing.darkenDays);
-  const stage =
-    day < openStart
-      ? 'bud'
-      : openProgress < 0.95
-        ? 'opening'
-        : day < bloomEnd
-          ? 'open'
-          : dropProgress < 1
-            ? 'fading'
-            : 'seed';
-  const rayVisibility = stage === 'bud' ? 0 : smoothstep01(openProgress) * (1 - smoothstep01(dropProgress));
-  // A bud is a small gray-green cone; it fills out as it opens, and the ripe
-  // cone is a touch plumper than the bud.
-  const visualScale =
-    stage === 'bud'
-      ? lerp(0.45, 0.8, smoothstep01(budProgress))
-      : lerp(0.8, 1, smoothstep01(openProgress)) + 0.04 * smoothstep01(darkenProgress);
+  const closes = open + head.durationDays;
+  const budProgress = progress(day, open - 22, open);
+  const openProgress = progress(day, open, open + 3);
+  let stage;
+  let rayVisibility;
+  if (day < open) {
+    stage = 'bud';
+    rayVisibility = 0;
+  } else if (day < closes) {
+    stage = openProgress < 1 ? 'opening' : 'open';
+    rayVisibility = openProgress;
+  } else {
+    stage = 'seed';
+    rayVisibility = 1 - progress(day, closes, closes + 3);
+  }
   return {
     visible: true,
     stage,
     budProgress,
     openProgress,
     rayVisibility,
-    darkenProgress,
-    visualScale,
-    weathering: phenology.dryProgress,
+    // 0 gray-green bud, brown by the end of bloom, dark about two months on.
+    maturity: progress(day, open, closes + 60),
+    visualScale: day < open ? lerp(0.4, 0.95, smoothstep01(budProgress)) : 1,
+    weathering: phenology.dryProgress * 0.5,
   };
 }
 
-/**
- * A leaf that has dropped lies where it landed, under its own node, until the
- * spring cleanup clears it along with the old stems.
- */
-function fallenLeaf(leaf, node, { ageScale, phenology, seed, fellInSummer }) {
-  if (
-    phenology.dayOfYear < phenology.calendar.cutbackEnd &&
-    keyedRandom(seed, leaf.id, 'ground-clear') >= phenology.standingDryVisibility
-  ) {
+function evaluateLeaf(leaf, ctx) {
+  const { mode, axisMap, phenology, cohortAgeYears, crownScale, leafExpansion, stemGrowth, seed } = ctx;
+  if (mode !== 'current') return null;
+  const day = phenology.dayOfYear;
+  const { calendar } = phenology;
+  // Leaves let go through the first weeks of November, in a seeded order.
+  if (day >= calendar.leafFallStart + leaf.dropOrder * (calendar.leafFallEnd - calendar.leafFallStart)) {
     return null;
   }
-  const azimuth = randomRange(seed, [leaf.id, 'ground-azimuth'], 0, Math.PI * 2);
-  const reach = leaf.lengthM * ageScale * randomRange(seed, [leaf.id, 'ground-reach'], 0.1, 0.9);
-  const outwardLength = Math.hypot(leaf.direction.x, leaf.direction.z) || 1;
-  const position = vector(
-    node.x + (leaf.direction.x / outwardLength) * reach + randomRange(seed, [leaf.id, 'gx'], -0.05, 0.05),
-    0.004 + randomRange(seed, [leaf.id, 'gy'], 0, 0.01),
-    node.z + (leaf.direction.z / outwardLength) * reach + randomRange(seed, [leaf.id, 'gz'], -0.05, 0.05),
+  const length = sampleAnchors(LEAF.basalLengthAnchorsM, Math.min(cohortAgeYears, MATURE_AGE)) * leaf.sizeFactor;
+  const senescence = phenology.autumnProgress;
+  const outward = vector(Math.cos(leaf.azimuth), 0, Math.sin(leaf.azimuth));
+  let position;
+  let elevation;
+  let expansion;
+  if (leaf.kind === 'basal') {
+    const rootRadius = ARCH.matureCrownRadiusM * crownScale * leaf.root;
+    position = vector(outward.x * rootRadius, 0.03, outward.z * rootRadius);
+    elevation = lerp(leaf.elevationYoung, leaf.elevationMature, progress(cohortAgeYears, 0, 3));
+    expansion = smoothstep01(leafExpansion);
+  } else {
+    position = axisMap.get(leaf.axisId)?.points[leaf.pointIndex];
+    if (!position) return null;
+    elevation = leaf.elevationMature;
+    expansion = smoothstep01(clamp01((stemGrowth * 1.2 - leaf.fraction * 0.7) / 0.35));
+  }
+  if (expansion <= 0.01) return null;
+  const direction = normalize(add(scale(outward, Math.cos(elevation)), scale(UP, Math.sin(elevation))));
+  const sideways = vector(-outward.z, 0, outward.x);
+  const normal = normalize(
+    vector(
+      sideways.y * direction.z - sideways.z * direction.y,
+      sideways.z * direction.x - sideways.x * direction.z,
+      sideways.x * direction.y - sideways.y * direction.x,
+    ),
   );
-  const tilt = randomRange(seed, [leaf.id, 'ground-tilt'], -0.18, 0.18);
+  const lengthM = length * lerp(0.15, 1, expansion);
   return {
     id: leaf.id,
     visible: true,
-    fallen: true,
-    rosette: false,
-    position,
-    direction: normalize(vector(Math.cos(azimuth), tilt * 0.4, Math.sin(azimuth))),
-    normal: normalize(vector(tilt, 1, -tilt * 0.5)),
-    roll: 0,
-    fraction: leaf.fraction,
-    lengthM: leaf.lengthM * ageScale * 0.85,
-    widthM: leaf.widthM * ageScale * 0.55,
-    autumnProgress: 1,
-    lowerYellowing: 0,
-    wilt: 1,
-    fellInSummer,
-  };
-}
-
-function evaluateStemLeaf(
-  leaf,
-  { standingAxes, groundAxes },
-  { mode, ageScale, leafExpansion, stemGrowth, phenology, seed },
-) {
-  if (mode === 'dormant') return null;
-  const dryMode = mode === 'previous-dry' || mode === 'current-dry';
-  const node = groundAxes.get(leaf.axisId)?.points[leaf.pointIndex];
-  if (!node) return null;
-
-  // The lowest stem leaves yellow and drop in late summer, shaded out.
-  const lowerDrop =
-    leaf.fraction < 0.3 &&
-    keyedRandom(seed, leaf.id, 'lower-drop') <
-      phenology.lowerLeafDropProgress * (1 - leaf.fraction / 0.3) * 0.8;
-  const deadDrop =
-    keyedRandom(seed, leaf.id, 'dead-drop') <
-    phenology.deadLeafDropProgress * (1 - DEAD_LEAF_RETAINED);
-  if (lowerDrop || deadDrop) {
-    return fallenLeaf(leaf, node, { ageScale, phenology, seed, fellInSummer: lowerDrop && !deadDrop });
-  }
-
-  if (!dryMode && (mode !== 'current' || leafExpansion <= 0.01)) return null;
-  const position = standingAxes.get(leaf.axisId)?.points[leaf.pointIndex];
-  if (!position) return null; // its stem has been cut
-
-  // Every leaf is on the shoot from the start, folded small at the tip, and
-  // unfolds from the bottom up as the stem elongates.
-  const local = dryMode ? 1 : clamp01(0.2 + (stemGrowth - 0.7 * leaf.fraction) / 0.35);
-  const expansion = dryMode ? 1 : smoothstep01(Math.min(leafExpansion, local));
-
-  // After frost the blade goes limp and droops, edges curling.
-  const wilt = smoothstep01(phenology.wiltProgress);
-  let direction = leaf.direction;
-  let normal = leaf.normal;
-  if (wilt > 0) {
-    const outwardLength = Math.hypot(leaf.direction.x, leaf.direction.z) || 1;
-    const outward = vector(leaf.direction.x / outwardLength, 0, leaf.direction.z / outwardLength);
-    const hanging = normalize(add(scale(outward, 0.5), vector(0, -1, 0)));
-    direction = normalize(add(scale(leaf.direction, 1 - wilt), scale(hanging, wilt * 0.75)));
-    normal = normalize(add(scale(leaf.normal, 1 - wilt), scale(outward, wilt * 0.75)));
-  }
-  return {
-    id: leaf.id,
-    visible: true,
-    fallen: false,
-    rosette: false,
+    kind: leaf.kind,
     position,
     direction,
     normal,
     roll: leaf.roll,
     fraction: leaf.fraction,
-    lengthM: leaf.lengthM * ageScale * lerp(0.15, 1, expansion) * (1 - 0.1 * wilt),
-    widthM: leaf.widthM * ageScale * lerp(0.3, 1, expansion) * (1 - 0.6 * wilt),
-    autumnProgress: phenology.autumnProgress,
-    lowerYellowing: leaf.fraction < 0.3 ? phenology.lowerLeafDropProgress : 0,
-    wilt,
-    fellInSummer: false,
+    lengthM,
+    widthM: lengthM * LEAF.widthToLength,
+    autumnProgress: senescence,
+    seed,
   };
-}
-
-/**
- * The basal rosette is on the plant all year: small and green in winter,
- * growing out of the crown in spring, dying back at the base in late summer.
- */
-function evaluateRosette(model, { ageYears, phenology, crownScale }) {
-  const growth = PINNATA_PROFILE.growth;
-  const ageScale = sampleAnchors(growth.rosetteAgeScaleAnchors, ageYears);
-  const size = ageScale * phenology.rosetteScale;
-  const leaves = [];
-  for (const leaf of model.rosette) {
-    if (leaf.birthAgeYears > ageYears) continue;
-    // Older leaves die back first as late summer comes on.
-    const yellowing = phenology.rosetteYellowing * (0.35 + 0.65 * leaf.weathering);
-    leaves.push({
-      id: leaf.id,
-      visible: true,
-      fallen: false,
-      rosette: true,
-      position: scale(leaf.root, crownScale),
-      direction: leaf.direction,
-      normal: leaf.normal,
-      roll: leaf.roll,
-      fraction: 0,
-      lengthM: leaf.lengthM * size * lerp(1, 0.8, yellowing * 0.5),
-      widthM: leaf.widthM * size * lerp(1, 0.7, yellowing * 0.5),
-      autumnProgress: 0,
-      lowerYellowing: yellowing,
-      wilt: 0,
-      fellInSummer: false,
-    });
-  }
-  return leaves;
 }
 
 function dimensionsFor(axes, leaves, heads) {
   let heightM = 0;
   let radiusM = 0;
+  let baseRadiusM = 0;
+  const BASE_ZONE_M = 0.3;
   for (const axis of axes) {
-    for (const point of axis.points) {
-      heightM = Math.max(heightM, point.y);
-      radiusM = Math.max(radiusM, Math.hypot(point.x, point.z));
+    for (const p of axis.points) {
+      heightM = Math.max(heightM, p.y);
+      radiusM = Math.max(radiusM, Math.hypot(p.x, p.z));
+      if (p.y <= BASE_ZONE_M) baseRadiusM = Math.max(baseRadiusM, Math.hypot(p.x, p.z));
     }
   }
   for (const leaf of leaves) {
     const tip = add(leaf.position, scale(leaf.direction, leaf.lengthM));
     heightM = Math.max(heightM, tip.y);
-    radiusM = Math.max(radiusM, Math.hypot(tip.x, tip.z) + leaf.widthM * 0.5);
+    radiusM = Math.max(radiusM, Math.hypot(tip.x, tip.z));
+    if (leaf.position.y <= BASE_ZONE_M && tip.y <= BASE_ZONE_M + 0.1) {
+      baseRadiusM = Math.max(baseRadiusM, Math.hypot(tip.x, tip.z));
+    }
   }
+  let headRadiusM = 0;
+  let lowestHeadM = Infinity;
   for (const head of heads) {
-    heightM = Math.max(heightM, head.position.y + head.spanM * 0.2);
-    radiusM = Math.max(
-      radiusM,
-      Math.hypot(head.position.x, head.position.z) + head.spanM * 0.4,
-    );
+    heightM = Math.max(heightM, head.position.y + 0.03 * head.visualScale * head.headScale * head.direction.y);
+    const reach = Math.hypot(head.position.x, head.position.z) + 0.02;
+    radiusM = Math.max(radiusM, reach);
+    headRadiusM = Math.max(headRadiusM, reach);
+    lowestHeadM = Math.min(lowestHeadM, head.position.y);
   }
-  return { heightM, radiusM, spreadM: radiusM * 2 };
+  return {
+    heightM,
+    radiusM,
+    spreadM: radiusM * 2,
+    baseSpreadM: baseRadiusM * 2,
+    headWidthM: headRadiusM * 2,
+    lowestHeadFraction: heads.length ? lowestHeadM / heightM : null,
+  };
 }
 
-/** Evaluate the immutable crown at one age and calendar day. */
+/** Mean chord tilt and tip-tangent tilt of the standing stems, in degrees. */
+function leanStats(axes) {
+  const mains = axes.filter((a) => a.kind === 'main');
+  if (mains.length === 0) return { degrees: 0, tipDegrees: 0, maxTipDegrees: 0 };
+  const deg = (x, y, z) => (Math.atan2(Math.hypot(x, z), y) * 180) / Math.PI;
+  const chords = mains.map((a) => {
+    const t = a.points.at(-1);
+    return deg(t.x - a.root.x, t.y - a.root.y, t.z - a.root.z);
+  });
+  const tips = mains.map((a) => {
+    const n = a.points.length;
+    const p = a.points[n - 1];
+    const q = a.points[n - 2];
+    return deg(p.x - q.x, p.y - q.y, p.z - q.z);
+  });
+  const mean = (v) => v.reduce((x, y) => x + y, 0) / v.length;
+  return { degrees: mean(chords), tipDegrees: mean(tips), maxTipDegrees: Math.max(...tips) };
+}
+
+/** Evaluate the immutable clump at one age and calendar day. */
 export function evaluatePinnataModel(
   model,
   { ageYears = 0, dayOfYear = 205, events = [], seasonProfile = 'typical', offsetDays = 0 } = {},
 ) {
-  if (!model || model.kind !== MODEL_KIND) {
-    throw new TypeError('Expected a model returned by createPinnataModel');
-  }
+  if (!model || model.kind !== MODEL_KIND) throw new TypeError('Expected a model returned by createPinnataModel');
   if (!Number.isInteger(ageYears) || ageYears < 0 || ageYears > model.maxYears) {
     throw new RangeError(`ageYears must be an integer between 0 and ${model.maxYears}`);
   }
   if (!Array.isArray(events)) throw new TypeError('events must be an array');
   if (events.length > 0) {
-    throw new RangeError(
-      'Gray-headed coneflower exposes no care events; the winter stand and spring cutback are part of its calendar.',
-    );
+    throw new RangeError('Gray-headed coneflower exposes no care events; the winter stand and spring cutback are part of its calendar.');
   }
-
   const phenology = getPinnataPhenology(dayOfYear, { seasonProfile, offsetDays });
   const mode = plantMode(phenology, ageYears);
-  // Before the spring cutback the standing stems are last year's growth.
   const cohortAgeYears = mode === 'previous-dry' ? Math.max(0, ageYears - 1) : ageYears;
-  const ageScale = sampleAnchors(PINNATA_PROFILE.growth.plantAgeScaleAnchors, cohortAgeYears);
-  const crownRadius = sampleAnchors(
-    PINNATA_PROFILE.architecture.crownRadiusAnchorsM,
-    ageYears,
-  );
-  const crownScale = crownRadius / PINNATA_PROFILE.architecture.matureCrownRadiusM;
   const dryMode = mode === 'previous-dry' || mode === 'current-dry';
-  const stemGrowth = dryMode
-    ? 1
-    : mode === 'current'
-      ? smoothstep01(phenology.stemGrowthProgress)
-      : 0;
-  // A new stem is a short leafy tuft before it bolts: give it a tenth of its
-  // height as soon as it emerges so the first leaves have somewhere to sit.
-  const emergence = mode === 'current' ? smoothstep01(phenology.emergenceProgress * 4) : 1;
-  const primaryScale = ageScale * Math.max(stemGrowth, 0.1 * emergence);
+  const ageScale = sampleAnchors(ARCH.stemHeightScaleAnchors, Math.min(cohortAgeYears, MATURE_AGE));
+  const crownRadius = sampleAnchors(ARCH.crownRadiusAnchorsM, Math.min(cohortAgeYears, MATURE_AGE));
+  const crownScale = crownRadius / ARCH.matureCrownRadiusM;
+  const stemGrowth = dryMode ? 1 : mode === 'current' ? smoothstep01(phenology.stemGrowthProgress) : 0;
   const lateralGrowth = dryMode ? 1 : smoothstep01(progress(stemGrowth, 0.7, 1));
-  const lateralScale = ageScale * lateralGrowth;
   const weathering = dryMode ? overwinterWeathering(phenology) : 0;
 
-  const activeShoots = model.shoots.filter((shoot) => shoot.birthAgeYears <= cohortAgeYears);
+  const active = model.shoots.filter((s) => s.birthAgeYears <= cohortAgeYears);
   const axes = [];
   const axisMap = new Map();
-  for (const shoot of activeShoots) {
-    if (
-      mode === 'previous-dry' &&
-      keyedRandom(model.seed, shoot.id, 'spring-cutback-order') >=
-        phenology.standingDryVisibility
-    ) {
-      continue;
-    }
-    if (mode === 'dormant') continue;
-    const primary = shoot.axes[0];
-    const evaluated = transformPrimaryAxis(primary, crownScale, primaryScale);
-    Object.assign(evaluated, {
-      visible: true,
-      cohort: dryMode ? 'dry' : 'current',
-      weathering,
-      radiusScale: ageScale * lerp(0.55, 1, stemGrowth),
-    });
-    axes.push(evaluated);
-    axisMap.set(evaluated.id, evaluated);
-    for (const lateral of shoot.axes.slice(1)) {
-      if (lateral.birthAgeYears > cohortAgeYears || lateralScale <= 0.002) continue;
-      const parent = axisMap.get(lateral.parentAxisId);
-      if (!parent) continue;
-      const branch = transformLateralAxis(lateral, parent, lateralScale);
-      Object.assign(branch, {
+  const bolted = dryMode || stemGrowth > 0.02;
+  if (mode !== 'dormant' && bolted) {
+    for (const shoot of active) {
+      if (
+        mode === 'previous-dry' &&
+        keyedRandom(model.seed, shoot.id, 'spring-cutback-order') >= phenology.standingDryVisibility
+      ) {
+        continue;
+      }
+      const main = transformPrimaryAxis(shoot.axes[0], crownScale, ageScale * stemGrowth);
+      Object.assign(main, {
         visible: true,
         cohort: dryMode ? 'dry' : 'current',
         weathering,
-        radiusScale: ageScale * lerp(0.5, 1, lateralGrowth),
+        radiusScale: lerp(0.6, 1, ageScale) * lerp(0.6, 1, stemGrowth),
       });
-      axes.push(branch);
-      axisMap.set(branch.id, branch);
+      axes.push(main);
+      axisMap.set(main.id, main);
+      for (const lateral of shoot.axes.slice(1)) {
+        if (lateral.birthAgeYears > cohortAgeYears || lateralGrowth <= 0.002) continue;
+        const parent = axisMap.get(lateral.parentAxisId);
+        if (!parent) continue;
+        const branch = transformLateralAxis(lateral, parent, ageScale * lateralGrowth);
+        Object.assign(branch, {
+          visible: true,
+          cohort: dryMode ? 'dry' : 'current',
+          weathering,
+          radiusScale: lerp(0.7, 1, ageScale),
+        });
+        axes.push(branch);
+        axisMap.set(branch.id, branch);
+      }
     }
   }
 
-  // Where each node is, whether or not its stem still stands: a leaf that fell
-  // before the cutback stays where it landed after the stem is gone.
-  const groundAxes = new Map();
-  if (mode !== 'dormant') {
-    for (const shoot of activeShoots) {
-      const primary = shoot.axes[0];
-      groundAxes.set(
-        primary.id,
-        axisMap.get(primary.id) ?? transformPrimaryAxis(primary, crownScale, primaryScale),
-      );
-    }
+  const leaves = [];
+  const leafContext = {
+    mode,
+    axisMap,
+    phenology,
+    cohortAgeYears,
+    crownScale,
+    leafExpansion: Math.max(phenology.leafProgress, phenology.emergenceProgress * 0.8),
+    stemGrowth,
+    seed: model.seed,
+  };
+  for (const leaf of model.basalLeaves) {
+    if (leaf.birthAgeYears > cohortAgeYears) continue;
+    const evaluated = evaluateLeaf(leaf, leafContext);
+    if (evaluated) leaves.push(evaluated);
   }
-  const stemLeaves = [];
-  const leafExpansion = Math.max(phenology.leafProgress, phenology.emergenceProgress * 0.8);
-  for (const shoot of activeShoots) {
+  for (const shoot of active) {
     for (const leaf of shoot.leaves) {
-      const evaluated = evaluateStemLeaf(leaf, { standingAxes: axisMap, groundAxes }, {
-        mode,
-        ageScale,
-        leafExpansion,
-        stemGrowth: Math.max(stemGrowth, 0.12 * emergence),
-        phenology,
-        seed: model.seed,
-      });
-      if (evaluated) stemLeaves.push(evaluated);
+      if (leaf.birthAgeYears > cohortAgeYears) continue;
+      const evaluated = evaluateLeaf(leaf, leafContext);
+      if (evaluated) leaves.push(evaluated);
     }
   }
-  const rosetteLeaves = evaluateRosette(model, { ageYears, phenology, crownScale });
-  const leaves = [...rosetteLeaves, ...stemLeaves];
 
   const heads = [];
-  for (const shoot of activeShoots) {
+  const headScale = lerp(0.8, 1, ageScale);
+  for (const shoot of active) {
     for (const head of shoot.heads) {
-      if (head.firstFloweringAgeYears > cohortAgeYears) continue;
+      if (head.birthAgeYears > cohortAgeYears) continue;
       const axis = axisMap.get(head.axisId);
       if (!axis) continue;
-      const state = localHeadState(head, phenology, dryMode);
+      const state = localHeadState(head, phenology, cohortAgeYears, dryMode);
       if (!state.visible) continue;
-      const stemDirection = tangentAt(axis.points, axis.points.length - 1);
+      const tip = tangentAt(axis.points, axis.points.length - 1);
       heads.push({
         id: head.id,
         axisId: head.axisId,
-        lateral: head.lateral,
+        lateral: head.slot > 0,
+        visible: true,
         position: axis.points.at(-1),
-        direction: normalize(add(scale(head.direction, 0.75), scale(stemDirection, 0.25))),
+        direction: normalize(add(tip, vector(head.tiltX, 0, head.tiltZ))),
         spin: head.spin,
-        spanM: head.spanM * lerp(0.75, 1, ageScale) * state.visualScale,
+        headScale: headScale * head.sizeScale,
         ...state,
       });
     }
   }
 
-  const visibleStems = axes.filter((axis) => axis.kind === 'main').length;
+  const visibleStems = axes.filter((a) => a.kind === 'main').length;
   const stats = {
     visibleShoots: visibleStems,
     visibleStems,
     visibleAxes: axes.length,
     visibleLeaves: leaves.length,
-    visibleRosetteLeaves: rosetteLeaves.length,
     visibleHeads: heads.length,
     visibleFlowers: heads.filter((h) => h.stage === 'open' || h.stage === 'opening').length,
     visibleFlowerBuds: heads.filter((h) => h.stage === 'bud').length,
@@ -773,7 +658,8 @@ export function evaluatePinnataModel(
     ageYears,
     dayOfYear: phenology.dayOfYear,
     mode,
-    crown: { radiusM: crownRadius, shootSites: activeShoots.length },
+    lean: leanStats(axes),
+    crown: { radiusM: crownRadius, shootSites: active.length },
     dimensions: dimensionsFor(axes, leaves, heads),
     phenology,
     careHints: getPinnataCareHints(phenology.dayOfYear, { seasonProfile, offsetDays }),
@@ -782,11 +668,7 @@ export function evaluatePinnataModel(
       sources: PINNATA_SOURCES,
       rendererAssumptions: PINNATA_RENDER_ASSUMPTIONS,
     },
-    shoots: activeShoots.map((shoot) => ({
-      id: shoot.id,
-      sequence: shoot.sequence,
-      birthAgeYears: shoot.birthAgeYears,
-    })),
+    shoots: active.map((s) => ({ id: s.id, sequence: s.sequence, birthAgeYears: s.birthAgeYears })),
     axes,
     leaves,
     heads,

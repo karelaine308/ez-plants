@@ -176,7 +176,7 @@ const PEAKS = Object.freeze({
   ratibida: {
     age: 5,
     day: 205,
-    triangles: [3100, 1426, 1046],
+    triangles: [15038, 7626, 3426],
     draws: [3, 3, 3],
   },
   pennisetum: {

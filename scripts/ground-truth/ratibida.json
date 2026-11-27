@@ -3,7 +3,7 @@
   "species": "Ratibida pinnata (gray-headed coneflower)",
   "class": "Ratibida",
   "entry": "src/lib/plants/ratibida/ratibida.js",
-  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm. Plan review, 26 Nov 2026: the owner approved bloom to October with a thin tail, tolerances of 2 weeks on bloom start and midpoint with a month-level window for the end, the 90 percent week dropped, the winter check and the head ramp kept as gate checks. Age 0 is a plug (a small first-year seedling as bought in spring, or from winter-sown seed); the planner may start a bought-bigger plant at an older age. Clump rerun, 27 Nov 2026: the 12-head cap and the 9-to-12 ramp are replaced by the draft ranges above (heads at ages 2 and 3, a mature clump of about 40 heads as advisory, stems and spread as advisory); the owner approved the approach and still has to confirm the age 2 and 3 numbers.",
+  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm. Plan review, 26 Nov 2026: the owner approved bloom to October with a thin tail, tolerances of 2 weeks on bloom start and midpoint with a month-level window for the end, the 90 percent week dropped, the winter check and the head ramp kept as gate checks. Age 0 is a plug (a small first-year seedling as bought in spring, or from winter-sown seed); the planner may start a bought-bigger plant at an older age. Clump rerun, 27 Nov 2026: the 12-head cap and the 9-to-12 ramp are replaced by the draft ranges above (heads at ages 2 and 3, a mature clump of about 40 heads as advisory, stems and spread as advisory); the owner approved the approach and still has to confirm the age 2 and 3 numbers. Ages 1 to 3 head ranges were reset on 27 Nov 2026 to the owner-approved silhouette plan, before the plan's build was scored.",
   "stats": {
     "heads": "visibleHeads",
     "flowers": "visibleFlowers",
@@ -171,11 +171,11 @@
     {
       "id": "mayfield",
       "name": "Wikimedia Commons photograph of a mature stand in flower by Mayfield, CC BY-SA 2.0",
-      "url": null,
+      "url": "https://commons.wikimedia.org/wiki/File:Ratibida_pinnata_YELLOW_CONEFLOWER_(4626305345).jpg",
       "shows": "whole plant in flower, head height and foliage spread",
       "license": "CC BY-SA 2.0",
-      "checked": "not recorded",
-      "status": "needs-url: find this photograph again and record its address",
+      "checked": "2026-11-27 (address chosen by Karen from two candidates; file description: single specimen at full bloom showing stem, branch and leaf pattern)",
+      "status": "ok",
       "reputable": false,
       "published": "not recorded"
     },
@@ -347,7 +347,7 @@
       "label": "heads: median at age 1",
       "type": "ramp",
       "tier": "gate",
-      "origin": "owner decision (unchanged: 2 to 4); no source gives heads by age",
+      "origin": "approved silhouette plan, 27 Nov 2026 (about 5, 15 and 25 heads at ages 1, 2 and 3), about 40 percent tolerance for seed variation; the plan's numbers are assumptions, not sourced",
       "sources": [
         "owner"
       ],
@@ -357,8 +357,8 @@
           1
         ],
         "range": [
-          2,
-          4
+          3,
+          8
         ]
       }
     },
@@ -367,7 +367,7 @@
       "label": "heads: median at age 2",
       "type": "ramp",
       "tier": "gate",
-      "origin": "draft by Claude so a mature clump reaches about 40 heads; owner to confirm",
+      "origin": "approved silhouette plan, 27 Nov 2026 (about 5, 15 and 25 heads at ages 1, 2 and 3), about 40 percent tolerance for seed variation; the plan's numbers are assumptions, not sourced",
       "sources": [
         "owner"
       ],
@@ -377,9 +377,27 @@
           2
         ],
         "range": [
-          6,
-          15
+          10,
+          20
         ]
+      }
+    },
+    {
+      "id": "growth-continues",
+      "label": "growth: heads keep increasing after age 3 (ages 3, 5)",
+      "type": "growth",
+      "tier": "advisory",
+      "origin": "chosen by Claude: a clump should still be filling out after year 3 (mature clump of about 45 heads against 3-year plant of about 25); catches a plant that stops changing. Ages 3 and 5 only: the model stops growing at age 5 (50 heads, 14 stems, 1.76 ft spread, flat to age 20), which is an open question for the owner, not a sourced fact",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          3,
+          5
+        ],
+        "minRatio": 1.05
       }
     },
     {
@@ -387,7 +405,7 @@
       "label": "heads: median at age 3+",
       "type": "ramp",
       "tier": "gate",
-      "origin": "draft by Claude so a mature clump reaches about 40 heads; owner to confirm",
+      "origin": "approved silhouette plan, 27 Nov 2026 (about 5, 15 and 25 heads at ages 1, 2 and 3), about 40 percent tolerance for seed variation; the plan's numbers are assumptions, not sourced",
       "sources": [
         "owner"
       ],
@@ -397,8 +415,8 @@
           3
         ],
         "range": [
-          15,
-          30
+          18,
+          32
         ]
       }
     },
@@ -562,14 +580,16 @@
       "label": "structure: share of leaves below half height",
       "type": "leavesLow",
       "tier": "advisory",
-      "origin": "measured by Claude from one photo",
+      "origin": "updated 27 Nov 2026 by Claude from two clump photos (leaves reach 50 to 60% of height); earlier range came from one photo",
       "sources": [
+        "inat-clump-detroit",
+        "inat-clump-london",
         "mayfield"
       ],
       "params": {
         "range": [
-          0.4,
-          0.85
+          0.6,
+          1
         ]
       }
     },
@@ -578,12 +598,14 @@
       "label": "structure: leaf-free top of plant",
       "type": "leafFreeTop",
       "tier": "advisory",
-      "origin": "measured by Claude from one photo",
+      "origin": "updated 27 Nov 2026 by Claude from two clump photos (leaves reach 50 to 60% of height, so the bare top is 40 to 50%); earlier max came from one photo",
       "sources": [
+        "inat-clump-detroit",
+        "inat-clump-london",
         "mayfield"
       ],
       "params": {
-        "max": 0.35
+        "max": 0.5
       }
     },
     {

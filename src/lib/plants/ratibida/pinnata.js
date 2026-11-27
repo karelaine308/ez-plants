@@ -1,117 +1,107 @@
 /**
- * Published evidence behind gray-headed coneflower. One scene unit is one metre.
+ * Published evidence behind gray-headed coneflower, Ratibida pinnata. One scene
+ * unit is one metre.
  *
- * This is the straight species as it would grow in a central-Ohio garden, not
- * a named cultivar. Every number below is either traceable to a source here or
- * listed in `PINNATA_RENDER_ASSUMPTIONS` (library rule 3).
- *
- * Pages marked "read" were fetched and their extracted text read while the
- * plant was modelled. Photographs informed the silhouette (rule 4); their
- * moving URLs are deliberately not kept here, only what looking taught.
+ * This is the straight species as grown in a central-Ohio garden, not a named
+ * cultivar. Every number below is either traceable to a source here or listed
+ * in `PINNATA_RENDER_ASSUMPTIONS` (library rule 3). The sources are the
+ * addresses recorded in the research report for this plant.
  */
 export const PINNATA_SOURCES = Object.freeze({
-  illinoisWildflowers: Object.freeze({
-    title: 'Yellow Coneflower (Ratibida pinnata), Illinois Wildflowers',
-    url: 'https://www.illinoiswildflowers.info/prairie/plantx/yl_coneflowerx.htm',
-    supports:
-      'Up to about 4 ft in flower; stems tend to flop in wet or over-fertile soil; up to 13 drooping yellow rays; disk head light green or gray, turning dark brown; basal leaves up to about 8 x 5 in, pinnately divided into 3-7 lobes, rough; spreads by rhizomes into tight clumps; blooms 1-2 months.',
-  }),
-  minnesotaWildflowers: Object.freeze({
-    title: 'Gray-headed Coneflower, Minnesota Wildflowers',
-    url: 'https://www.minnesotawildflowers.info/flower/gray-headed-coneflower',
-    supports:
-      'Stems unbranched except where they fork to carry flower stalks; alternate rough leaves, long-stalked low down and shrinking up the stem, the uppermost unlobed and stalkless; cone about 0.5-0.75 in tall, up to 15 rays about 2 in long that spread to droop; 1-12 heads on long bare stalks.',
-  }),
-  minnesotaSeasons: Object.freeze({
-    title: 'Gray-headed Coneflower, Minnesota Seasons',
-    url: 'https://minnesotaseasons.com/Plants/gray-headed_coneflower.html',
-    supports:
-      'Height 16-48 in; one to a dozen or more stems from the base, branching only near the top; ridged rough-hairy stems; cone 0.4-1 in long; 6-15 drooping yellow rays 1.2-2.4 in long; each head on its own bare stalk 1.25-10.5 in long.',
-  }),
   wildflowerCenter: Object.freeze({
     title: 'Ratibida pinnata, Lady Bird Johnson Wildflower Center',
     url: 'https://www.wildflower.org/plants/result.php?id_plant=RAPI',
     supports:
-      'Native range includes Ohio; height to about 5 ft and stems may need support; yellow bloom May-September; full sun or part shade; dry to moist soil; moist stratification improves germination.',
+      'Height 3-5 ft; somewhat branched stem; one or several flowers, each on its own long stalk, may top a single stem; clumps can be divided.',
   }),
-  ozarkEdge: Object.freeze({
-    title: 'Gray-headed coneflower, Ozark Edge Wildflowers',
-    url: 'https://ozarkedgewildflowers.com/native-plants/gray-headed-coneflower-ratibida-pinnata',
+  missouriDc: Object.freeze({
+    title: 'Gray-headed coneflower, Missouri Department of Conservation',
+    url: 'https://mdc.mo.gov/discover-nature/field-guide/gray-headed-coneflower',
     supports:
-      'Rough alternate leaves with 3-7 lobes; 10-16 rays; heads gray before opening and open from the bottom of the cone upward, going gray to brown; fall foliage yellow-gold, brown and burgundy; basal rosette stays green through winter; fuzzy stems emerge from the rosette in spring; goldfinches strip the seed.',
+      'One to several slender hairy stems from a horizontal rootstock; 6-15 drooping rays to 3 in.',
   }),
-  growItBuildIt: Object.freeze({
-    title: 'Grayhead coneflower, Grow It Build It',
-    url: 'https://growitbuildit.com/ratibida-pinnata-grayhead-coneflower/',
+  missouriBotanical: Object.freeze({
+    title: 'Ratibida pinnata, Missouri Botanical Garden Plant Finder (archive copy)',
+    url: 'https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?kempercode=l940',
     supports:
-      'Height 3-5 ft; basal leaves about 6 x 4 in, stem leaves 1-2 in; cone 0.5-1 in tall; width up to about 2 ft; spacing 18-24 in.',
+      'Height 3-5 ft, spread 1.5-2 ft; individual plants narrow and somewhat sparsely leafed; may need staking; disk an elongated cylinder 1 in long; 3-7 reflexed rays to 3 in.',
   }),
-  prairieMoon: Object.freeze({
-    title: 'Ratibida pinnata, Prairie Moon Nursery',
+  purdueArboretum: Object.freeze({
+    title: 'Ratibida pinnata, Purdue Arboretum',
+    url: 'https://www.arboretum.purdue.edu/explorer/?p=5999',
+    supports: 'Height 3-5 ft, spread 1.5-2 ft; clump-forming.',
+  }),
+  ncStateExtension: Object.freeze({
+    title: 'Ratibida pinnata, NC State Extension Plant Toolbox',
+    url: 'https://plants.ces.ncsu.edu/plants/ratibida-pinnata/',
+    supports:
+      'Basal leaves to 8 in by 5 in; stem leaves smaller and sparse; leaves with 3-7 segments; up to 13 reflexed rays 1-3 in.',
+  }),
+  sdsu: Object.freeze({
+    title: 'Ratibida pinnata, South Dakota State University (R. N. Reese)',
+    url: 'https://openprairie.sdstate.edu/nativeplant/221',
+    supports:
+      'Stems arising singly or in clusters from a rhizome, branched only in the flowering part; 1 to 12 flower heads at the top of the plant.',
+  }),
+  usdaPlantGuide: Object.freeze({
+    title: 'Plant guide, gray-headed prairie coneflower, USDA NRCS',
+    url: 'https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_rapi.pdf',
+    supports:
+      'Disk gray then brown; drooping rays; seed harvested October-November; seed heads eaten by birds in late fall.',
+  }),
+  minnesotaWildflowers: Object.freeze({
+    title: 'Gray-headed coneflower, Minnesota Wildflowers',
+    url: 'https://www.minnesotawildflowers.info/flower/gray-headed-coneflower',
+    supports:
+      'Stems unbranched except in the flowers; leaves grade from lobed and stalked below to unlobed and bract-like above; garden-grown clump photograph (about 55 heads) and a late-fall photograph of bare stems each carrying one dark seed head.',
+  }),
+  newMoonNursery: Object.freeze({
+    title: 'Ratibida pinnata, New Moon Nursery',
+    url: 'https://www.newmoonnursery.com/plant/Ratibida-pinnata',
+    supports: 'Usually blooms the second year from seed; 2 ft spread.',
+  }),
+  prairieMoonNursery: Object.freeze({
+    title: 'Yellow coneflower, Prairie Moon Nursery',
     url: 'https://www.prairiemoon.com/ratibida-pinnata-yellow-coneflower',
-    supports:
-      'Most plants flower in their second and later years, the first season going mostly to roots; bloom July-September; cone green darkening to purple or brown; soft drooping rays.',
+    supports: 'First-season bloom not unheard of, second and later seasons far more common.',
   }),
-  eastIllinoisPrairie: Object.freeze({
-    title: 'Ratibida pinnata, Eastern Illinois University prairie plants',
-    url: 'https://castle.eiu.edu/prairie/ratipinn.htm',
+  inatOhioBloom: Object.freeze({
+    title: 'iNaturalist, Ohio, Ratibida pinnata, flowering weekly histogram',
+    url: 'https://api.inaturalist.org/v1/observations/histogram?taxon_id=85331&place_id=31&term_id=12&term_value_id=13&date_field=observed&interval=week_of_year',
     supports:
-      'Seedling leaves are basal, simple, oval and pointed with three veins, on round seed leaves; fruit October-November; 30 days of cold stratification.',
+      'Flowering observations begin in week 25, 50% by week 30, peak weeks 28-30, a thin tail to week 40 and odd weeks to 43.',
   }),
-  epaGreatLakes: Object.freeze({
-    title: 'Yellow coneflower, EPA Great Lakes Green Acres',
-    url: 'https://archive.epa.gov/greenacres/web/html/ylwcoflwr.html',
-    supports:
-      'Lower leaves alternate on long stalks with 3-7 narrow coarsely toothed leaflets that droop slightly; one flower per stem; seed ripe October-November.',
+  inatWinterPhotographs: Object.freeze({
+    title: 'iNaturalist winter photographs, Oregon OH 2026-01-31 (obs 336858754) and Wooster OH 2026-02-24 (obs 340096176)',
+    url: 'https://www.inaturalist.org/observations/336858754',
+    supports: 'Dark seed heads still standing on bare stems in snow, late January and February.',
   }),
-  friendsOfEloiseButler: Object.freeze({
-    title: 'Grayhead coneflower, Friends of Eloise Butler',
-    url: 'https://www.friendsofeloisebutler.org/pages/plants/grayheadedconeflower.html',
+  clumpPhotographCounts: Object.freeze({
+    title: 'Research report, heads counted from three garden-clump photographs',
     supports:
-      'Large lower leaves with 3-7 stalked leaflets, smaller narrower leaves up the stem; disk taller than wide; rays 1-2.5 in; one to several heads on long stalks above the leaves.',
-  }),
-  ohioNativePlantsChart: Object.freeze({
-    title: 'Native Plants of Ohio chart (supplied by the owner)',
-    supports:
-      'Bloom July to October; habitat woods edges, prairie and prairie remnants, roadsides; alkaline soil. The only Ohio-specific timing found.',
-  }),
-  referencePhotographs: Object.freeze({
-    title: 'Photographic observations made during modelling',
-    supports:
-      'Side view of a head: an egg-shaped tan cone with a dark maroon band of opened florets at its base, and about three to nine yellow rays hanging almost straight down, narrow and slightly curved, roughly twice as long as the cone is tall. From above: a round cone about a quarter of the head width with rays radiating flat with gaps between them and a few small green bracts at the base. Whole plant: a leafy column of slender stems with leaves up the whole stem and small heads in the top fifth. Stem leaves: long and narrow, deeply cut into three to seven narrow lobes low down, plain lance shapes at the top, rough and gray-green rather than dark. Seed heads: black ovals on thin wiry bare tan stems, standing through winter. Winter rosette: a low green spray of narrow cut leaves. Spring crown: several short stems from one crown with simple elliptic, hairy-edged leaves and tiny divided new leaves at the centre.',
-  }),
-  ownerSeedlingPhotograph: Object.freeze({
-    title: 'Owner-supplied photograph of a potted first-year plant',
-    supports:
-      'A small plant of about five simple, broad, rounded to heart-shaped leaves on long stalks: no lobed leaves yet.',
+      'About 35, 45 and 55 heads (median 45); about 12-15 stems visible in one photograph; none of known age.',
   }),
 });
 
 /** Numbers the renderer needs that no source above states. */
 export const PINNATA_RENDER_ASSUMPTIONS = Object.freeze([
-  'mature height 3-5 ft is sourced, modelled at the 4 ft (1.22 m) average the owner asked for, with stems varying 0.9-1.5 m by seed',
-  'stems lean outward only slightly (about 2-7 degrees at the base, a little more for outer stems): sources say it can flop in rich soil, but there is no soil input, so the lean is fixed and small',
-  'stem base diameter 5.5-8.5 mm is assumed; sources say only "slender"',
-  'stems per plant by age (3, 4, 6, 8) and the share that fork are assumed so a mature plant carries about 10-12 heads; sources give only the 1-12 range',
-  'about one stem in eight forks near the top to carry a second head, as the sources say stems branch only near the top',
-  'the first season is a rosette of leaves with no tall stems or heads; the second season and later flower (Prairie Moon: most plants flower from year two). Years 1-3 growth proportions are assumed',
-  'leaf posture along the stem is matched by eye to photographs; lower leaves spread wider than upper ones. The lower four nodes also carry a second, smaller leaf (about 60% size) in the axil; this is an assumption, since sources describe few leaves higher up',
-  'head size: the horizontal span of a head is drawn 9.5-12.5 cm. Cone about 2.5 cm tall and 1.9 cm wide, rays about 4.2 cm long and about 1 cm wide, all within the cited ranges but fixed by eye to photographs',
-  'ray droop is not stated in degrees anywhere: rays are drawn leaving the cone nearly flat and bending to about 78 degrees below horizontal by the tip, matched to photographs. Nine rays at the finest band (sources say 6-16)',
-  'leaf colour is tuned by measurement, not chosen by eye: under the planner\'s sun-and-sky lighting the rendered leaf pixels sit at hue 67, saturation 0.42 and brightness 0.42, against about hue 68-70, saturation 0.54 and brightness 0.42-0.48 in the reference leaf photographs; saturation is left lower because tints near full saturation barely raise it in the render. No source gives a colour value',
-  'each head stays open about four weeks (no source gives a per-head duration; to be replaced by a measurement from the owner\'s garden), opens in a staggered order across the plant, and the plant as a whole flowers July to October (owner chart); all other phase dates are assumed',
-  'central-Ohio phase dates other than the July-October bloom window and the October-November seed ripening are assumed, anchored to the Joe Pye weed calendar for the same garden',
-  'the winter rosette stays green but is about 40% of its summer size and a dull dark green; its sizes and the lower leaves dying back in late summer are assumed from the Ozark Edge description. Foliage is weighted to the base (sources: basal leaves 5-8 in, upper leaves few and small): a fuller rosette of up to 22 leaves and smaller upper stem leaves',
-  'frost-killed stem leaves brown, shrivel and fall over about two months, with about one in thirty staying until the spring cutback; the stems and black cones stand until then. This follows the Joe Pye weed behaviour recorded for the same garden and is assumed for this species',
-  'year-0 leaves use the same lobed leaf plate as older leaves, drawn small and broad; a separate simple-leaf plate is not drawn',
-  'the order heads open in is assumed: terminal heads open from the first flowering date out to about ten weeks later, weighted toward the earlier dates, and side heads open six to twelve weeks after it, so that one plant carries bloom from July into October as the owner chart says',
-  'a head is a small gray-green bud for at least two weeks before it opens, filling out from under half to full size as it opens',
-  'the cone darkens from tan to near black over about a month after the rays begin to drop, and about half the cones have broken away from their stems by the April cutback',
-  'heads tilt 5-30 degrees off the stem axis; each ray varies a little in length, bend and twist; six small green bracts ring the base of every head',
-  'basal rosette leaves arch up out of the crown at about 20-40 degrees above horizontal, and a first-season plant carries five of them at 40% of full leaf size, matched to the owner photograph of a first-year plant',
-  'old stems are removed whole at the April cutback: the model draws no stubble, although the owner leaves 8-15 in of it for stem-nesting bees (the care hint says so)',
-  'leaf wind strength and frequency are borrowed from Echinacea (slender stems, rough narrow leaves, a modest flutter)',
-  'all colours are estimates from description and photographs, not measurements',
+  'stems per clump by age (3, 6, 9, 13, 14 at ages 1, 2, 3, 4, 5) are assumed except the mature 12-15, which rests on one rough photograph count; age 4 is interpolated',
+  'heads per clump by age (5, 15, 25, 41, 45) are assumed except the mature median of 45 (range 30-60), counted from three photographs',
+  'seed-to-seed variation: stems x0.88-1.12, heads x0.7-1.3 around those figures',
+  'height by age (0.20 m plug rosette, 0.80, 1.05, 1.20, 1.22 m) is assumed except the mature 3-5 ft, modelled at its middle',
+  'spread by age (0.20, 0.30, 0.40, 0.48, 0.53 m) is assumed except the mature 1.5-2 ft',
+  'basal leaf counts (12, 15, 21, 27, 33) and the leaf reach up the stem (45% at age 1 to 57% at age 3 and later) are assumed; the mature lower-half-to-60% reach is read from two photographs',
+  'each stem leans outward from the crown centre in its own direction, the tip tangent about 2 degrees off vertical in the centre and 15 degrees at the edge, plus or minus 2; the sources say only arching and may need staking',
+  'heads sit between about 66% and 100% of the plant height on stalks of 10-45 cm branching from about 65% of the height; the sources give only long bare stalks',
+  'a pinnate blade of three leaflet pairs and a terminal one, coarsely toothed, 10-20 cm on the lower stem, bract-like near the top, two leaves per node on the lowest nodes; basal leaves to 20 cm, 12 to 33 per clump (Karen asked for a leafier clump)',
+  'each head holds its rays open for 14-21 days; head opening dates are spread over a skewed curve fitted by eye to the Ohio weekly histogram, with about one head in eleven opening late (day 250-285) to give the thin October tail',
+  'buds are visible 16 days before a head opens; young clumps bloom 7 days (age 1) and 3 days (age 2) later than mature ones',
+  'eight rays per head, 4.5-7 cm long, hanging at 60-80 degrees below horizontal; sources range from 3 to 15 rays',
+  'cone 2.6 cm tall and 1.9 cm wide; bare peduncles 20-40 cm above the last leaf',
+  'seed heads weather from brown to dark over winter and about one in twenty-five shatters per month; old stems are cut back between 5 March and 1 April',
+  'central-Ohio phase dates other than the July start, the peak near day 205 and the thin tail into October (observations in the report) are assumed',
+  'all colours are estimates from described and photographed plants, not measurements',
+  'the pinnate leaf plate is generated in code: 3 leaflet pairs and a terminal leaflet, where the sources give 3-7 segments',
 ]);
 
 /** Species profile for one maintained plant in a central-Ohio garden. */
@@ -124,99 +114,140 @@ export const PINNATA_PROFILE = Object.freeze({
   metresPerUnit: 1,
   architecture: Object.freeze({
     habit:
-      'clump of slender leafy stems from a persistent crown, each ending in one drooping-rayed head on a long bare stalk',
+      'narrow upright clump of slender stems from a rhizomatous crown, branching only in the top quarter, a basal rosette of pinnate leaves and heads on long bare stalks',
     hasTrunk: false,
     woody: false,
     deciduous: true,
-    crownOrigin: 'persistent rhizomatous basal crown with an overwintering rosette',
+    crownOrigin: 'persistent rhizomatous basal crown',
     matureHeightM: 1.22,
-    matureRadiusM: 0.32,
-    matureCrownRadiusM: 0.1,
+    matureRadiusM: 0.27,
+    matureCrownRadiusM: 0.09,
     modelHorizonYears: 20,
-    maximumPrimaryShoots: 8,
-    // No tall stems in the planting season; flowering stems from year one.
+    maximumPrimaryShoots: 17,
+    // Each stem leans outward from the crown centre, the tilt growing along the
+    // stem: the tip tangent is about 2 degrees off vertical for central stems and
+    // about 15 degrees for the clump's edge stems (Karen's review of the render).
+    leanTipDegreesCentre: 2,
+    leanTipDegreesEdge: 15,
+    leanJitterDeg: 2,
     shootCountAnchors: Object.freeze([
+      Object.freeze([0, 0]),
       Object.freeze([1, 3]),
-      Object.freeze([2, 4]),
-      Object.freeze([3, 6]),
-      Object.freeze([5, 8]),
+      Object.freeze([2, 6]),
+      Object.freeze([3, 9]),
+      Object.freeze([4, 13]),
+      Object.freeze([5, 14]),
     ]),
-    rosetteLeafAnchors: Object.freeze([
-      Object.freeze([0, 5]),
-      Object.freeze([1, 10]),
-      Object.freeze([2, 16]),
-      Object.freeze([3, 20]),
-      Object.freeze([5, 22]),
+    headCountAnchors: Object.freeze([
+      Object.freeze([0, 0]),
+      Object.freeze([1, 5]),
+      Object.freeze([2, 15]),
+      Object.freeze([3, 25]),
+      Object.freeze([4, 41]),
+      Object.freeze([5, 45]),
     ]),
-    maximumRosetteLeaves: 22,
+    basalLeafCountAnchors: Object.freeze([
+      Object.freeze([0, 12]),
+      Object.freeze([1, 15]),
+      Object.freeze([2, 21]),
+      Object.freeze([3, 27]),
+      Object.freeze([5, 33]),
+    ]),
     crownRadiusAnchorsM: Object.freeze([
-      Object.freeze([0, 0.03]),
-      Object.freeze([1, 0.06]),
-      Object.freeze([2, 0.08]),
-      Object.freeze([3, 0.095]),
-      Object.freeze([5, 0.1]),
+      Object.freeze([0, 0.02]),
+      Object.freeze([1, 0.04]),
+      Object.freeze([2, 0.06]),
+      Object.freeze([3, 0.075]),
+      Object.freeze([5, 0.09]),
+    ]),
+    // Share of the mature stem height reached, by age.
+    stemHeightScaleAnchors: Object.freeze([
+      Object.freeze([0, 0.5]),
+      Object.freeze([1, 0.69]),
+      Object.freeze([2, 0.887]),
+      Object.freeze([3, 1]),
+      Object.freeze([5, 1]),
+    ]),
+    heightByAgeM: Object.freeze([
+      Object.freeze([0, 0.2]),
+      Object.freeze([1, 0.8]),
+      Object.freeze([2, 1.05]),
+      Object.freeze([3, 1.2]),
+      Object.freeze([5, 1.22]),
+    ]),
+    spreadByAgeM: Object.freeze([
+      Object.freeze([0, 0.2]),
+      Object.freeze([1, 0.3]),
+      Object.freeze([2, 0.4]),
+      Object.freeze([3, 0.48]),
+      Object.freeze([5, 0.53]),
     ]),
   }),
   growth: Object.freeze({
-    rate: 'moderate; flowers from the second year',
-    plantAgeScaleAnchors: Object.freeze([
-      Object.freeze([0, 0.3]),
-      Object.freeze([1, 0.7]),
-      Object.freeze([2, 0.9]),
-      Object.freeze([3, 1]),
-    ]),
-    rosetteAgeScaleAnchors: Object.freeze([
-      Object.freeze([0, 0.4]),
-      Object.freeze([1, 0.75]),
-      Object.freeze([2, 1]),
-    ]),
+    rate: 'moderate; the first season is mostly root and a rosette',
     topGrowthAnnual: true,
+    firstYearFlowers: false,
   }),
   stem: Object.freeze({
-    kind: 'annual herbaceous flowering stem, ridged and rough-hairy',
-    targetHeightM: Object.freeze([0.9, 1.5]),
+    kind: 'annual herbaceous flowering stem, slender, ridged, rough-hairy',
+    // Per-stem height as a share of the mature figure.
+    heightShare: Object.freeze([0.88, 1]),
+    stemMaxHeightM: 1.2,
     baseRadiusM: Object.freeze([0.0028, 0.0042]),
-    mainAxisSections: 14,
-    lateralAxisSections: 3,
-    leafyNodes: 10,
-    surface: 'green, finely hairy; tan and wiry when dry',
+    pedunculeRadiusM: 0.0016,
+    mainAxisSections: 11,
+    lateralAxisSections: 4,
+    maxHeadsPerStem: 9,
+    // First lateral node and how many nodes from the top bear laterals.
+    // Head zone: stalks 10-45 cm, branching from about 65% of the height, heads
+    // between 68% and 100% of it, stalks leaving at 12-27 degrees from vertical.
+    headZoneFractions: Object.freeze([0.75, 1]),
+    branchStartFraction: 0.63,
+    stalkLengthM: Object.freeze([0.1, 0.45]),
+    stalkOutward: Object.freeze([0.2, 0.5]),
+    leafReachAnchors: Object.freeze([
+      Object.freeze([1, 0.45]),
+      Object.freeze([2, 0.5]),
+      Object.freeze([3, 0.57]),
+      Object.freeze([5, 0.57]),
+    ]),
   }),
   leaf: Object.freeze({
-    arrangement: 'alternate, spiralling up the stem',
-    shape:
-      'rough, cut into three to seven narrow pointed lobes low down; plain narrow lance shapes at the top',
-    texture: 'matte, rough, finely hairy',
-    stemLengthM: Object.freeze([0.15, 0.22]),
-    stemWidthM: Object.freeze([0.09, 0.13]),
-    upperScale: 0.35,
-    lowerScale: 0.85,
-    rosetteLengthM: Object.freeze([0.18, 0.3]),
-    rosetteWidthM: Object.freeze([0.09, 0.14]),
-    autumnColours: Object.freeze(['yellow-gold', 'brown', 'burgundy']),
+    arrangement: 'basal rosette plus alternate stem leaves, both pinnately divided',
+    segments: Object.freeze([3, 7]),
+    basalLengthAnchorsM: Object.freeze([
+      Object.freeze([0, 0.16]),
+      Object.freeze([1, 0.18]),
+      Object.freeze([2, 0.195]),
+      Object.freeze([3, 0.2]),
+      Object.freeze([5, 0.2]),
+    ]),
+    widthToLength: 0.7,
+    stemLeafScaleLowTop: Object.freeze([1, 0.3]),
+    colour: 'medium green to slightly grey-green, rough',
     persistentThroughWinter: false,
-    rosetteEvergreenInWinter: true,
   }),
-  flowerHead: Object.freeze({
-    position: 'terminal on a bare stalk, tilting slightly outward',
-    horizontalSpanM: Object.freeze([0.095, 0.125]),
-    rayCount: Object.freeze([6, 16]),
-    rayColour: 'clear yellow',
-    rayPosture: 'hanging almost straight down, narrow and slightly curved',
-    coneHeightM: Object.freeze([0.016, 0.026]),
-    coneColour: 'tan, with a dark maroon band where florets have opened',
-    stalkLengthM: Object.freeze([0.03, 0.27]),
+  head: Object.freeze({
+    kind: 'capitulum with a tall gray-then-brown cone and strongly reflexed yellow rays',
+    coneHeightM: 0.026,
+    coneRadiusM: 0.0095,
+    raysPerHead: 8,
+    rayLengthM: Object.freeze([0.045, 0.07]),
+    rayColour: 'yellow',
     progression:
-      'gray-green bud, yellow rays opening and drooping, rays dropping, then a dark brown to black cone standing on a bare stem',
+      'gray-green bud, yellow rays opening and drooping, cone browning from the base, rays dropping, dark brown winter head',
   }),
   flowering: Object.freeze({
-    observedDisplay: 'July to October (owner chart); one to two months per plant',
-    bloomWeeksPerHead: Object.freeze([4, 4]),
+    observedDisplay:
+      'Ohio flowering observations peak weeks 28-30 and thin out by week 40; text sources end in September',
+    openDurationDays: Object.freeze([14, 21]),
     stemsFlowerInCurrentSeason: true,
+    flowersFirstYear: false,
   }),
   management: Object.freeze({
     maintained: true,
     standsThroughWinter: true,
-    cutbackWindow: 'April, once daytime temperatures stay in the 50s',
-    cutbackHeightM: 0.29,
+    cutbackWindow: 'late winter before spring growth',
+    cutbackHeightM: 0.1,
   }),
 });

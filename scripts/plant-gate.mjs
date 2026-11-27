@@ -104,6 +104,11 @@ const TYPES = {
     const bad = meds.find((v) => !inRange(v, range));
     return [bad ?? meds[0], bad === undefined, range.join(' to ')];
   },
+  growth({ stat, ages, minRatio = 1.05 }) {
+    const meds = ages.map((a) => median(each(SEEDS, a, PD, (p) => statVal(p, stat))));
+    const ok = meds.every((v, i) => i === 0 || v >= meds[i - 1] * minRatio);
+    return [meds.map((v) => f(v, 1)).join(' > '), ok, `each age >= ${minRatio}x the one before (ages ${ages.join(', ')})`];
+  },
   absent({ age, stats }) {
     const p = make(1, age, 100); const mx = Object.fromEntries(stats.map((s) => [s, 0]));
     for (let d = 5; d <= 365; d += 5) { p.setTime({ ageYears: age, dayOfYear: d }); for (const s of stats) mx[s] = Math.max(mx[s], statVal(p, s)); }

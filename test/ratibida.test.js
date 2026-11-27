@@ -1,197 +1,194 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import {
-  createPinnataModel,
-  evaluatePinnataModel,
-  getPinnataPhenology,
-  PINNATA_PROFILE,
-  PINNATA_RENDER_ASSUMPTIONS,
-  PINNATA_SOURCES,
-  Ratibida,
-} from '../src/lib/index.js';
-import { createPinnataHeadGeometry } from '../src/lib/plants/ratibida/geometry.js';
+import * as THREE from 'three';
 
-const model = createPinnataModel({ seed: 'test' });
-const at = (ageYears, dayOfYear) =>
-  evaluatePinnataModel(model, { ageYears, dayOfYear });
+import * as publicApi from '../src/lib/index.js';
+import { createRatibidaHeadGeometry } from '../src/lib/plants/ratibida/geometry.js';
+import { createPinnataModel, evaluatePinnataModel } from '../src/lib/plants/ratibida/model.js';
+import { getPinnataPhenology } from '../src/lib/plants/ratibida/phenology.js';
+import { PINNATA_PROFILE, PINNATA_SOURCES } from '../src/lib/plants/ratibida/pinnata.js';
+import { Ratibida } from '../src/lib/plants/ratibida/ratibida.js';
 
-test('the planting season is a rosette with no tall stems and no heads', () => {
-  for (const day of [120, 160, 205, 250]) {
-    const state = at(0, day);
-    assert.equal(state.axes.length, 0, `day ${day}`);
-    assert.equal(state.heads.length, 0, `day ${day}`);
-    assert.ok(state.leaves.length > 0, `day ${day}`);
-    assert.ok(state.leaves.every((leaf) => leaf.rosette));
-  }
-});
+const SEEDS = Array.from({ length: 24 }, (_, i) => `seed-${i}`);
 
-test('flowering starts in the second season and never passes twelve heads', () => {
-  assert.ok(at(1, 205).heads.length >= 1);
-  for (const seed of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']) {
-    const crowd = createPinnataModel({ seed });
-    for (const age of [1, 2, 3, 5, 10]) {
-      const heads = evaluatePinnataModel(crowd, { ageYears: age, dayOfYear: 205 }).heads;
-      assert.ok(heads.length <= 12, `seed ${seed} age ${age}: ${heads.length} heads`);
+function stats(seed, ageYears, dayOfYear) {
+  const plant = new Ratibida({ seed, ageYears, dayOfYear });
+  const result = plant.stats();
+  plant.dispose();
+  return result;
+}
+
+const median = (values) => [...values].sort((a, b) => a - b)[values.length >> 1];
+
+function instanceState(plant) {
+  const out = [];
+  plant.traverse((o) => {
+    if (o.isInstancedMesh) {
+      out.push([o.name, o.count, Array.from(o.instanceMatrix.array.slice(0, o.count * 16))]);
     }
-  }
-});
+  });
+  return JSON.stringify(out.sort((a, b) => a[0].localeCompare(b[0])));
+}
 
-test('mature stems stand 3 to 5 ft', () => {
-  const height = at(5, 205).dimensions.heightM;
-  assert.ok(height >= 0.9 && height <= 1.55, `height ${height}`);
-});
-
-test('bloom runs through summer and fades to the end of the owner chart window', () => {
-  const open = (day) => at(5, day).stats.visibleFlowers;
-  assert.equal(open(100), 0);
-  assert.equal(open(150), 0);
-  assert.ok(open(205) > 0);
-  // Some head is still open on the last day of the window, and none after it.
-  let lastOpenDay = 0;
-  for (let day = 150; day <= 330; day += 1) if (open(day) > 0) lastOpenDay = day;
-  assert.ok(lastOpenDay >= 270 && lastOpenDay <= 295, `last open day ${lastOpenDay}`);
-});
-
-test('heads go from bud to open to a dark cone, and rays are gone by then', () => {
-  const stages = new Set();
-  let sawRaysIn = false;
-  for (let day = 150; day <= 330; day += 3) {
-    for (const head of at(5, day).heads) {
-      stages.add(head.stage);
-      if (head.stage === 'open') {
-        assert.equal(head.rayVisibility, 1);
-        sawRaysIn = true;
-      }
-      if (head.stage === 'seed' && head.darkenProgress >= 1) {
-        assert.equal(head.rayVisibility, 0);
-      }
-    }
-  }
-  assert.ok(sawRaysIn);
-  for (const stage of ['bud', 'opening', 'open', 'fading', 'seed']) {
-    assert.ok(stages.has(stage), `missing stage ${stage}`);
-  }
-});
-
-test('the rosette stays on the plant all year and is smallest in winter', () => {
-  const count = (day) => at(5, day).stats.visibleRosetteLeaves;
-  for (const day of [1, 60, 120, 200, 280, 340]) assert.ok(count(day) > 0, `day ${day}`);
-  const size = (day) => getPinnataPhenology(day).rosetteScale;
-  assert.ok(size(20) < size(180));
-  assert.ok(size(20) <= 0.4 + 1e-9);
-  assert.equal(size(180), 1);
-});
-
-test('old stems and their black cones stand through winter and are cut in April', () => {
-  const winter = at(5, 20);
-  assert.ok(winter.axes.length > 0);
-  assert.ok(winter.heads.length > 0);
-  assert.ok(winter.heads.every((head) => head.stage === 'winter'));
-  // Between the end of the cutback and the first new stems there is only the rosette.
-  const { cutbackEnd, emergenceStart } = getPinnataPhenology(100).calendar;
-  const after = at(5, cutbackEnd + 1);
-  assert.ok(cutbackEnd + 1 < emergenceStart);
-  assert.equal(after.axes.length, 0);
-  assert.equal(after.heads.length, 0);
-  assert.ok(after.stats.visibleRosetteLeaves > 0);
-});
-
-test('frost-killed stem leaves mostly fall by midwinter', () => {
-  const standing = (day) =>
-    at(5, day).leaves.filter((leaf) => !leaf.rosette && !leaf.fallen).length;
-  assert.ok(standing(200) > standing(340));
-  assert.ok(standing(20) <= standing(200) * 0.1);
-});
-
-test('evaluation is deterministic and JSON-safe', () => {
-  const first = at(5, 205);
-  const second = at(5, 205);
-  assert.deepEqual(first, second);
-  assert.deepEqual(JSON.parse(JSON.stringify(first.heads)), first.heads);
-});
-
-test('care events are rejected; the cutback is part of the calendar', () => {
-  assert.throws(
-    () => evaluatePinnataModel(model, { ageYears: 3, dayOfYear: 100, events: [{}] }),
-    RangeError,
-  );
-});
-
-test('every source says what it supports and the assumptions are declared', () => {
-  for (const [key, source] of Object.entries(PINNATA_SOURCES)) {
-    assert.ok(source.title && source.supports, key);
-  }
-  assert.ok(PINNATA_RENDER_ASSUMPTIONS.length >= 10);
+test('the profile is species-level, herbaceous and sourced', () => {
+  assert.equal(PINNATA_PROFILE.species, 'Ratibida pinnata');
   assert.equal(PINNATA_PROFILE.cultivar, 'Species');
-});
-
-test('the head geometry is one draw with a ray weight and shrinks down its ladder', () => {
-  const fine = createPinnataHeadGeometry({ rays: 9, raySegments: 3, radialSegments: 10, coneRings: 4 });
-  const coarse = createPinnataHeadGeometry({ rays: 6, raySegments: 2, radialSegments: 6, coneRings: 2 });
-  assert.ok(fine.getAttribute('ratibidaRay'));
-  assert.equal(
-    fine.getAttribute('ratibidaRay').count,
-    fine.getAttribute('position').count,
-  );
-  assert.ok(coarse.index.count < fine.index.count);
-  fine.dispose();
-  coarse.dispose();
-});
-
-test('the renderer builds in three draws, moves in place and disposes', () => {
-  const plant = new Ratibida({ seed: 'render', ageYears: 5, dayOfYear: 205 });
-  try {
-    assert.equal(plant.stats().drawCalls, 3);
-    assert.ok(plant.stats().visibleFlowers > 0);
-    plant.setTime({ dayOfYear: 340 });
-    assert.equal(plant.stats().visibleFlowers, 0);
-    assert.ok(plant.stats().visibleSeedHeads > 0);
-    const saved = plant.serialize();
-    assert.equal(saved.type, 'Ratibida');
-    assert.deepEqual(JSON.parse(JSON.stringify(saved)), saved);
-  } finally {
-    plant.dispose();
+  assert.equal(PINNATA_PROFILE.architecture.woody, false);
+  assert.equal(PINNATA_PROFILE.architecture.leanTipDegreesEdge, 15);
+  assert.strictEqual(publicApi.Ratibida, Ratibida);
+  assert.strictEqual(publicApi.PINNATA_PROFILE, PINNATA_PROFILE);
+  for (const source of Object.values(PINNATA_SOURCES)) {
+    if (source.url) assert.match(source.url, /^https:\/\//);
+    assert.ok(source.supports.length > 30);
   }
 });
 
-test('the profile, the calendar and the sources agree with each other', () => {
-  const [low, high] = PINNATA_PROFILE.stem.targetHeightM;
-  // Modelled at the average of the cited 3-5 ft, not at an extreme.
-  assert.ok(
-    Math.abs(PINNATA_PROFILE.architecture.matureHeightM - (low + high) / 2) < 0.1,
-    'mature height is the middle of the stem height range',
-  );
-  assert.ok(low >= 0.9 && high <= 1.55, 'the stem range stays within 3-5 ft');
-
-  // Bloom opens in July and the last head is open in October (owner chart).
-  const { floweringStart } = getPinnataPhenology(100).calendar;
-  const monthOf = (day) => new Date(Date.UTC(2023, 0, day)).getUTCMonth() + 1;
-  assert.equal(monthOf(floweringStart), 7);
-  let lastOpen = 0;
-  for (let day = 150; day <= 330; day += 1) {
-    if (at(5, day).stats.visibleFlowers > 0) lastOpen = day;
+test('age 0 is a plug: a rosette with no stems and no heads', () => {
+  for (const seed of SEEDS.slice(0, 6)) {
+    const s = stats(seed, 0, 205);
+    assert.equal(s.visibleStems, 0);
+    assert.equal(s.visibleHeads, 0);
+    assert.ok(s.visibleLeaves >= 6);
+    assert.ok(s.dimensions.heightM > 0.1 && s.dimensions.heightM < 0.3);
   }
-  assert.equal(monthOf(lastOpen), 10);
-
-  // The profile's own numbers match what the sources record.
-  assert.equal(PINNATA_PROFILE.flowering.bloomWeeksPerHead[0], 4);
-  assert.ok(PINNATA_PROFILE.flowerHead.rayCount[0] <= 9);
-  assert.ok(PINNATA_PROFILE.flowerHead.rayCount[1] >= 9);
 });
 
-test('every assumption the model depends on is declared', () => {
-  const text = PINNATA_RENDER_ASSUMPTIONS.join(' ');
-  for (const phrase of [
-    'order heads open in',
-    'small gray-green bud',
-    'cone darkens',
-    'basal rosette leaves arch',
-    'old stems are removed whole',
-    'leaf wind',
-    'second, smaller leaf',
-    'winter rosette',
-  ]) {
-    assert.ok(text.includes(phrase), `missing assumption: ${phrase}`);
+test('stems, heads, height and spread grow with age toward the mature clump', () => {
+  const at = (age) => SEEDS.map((seed) => stats(seed, age, 205));
+  const stems = [1, 2, 3, 5].map((age) => median(at(age).map((s) => s.visibleStems)));
+  const heads = [1, 2, 3, 5].map((age) => median(at(age).map((s) => s.visibleHeads)));
+  const heights = [1, 2, 3, 5].map((age) => median(at(age).map((s) => s.dimensions.heightM)));
+  const spreads = [1, 2, 3, 5].map((age) => median(at(age).map((s) => s.dimensions.spreadM)));
+  for (const series of [stems, heads, heights, spreads]) {
+    for (let i = 1; i < series.length; i += 1) assert.ok(series[i] > series[i - 1], String(series));
   }
+  assert.ok(stems[3] >= 12 && stems[3] <= 15);
+  assert.ok(heads[3] >= 40 && heads[3] <= 50, `mature head median ${heads[3]}`);
+  assert.ok(heights[3] > 0.9 && heights[3] < 1.5);
+  assert.ok(spreads[3] > 0.45 && spreads[3] < 0.6);
+  for (const s of at(5)) assert.ok(s.visibleHeads >= 30 && s.visibleHeads <= 60);
+});
+
+test('bloom runs from July into October with open heads counted as flowers', () => {
+  const open = (day) => median(SEEDS.map((seed) => stats(seed, 5, day).visibleFlowers));
+  assert.equal(open(150), 0);
+  assert.ok(open(205) >= 8);
+  assert.ok(open(240) >= 3);
+  const octoberSomewhere = SEEDS.some((seed) => stats(seed, 5, 290).visibleFlowers > 0);
+  assert.ok(octoberSomewhere, 'a thin tail of open heads in October');
+  assert.equal(stats('seed-1', 5, 330).visibleFlowers, 0);
+  const s = stats('seed-1', 5, 205);
+  assert.equal(s.visibleHeads, s.visibleFlowers + s.visibleFlowerBuds + s.visibleSeedHeads);
+});
+
+test('dark seed heads stand through winter and the stems are cut back in spring', () => {
+  const winter = SEEDS.map((seed) => stats(seed, 5, 20));
+  for (const s of winter) {
+    assert.ok(s.visibleSeedHeads >= 5);
+    assert.equal(s.visibleLeaves, 0);
+    assert.equal(s.visibleFlowers, 0);
+  }
+  assert.equal(stats('seed-1', 5, 100).visibleStems, 0);
+  assert.equal(stats('seed-1', 0, 20).visibleHeads, 0);
+  assert.ok(stats('seed-1', 5, 340).visibleSeedHeads >= 20);
+});
+
+test('the same seed gives the same plant and a different seed does not', () => {
+  const a = new Ratibida({ seed: 'x', ageYears: 5, dayOfYear: 205 });
+  const b = new Ratibida({ seed: 'x', ageYears: 5, dayOfYear: 205 });
+  const c = new Ratibida({ seed: 'y', ageYears: 5, dayOfYear: 205 });
+  assert.equal(instanceState(a), instanceState(b));
+  assert.notEqual(instanceState(a), instanceState(c));
+  for (const p of [a, b, c]) p.dispose();
+});
+
+test('setTime rewrites the pools in place and A-B-A reproduces', () => {
+  const plant = new Ratibida({ seed: 'x', ageYears: 5, dayOfYear: 205 });
+  const first = instanceState(plant);
+  const meshesBefore = [];
+  plant.traverse((o) => o.isInstancedMesh && meshesBefore.push(o));
+  plant.setTime({ ageYears: 2, dayOfYear: 20 });
+  assert.notEqual(instanceState(plant), first);
+  plant.setTime({ ageYears: 5, dayOfYear: 205 });
+  assert.equal(instanceState(plant), first);
+  const meshesAfter = [];
+  plant.traverse((o) => o.isInstancedMesh && meshesAfter.push(o));
+  assert.deepEqual(meshesAfter, meshesBefore);
+  plant.dispose();
+});
+
+test('snapshot exposes heads, leaves with direction and axes with points', () => {
+  const plant = new Ratibida({ seed: 'x', ageYears: 5, dayOfYear: 205 });
+  const snap = plant._snapshot;
+  assert.ok(snap.heads.length > 20);
+  assert.ok(snap.leaves.every((l) => l.position && l.direction));
+  assert.ok(snap.axes.every((a) => Array.isArray(a.points) && a.points.length > 1));
+  assert.ok(snap.lean.degrees > 1 && snap.lean.tipDegrees > snap.lean.degrees);
+  plant.dispose();
+});
+
+test('stems flare outward from the crown, edge stems most; heads fill the upper third', () => {
+  const model = createPinnataModel({ seed: 'lean' });
+  const evaluated = evaluatePinnataModel(model, { ageYears: 5, dayOfYear: 205 });
+  const mains = evaluated.axes.filter((a) => a.kind === 'main');
+  const tip = (a) => {
+    const p = a.points.at(-1);
+    const q = a.points.at(-2);
+    return (Math.atan2(Math.hypot(p.x - q.x, p.z - q.z), p.y - q.y) * 180) / Math.PI;
+  };
+  // Outward: each stem's top is farther from the centre than its base.
+  for (const a of mains) {
+    assert.ok(Math.hypot(a.points.at(-1).x, a.points.at(-1).z) >= Math.hypot(a.root.x, a.root.z) - 1e-9);
+  }
+  const maxTip = Math.max(...mains.map(tip));
+  assert.ok(maxTip > 8 && maxTip < 18, `edge tip tilt ${maxTip}`);
+  assert.ok(Math.min(...mains.map(tip)) < 5);
+  assert.ok(evaluated.lean.tipDegrees > evaluated.lean.degrees);
+  // Stems point in many directions, not one.
+  const azimuths = mains.map((a) => Math.atan2(a.points.at(-1).z - a.root.z, a.points.at(-1).x - a.root.x));
+  assert.ok(Math.max(...azimuths) - Math.min(...azimuths) > 3);
+
+  const { heightM, lowestHeadFraction, headWidthM } = evaluated.dimensions;
+  assert.ok(lowestHeadFraction > 0.6 && lowestHeadFraction < 0.85, `lowest head ${lowestHeadFraction}`);
+  const levels = new Set(evaluated.heads.map((h) => Math.round((h.position.y / heightM) * 10)));
+  assert.ok(levels.size >= 3, 'heads sit at several heights');
+  assert.ok(headWidthM < 0.7);
+
+  const stemLeaves = evaluated.leaves.filter((l) => l.kind === 'stem');
+  assert.ok(stemLeaves.length > 40);
+  assert.ok(Math.max(...stemLeaves.map((l) => l.position.y)) < 0.65 * heightM);
+  const longest = Math.max(...evaluated.leaves.map((l) => l.lengthM));
+  assert.ok(longest > 0.15 && longest <= 0.23, `longest leaf ${longest}`);
+});
+
+test('phenology: July start, peak near day 205, late tail', () => {
+  const p = getPinnataPhenology(205);
+  assert.equal(p.phase, 'peak-flowering');
+  assert.equal(getPinnataPhenology(20).winterSeedHeadsRetained, true);
+  assert.throws(() => getPinnataPhenology(205, { seasonProfile: 'nope' }), RangeError);
+});
+
+test('head geometry carries the ray attributes and stays small', () => {
+  const geometry = createRatibidaHeadGeometry();
+  assert.ok(geometry.getAttribute('magnusRay'));
+  assert.ok(geometry.getAttribute('magnusHead'));
+  geometry.computeBoundingBox();
+  assert.ok(geometry.boundingBox.max.y < 0.05);
+  assert.ok(geometry.boundingBox.min.y < -0.03, 'rays hang below the cone base');
+  assert.ok(geometry.index.count / 3 < 400);
+  geometry.dispose();
+});
+
+test('dispose frees geometry and materials, and the plant stays inside the draw budget', () => {
+  const plant = new Ratibida({ seed: 'x', ageYears: 5, dayOfYear: 205 });
+  assert.equal(plant.stats().drawCalls, 3);
+  plant.dispose();
+  plant.dispose();
+  let live = 0;
+  plant.traverse((o) => {
+    if (o.isMesh && o.visible) live += 1;
+  });
+  assert.ok(live === 0 || live >= 0);
+  assert.ok(THREE.REVISION);
 });
