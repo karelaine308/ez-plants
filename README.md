@@ -155,34 +155,66 @@ on current-season shoots; blackcurrant fruits on young wood; Miscanthus and
 Echinacea have no woody top growth and are rebuilt from the crown every year;
 'Magnus' holds its broad rays much more horizontally than generic seed strains.
 
-### 4. Look at real photographs before calling a plant done
+### 4. Check every plant against real-world data before calling it done
 
-This one is an instruction to whoever is doing the work, human or agent.
+This one is an instruction to whoever is doing the work, human or agent. A plant
+is not done until A and B both pass.
 
-Before a plant is finished, **go and find photographs of that cultivar at that
-age and that time of year, and compare.** Search for them then and there. Do not
-work from memory of what a forsythia looks like, do not work from the model's own
-earlier renders, and do not reason from the numbers in the profile — a plant can
-have every measurement right and still be wrong in silhouette, organ density or
-the way colour moves through a season, and those are exactly the things a
-photograph settles and a spec sheet does not.
-
-Render the candidate with
+**A. Measured.** Each plant has `scripts/ground-truth/<plant>.json`, drafted from
+sourced research and reviewed by the owner before any build is scored. Run
 
 ```bash
-npm run dev &                       # the demo page the shot script drives
-node scripts/shoot.mjs out.png "plant=forsythia&year=6&day=96" three-quarter
+npm run plant:gate -- <plant>
 ```
 
-then compare silhouette, proportion, organ density, colour and stage. A render
-that looks plausible but does not match the photograph is a bug.
+Builders run `npm test`; the reviewer runs the gate, so its ranges are not a target the
+builder can read off.
 
-The comparison is the point, not a paper trail: this repo does not collect
-photographs or links to them. Images move, disappear and change licence, and a
-stale URL is worse than none. What belongs in the cultivar profile is whatever
-the looking _taught_ you — a corrected date, a revised colour, a habit that turned
-out to arch further than assumed — recorded as an observation or a declared
-assumption under rule 3.
+Every gate-tier check passes, or is removed from the file with a stated reason.
+Checks that rest on one photograph, or on a reading a photograph cannot confirm,
+are marked advisory: they are reported, never fail the run, and are judged by eye.
+The data file names which stats the plant reports and which checks apply, so a new
+plant needs a data file, not a new script. A gate check that cannot run prints NOT
+CHECKED and the run ends incomplete (exit 3), never as a pass. Each number in the
+file records its origin (sourced, the owner's decision, or a tolerance) and who
+chose it.
+
+**B. By eye.** Compare renders with photographs of the plant at that age and
+time of year: silhouette, proportion, organ density, colour and stage. Do not
+work from memory of what the plant looks like or from the model's own earlier
+renders, and do not reason from the numbers in the profile. A plant can have every
+measurement right and still be wrong in silhouette or in the way colour moves
+through a season, and a photograph settles that where a spec sheet does not. A
+render that looks plausible but does not match the photograph is a bug. Render on
+the demo page in a browser, or with `scripts/shoot.mjs` if Playwright is
+installed. Open photographs in the browser; do not download them. A photograph
+from a source without a licence is for looking only. A photograph the owner
+supplies is a reference, with her words saying which stage it shows. Photographs
+of the species are acceptable when none exist for the cultivar; the profile says
+so.
+
+**C. Sources.** The ground-truth file keeps a `sources` list of links, never
+copies of images. Each entry has an id, the URL, the page's name, what it shows
+(stage, view, season), its licence (look-only or reusable), the date checked, and
+the check or lesson it informed. Every check lists the source ids it rests on, and
+the gate fails a check that lists none. A dead link stays in the list, marked
+dead. The owner's own photographs are listed by description.
+
+Prefer sources that rarely move: government agencies, universities and extension
+services, botanical gardens such as the Lady Bird Johnson Wildflower Center, and
+long-established organisations. Individual-run sites and companies are less
+stable and need a stable source that agrees.
+
+Minimum sources: one stable source for each view judged by eye (whole plant in
+leaf, in flower, in winter, spring emergence or first year, and the flower head
+from the side and from above); one stable source for each sourced number (height,
+head count, bloom window, native status); two agreeing stable sources for any
+number that becomes the edge of a pass range. Where that cannot be met, the entry
+says "only source" and the owner decides.
+
+**D. Lessons.** What the looking taught you goes into the cultivar profile as a
+corrected date, a revised colour or a habit that arched further than assumed,
+recorded as an observation or a declared assumption under rule 3.
 
 ### 5. Fast is a design constraint, not an optimisation pass
 

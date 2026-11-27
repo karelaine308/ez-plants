@@ -1,0 +1,478 @@
+{
+  "plant": "ratibida",
+  "species": "Ratibida pinnata (gray-headed coneflower)",
+  "class": "Ratibida",
+  "entry": "src/lib/plants/ratibida/ratibida.js",
+  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm.",
+  "stats": {
+    "heads": "visibleHeads",
+    "flowers": "visibleFlowers",
+    "stems": "visibleStems",
+    "seedHeads": "visibleSeedHeads",
+    "height": "dimensions.heightM"
+  },
+  "sources": [
+    {
+      "id": "mdc",
+      "name": "Missouri Department of Conservation field guide",
+      "url": "https://mdc.mo.gov/discover-nature/field-guide/gray-headed-coneflower",
+      "stable": true,
+      "shows": "description, habit, bloom",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "lbj",
+      "name": "Lady Bird Johnson Wildflower Center plant page",
+      "url": "https://www.wildflower.org/plants/result.php?id_plant=RAPI",
+      "stable": true,
+      "shows": "height, bloom period, habit",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "ncsu",
+      "name": "NC State Extension Plant Toolbox",
+      "url": "https://plants.ces.ncsu.edu/plants/ratibida-pinnata/",
+      "stable": true,
+      "shows": "height range, habit, photos",
+      "license": "per photo",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "epa",
+      "name": "EPA Green Acres archive",
+      "url": "https://archive.epa.gov/greenacres/web/html/ylwcoflwr.html",
+      "stable": true,
+      "shows": "description",
+      "license": "public domain text",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "nrcs",
+      "name": "USDA NRCS plant materials publication",
+      "url": "https://www.nrcs.usda.gov/Internet/FSE_PLANTMATERIALS/publications/mopmcpu6313.pdf",
+      "stable": true,
+      "shows": "establishment, seed, growth",
+      "license": "public domain",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "eiu",
+      "name": "Eastern Illinois University prairie page",
+      "url": "https://castle.eiu.edu/prairie/ratipinn.htm",
+      "stable": true,
+      "shows": "description",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "mobot",
+      "name": "Missouri Botanical Garden plant finder (web archive copy)",
+      "url": "https://webarchive.library.unt.edu/eot2008/20080921094222/http://www.mobot.org/gardeninghelp/plantfinder/Plant.asp?code=L940",
+      "stable": true,
+      "shows": "height, bloom",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "inat",
+      "name": "iNaturalist Ohio weekly flowering observations (place 31, taxon 85331, Flowers annotation)",
+      "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=85331&place_id=31&term_id=12&term_value_id=13&date_field=observed&interval=week_of_year",
+      "stable": true,
+      "shows": "when people photograph flowering plants, by week of year",
+      "license": "data",
+      "checked": "2026-11, read live; a later check showed 319 observations because of one week-48 record",
+      "status": "unverified"
+    },
+    {
+      "id": "mnwf",
+      "name": "Minnesota Wildflowers",
+      "url": "https://www.minnesotawildflowers.info/flower/gray-headed-coneflower",
+      "stable": false,
+      "shows": "heads per plant, leaves, photos",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "mnseasons",
+      "name": "Minnesota Seasons",
+      "url": "https://minnesotaseasons.com/Plants/gray-headed_coneflower.html",
+      "stable": false,
+      "shows": "heads per plant, season",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "ilwf",
+      "name": "Illinois Wildflowers",
+      "url": "https://www.illinoiswildflowers.info/prairie/plantx/yl_coneflowerx.htm",
+      "stable": false,
+      "shows": "leaf color photographs, habit",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "ozark",
+      "name": "Ozark Edge Wildflowers",
+      "url": "https://ozarkedgewildflowers.com/native-plants/gray-headed-coneflower-ratibida-pinnata",
+      "stable": false,
+      "shows": "winter stand, head close-up, rosette",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "prairiemoon",
+      "name": "Prairie Moon Nursery",
+      "url": "https://www.prairiemoon.com/ratibida-pinnata-yellow-coneflower-prairie-moon-nursery.html",
+      "stable": false,
+      "shows": "second-season flowering, seed treatment",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "growit",
+      "name": "Grow It Build It",
+      "url": "https://growitbuildit.com/ratibida-pinnata-grayhead-coneflower/",
+      "stable": false,
+      "shows": "height range",
+      "license": "look-only",
+      "checked": "2026-11, found by a research agent, not re-opened since",
+      "status": "unverified"
+    },
+    {
+      "id": "mayfield",
+      "name": "Wikimedia Commons photograph of a mature stand in flower by Mayfield, CC BY-SA 2.0",
+      "url": null,
+      "stable": false,
+      "shows": "whole plant in flower, head height and foliage spread",
+      "license": "CC BY-SA 2.0",
+      "checked": "not recorded",
+      "status": "needs-url: find this photograph again and record its address"
+    }
+  ],
+  "bloomData": {
+    "retrieved": "2026-11 (live check later showed one more observation, in week 48, total 319)",
+    "note": "iNaturalist shows when people post photographs of flowering plants. It is not the amount in bloom. Week numbers use floor((day-1)/7)+1, which may differ from iNaturalist's week_of_year by one.",
+    "weeklyFloweringObservations": {
+      "25": 6,
+      "26": 13,
+      "27": 34,
+      "28": 46,
+      "29": 50,
+      "30": 52,
+      "31": 34,
+      "32": 24,
+      "33": 12,
+      "34": 7,
+      "35": 2,
+      "36": 11,
+      "37": 5,
+      "38": 5,
+      "39": 2,
+      "40": 6,
+      "41": 1,
+      "42": 2,
+      "43": 3,
+      "44": 0,
+      "45": 1,
+      "46": 1,
+      "47": 1
+    }
+  },
+  "checks": [
+    {
+      "id": "heads-cap",
+      "label": "heads: never above cap",
+      "type": "cap",
+      "tier": "gate",
+      "origin": "sourced",
+      "sources": [
+        "mnwf",
+        "mnseasons"
+      ],
+      "params": {
+        "stat": "heads",
+        "max": 12
+      }
+    },
+    {
+      "id": "heads-age1",
+      "label": "heads: median at age 1",
+      "type": "ramp",
+      "tier": "gate",
+      "origin": "owner decision",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          1
+        ],
+        "range": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "heads-age2",
+      "label": "heads: median at age 2",
+      "type": "ramp",
+      "tier": "gate",
+      "origin": "owner decision",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          2
+        ],
+        "range": [
+          5,
+          8
+        ]
+      }
+    },
+    {
+      "id": "heads-age3",
+      "label": "heads: median at age 3+",
+      "type": "ramp",
+      "tier": "gate",
+      "origin": "owner decision",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          3,
+          5,
+          8
+        ],
+        "range": [
+          9,
+          12
+        ]
+      }
+    },
+    {
+      "id": "planting-season",
+      "label": "planting season: no stems or heads",
+      "type": "absent",
+      "tier": "gate",
+      "origin": "sourced + owner decision",
+      "sources": [
+        "prairiemoon",
+        "owner"
+      ],
+      "params": {
+        "age": 0,
+        "stats": [
+          "stems",
+          "heads"
+        ]
+      }
+    },
+    {
+      "id": "bloom-p10",
+      "label": "bloom: week reached 10% of season",
+      "type": "bloomPercentile",
+      "tier": "gate",
+      "origin": "tolerance chosen by Claude",
+      "sources": [
+        "inat"
+      ],
+      "params": {
+        "q": 0.1,
+        "tolerance": 2,
+        "weeks": [
+          24,
+          47
+        ]
+      }
+    },
+    {
+      "id": "bloom-p50",
+      "label": "bloom: week reached 50% of season",
+      "type": "bloomPercentile",
+      "tier": "gate",
+      "origin": "tolerance chosen by Claude",
+      "sources": [
+        "inat"
+      ],
+      "params": {
+        "q": 0.5,
+        "tolerance": 2,
+        "weeks": [
+          24,
+          47
+        ]
+      }
+    },
+    {
+      "id": "bloom-end",
+      "label": "bloom: last week with open heads",
+      "type": "bloomEnd",
+      "tier": "gate",
+      "origin": "owner decision (bloom to October) with iNaturalist",
+      "sources": [
+        "owner",
+        "inat"
+      ],
+      "params": {
+        "fraction": 0.1,
+        "range": [
+          36,
+          44
+        ]
+      }
+    },
+    {
+      "id": "height-mean",
+      "label": "height: mean tallest point, age 5",
+      "type": "heightMean",
+      "tier": "gate",
+      "origin": "sourced; 4 ft average is an owner decision",
+      "sources": [
+        "lbj",
+        "ncsu",
+        "growit",
+        "owner"
+      ],
+      "params": {
+        "range": [
+          3.5,
+          5.0
+        ]
+      }
+    },
+    {
+      "id": "height-max",
+      "label": "height: tallest single plant",
+      "type": "heightMax",
+      "tier": "gate",
+      "origin": "sourced maximum plus margin chosen by Claude",
+      "sources": [
+        "lbj",
+        "ncsu",
+        "growit"
+      ],
+      "params": {
+        "max": 5.2
+      }
+    },
+    {
+      "id": "winter-standing",
+      "label": "winter: standing seed heads on day 20",
+      "type": "winterStanding",
+      "tier": "gate",
+      "origin": "sourced; count chosen by Claude",
+      "sources": [
+        "ozark"
+      ],
+      "params": {
+        "stat": "seedHeads",
+        "day": 20,
+        "min": 4
+      }
+    },
+    {
+      "id": "bloom-correlation",
+      "label": "bloom: weekly shape against iNaturalist",
+      "type": "bloomCorrelation",
+      "tier": "advisory",
+      "origin": "tolerance chosen by Claude; a flat box scores 0.85",
+      "sources": [
+        "inat"
+      ],
+      "params": {
+        "weeks": [
+          24,
+          47
+        ],
+        "minR": 0.75
+      }
+    },
+    {
+      "id": "head-fraction",
+      "label": "structure: mean head height / plant height",
+      "type": "headFraction",
+      "tier": "advisory",
+      "origin": "measured by Claude from one photo",
+      "sources": [
+        "mayfield",
+        "ozark"
+      ],
+      "params": {
+        "range": [
+          0.72,
+          0.9
+        ]
+      }
+    },
+    {
+      "id": "leaves-low",
+      "label": "structure: share of leaves below half height",
+      "type": "leavesLow",
+      "tier": "advisory",
+      "origin": "measured by Claude from one photo",
+      "sources": [
+        "mayfield"
+      ],
+      "params": {
+        "range": [
+          0.4,
+          0.85
+        ]
+      }
+    },
+    {
+      "id": "leaf-free-top",
+      "label": "structure: leaf-free top of plant",
+      "type": "leafFreeTop",
+      "tier": "advisory",
+      "origin": "measured by Claude from one photo",
+      "sources": [
+        "mayfield"
+      ],
+      "params": {
+        "max": 0.35
+      }
+    },
+    {
+      "id": "first-year-leaf",
+      "label": "first year: median leaf elevation",
+      "type": "leafElevation",
+      "tier": "advisory",
+      "origin": "owner photographs, reading by Claude",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "minDeg": 35
+      }
+    }
+  ],
+  "visual": [
+    "Leaf colour: photographs measure hue 69 to 70, saturation 0.53 to 0.57 (Minnesota Wildflowers and Illinois Wildflowers leaf photographs, same measuring method each time).",
+    "First-year leaf outline: pointed oval, about 2.3 times as long as wide, upright (owner's nursery photograph). Not the cut, lobed leaf of an older plant.",
+    "Head from the side: egg-shaped cone, tan with a dark ring at its base, rays hanging steeply (Ozark Edge close-up).",
+    "Head from above: round cone with narrow rays radiating, gaps between them (Joshua Mayer photograph, Wikimedia Commons).",
+    "Winter: large dark seed heads on wiry stems, a low rosette of colored leaves, no dead leaves hanging on the stems."
+  ]
+}

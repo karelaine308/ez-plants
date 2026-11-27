@@ -59,7 +59,8 @@
     "build:field": "vite build --config vite.field.config.js",
     "build:webgpu": "vite build --config vite.webgpu.config.js",
     "typecheck": "tsc -p tsconfig.react.json --noEmit",
-    "plant:add": "node scripts/add-plant.mjs"
+    "plant:add": "node scripts/add-plant.mjs",
+    "plant:gate": "node scripts/plant-gate.mjs"
   },
   "devDependencies": {
     "@react-three/fiber": "^9.7.0",
