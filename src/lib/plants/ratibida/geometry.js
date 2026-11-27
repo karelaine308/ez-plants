@@ -109,6 +109,7 @@ export function createPinnateLeafTexture({ width = 128, height = 320, aspect = 0
 // Vertex colours; instance colour multiplies them. Rays stay yellow, the cone
 // is a neutral brown that the stage tint turns green, brown or near black.
 // Golden yellow, #e6c229 at the tip (Karen's review: the rays looked pale).
+const RAY_WIDTH_SCALE = 1.6;
 const RAY_TIP = new THREE.Color(0xe6c229);
 const RAY_BASE = new THREE.Color(0xd3a81c);
 const CONE_BASE = new THREE.Color(0.3, 0.19, 0.08);
@@ -193,7 +194,8 @@ function appendRay(buffers, { angle, sequence, segments }) {
   const rows = [];
   for (let row = 0; row <= segments; row += 1) {
     const s = row / segments;
-    const half = (0.0042 + 0.0034 * Math.sin(Math.PI * Math.pow(s, 0.85))) * (1 - 0.25 * s);
+    // Rays are broad: about a third as wide as they are long, overlapping at the base (owner's top-down photograph, 27 Nov 2026).
+    const half = RAY_WIDTH_SCALE * (0.0042 + 0.0034 * Math.sin(Math.PI * Math.pow(s, 0.85))) * (1 - 0.25 * s);
     const line = [];
     for (const column of [-1, 0, 1]) {
       const notch = row === segments && column === 0 ? 0.003 : 0;

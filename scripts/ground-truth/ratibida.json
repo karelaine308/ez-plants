@@ -59,14 +59,14 @@
     },
     {
       "id": "nrcs",
-      "name": "USDA NRCS plant materials publication",
+      "name": "USDA NRCS Plant Materials, Seedling ID Guide for Native Prairie Plants (gray-headed coneflower entry, PDF page 25)",
       "url": "https://www.nrcs.usda.gov/Internet/FSE_PLANTMATERIALS/publications/mopmcpu6313.pdf",
-      "shows": "establishment, seed, growth",
+      "shows": "will bloom the second year after seeding; up to 5 ft; blooms June to September; each head on its own stalk; seedling and juvenile (first-year) photographs; seed 625,000 per pound",
       "license": "public domain",
-      "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified",
+      "checked": "2026-11-27 (PDF supplied by owner and read locally; copy kept at review/sources/usda-nrcs-seedling-id-guide-native-prairie-plants.pdf; an address recorded earlier, mopmcpu6313.pdf, timed out and was not confirmed to be this publication)",
+      "status": "ok",
       "reputable": true,
-      "published": "not recorded"
+      "published": "created 2005-12-06, modified 2007-06-29 (PDF metadata)"
     },
     {
       "id": "eiu",
@@ -83,12 +83,12 @@
       "id": "mobot",
       "name": "Missouri Botanical Garden plant finder (web archive copy)",
       "url": "https://webarchive.library.unt.edu/eot2008/20080921094222/http://www.mobot.org/gardeninghelp/plantfinder/Plant.asp?code=L940",
-      "shows": "height, bloom",
+      "shows": "height 3 to 5 ft; spread 1.5 to 2 ft; bloom June to August; zone 3 to 8; water medium; full sun",
       "license": "look-only",
-      "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified",
+      "checked": "2026-11-27 (screenshot supplied by owner; the page is slow to load)",
+      "status": "ok",
       "reputable": true,
-      "published": "archive capture 2025 (exact date not recorded)"
+      "published": "archive capture 2008-09-21 (from the address; an earlier note said 2025, which was wrong)"
     },
     {
       "id": "inat",
@@ -128,7 +128,7 @@
       "id": "ilwf",
       "name": "Illinois Wildflowers",
       "url": "https://www.illinoiswildflowers.info/prairie/plantx/yl_coneflowerx.htm",
-      "shows": "leaf color photographs, habit",
+      "shows": "habit text; a compound-leaf photograph (no photograph captioned leaf colour, checked 2026-11-27)",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
@@ -139,7 +139,7 @@
       "id": "ozark",
       "name": "Ozark Edge Wildflowers",
       "url": "https://ozarkedgewildflowers.com/native-plants/gray-headed-coneflower-ratibida-pinnata",
-      "shows": "winter stand, head close-up, rosette",
+      "shows": "head close-up and winter basal rosette (no photograph of a standing winter plant; that is inat-winter-oh)",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
@@ -184,10 +184,10 @@
       "name": "Purdue Arboretum Explorer, Ratibida pinnata",
       "url": "https://www.arboretum.purdue.edu/explorer/?p=5999",
       "reputable": true,
-      "shows": "height 3-5 ft; spread 1.5-2 ft; clump-forming",
+      "shows": "height 3 to 5 ft; spread 1.5 to 2 ft; clump-forming; bloom June to August; 3 to 7 downward-pointing yellow rays; zone 3; leaves pinnately divided into 3 to 7 narrow lobes",
       "license": "look-only",
       "published": "undated",
-      "checked": "2026-11-27",
+      "checked": "2026-11-27 (screenshot supplied by owner; my fetch tool was reset by the server twice)",
       "status": "ok"
     },
     {
@@ -204,7 +204,7 @@
     {
       "id": "usda-pg",
       "name": "USDA NRCS Plant Guide, Yellow coneflower",
-      "url": "https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_rapi.pdf",
+      "url": "https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_rapi.pdf",
       "reputable": true,
       "shows": "up to 1 m or taller; 5-7 leaf segments; disk gray then brown; long-lived; seed heads eaten by birds late fall",
       "license": "public domain",
@@ -255,7 +255,7 @@
       "license": "look-only",
       "published": "2020-07-09",
       "checked": "2026-11-27",
-      "status": "photo viewed; observation page not opened"
+      "status": "photo viewed by owner (screenshot) and by agents; observation page not opened by agents"
     },
     {
       "id": "inat-clump-london",
@@ -286,9 +286,20 @@
       "reputable": false,
       "shows": "winter stand: dark seed heads on standing tan stems in Jan-Feb (photos https://inaturalist-open-data.s3.amazonaws.com/photos/612232923/large.jpg and https://inaturalist-open-data.s3.amazonaws.com/photos/618828773/large.jpg)",
       "license": "look-only",
-      "published": "2026-01-31 and 2026-02-24",
+      "published": "observed 2006-01-31 (owner, from the observation page) and 2026-02-24",
       "checked": "2026-11-27",
-      "status": "photos viewed"
+      "status": "photos viewed by owner (screenshot): heads intact on standing stems and one breaking apart, some ray remnants"
+    },
+    {
+      "id": "wilsonbros",
+      "name": "Wilson Bros Gardens product page, gray-headed coneflower (fifth photograph)",
+      "url": "https://www.wilsonbrosgardens.com/ratibida-pinnata-grey-headed-coneflower-6pk-1g.html",
+      "reputable": false,
+      "shows": "flower heads seen from above and the side: broad drooping yellow rays overlapping at the base, domed gray-green cone with a dark ring of opened disk flowers forming from the base up",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27 (screenshot supplied by owner; the site blocks automated access)",
+      "status": "ok"
     }
   ],
   "bloomData": {
@@ -706,7 +717,8 @@
     "Leaf colour: photographs measure hue 69 to 70, saturation 0.53 to 0.57 (Minnesota Wildflowers and Illinois Wildflowers leaf photographs, same measuring method each time).",
     "First-year leaf outline: pointed oval, about 2.3 times as long as wide, upright (owner's nursery photograph). Not the cut, lobed leaf of an older plant.",
     "Head from the side: egg-shaped cone, tan with a dark ring at its base, rays hanging steeply (Ozark Edge close-up).",
-    "Head from above: round cone with narrow rays radiating, gaps between them (Joshua Mayer photograph, Wikimedia Commons).",
+    "Head from above: short domed gray-green cone, rays broad (about a third as wide as long), drooping and overlapping at the base; the disk flowers open from the base up, forming a dark ring around the gray cone (owner's Wilson Bros photograph, 27 Nov 2026). An earlier note, narrow rays with gaps (Joshua Mayer photograph, Wikimedia Commons), disagrees; the model's rays were widened to match the broader photograph.",
+    "First-year juvenile (NRCS seedling guide, PDF page 25): about 6 in tall with 4 to 6 simple, elongated leaves held out and up at different angles, no stems or heads. Bloom the second year after seeding.",
     "Winter: large dark seed heads on wiry stems, a low rosette of colored leaves, no dead leaves hanging on the stems."
   ]
 }

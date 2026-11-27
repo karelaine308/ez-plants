@@ -164,7 +164,7 @@ function makeShoot(seed, sequence, birthAgeYears) {
   // E. maculatum 'Phantom'; owner's photograph). The axis grower's upward
   // pull then curves each stem gently back toward vertical near its top.
   const lean =
-    randomRange(seed, [id, 'lean'], 0.04, 0.1) + 0.3 * radialFraction * radialFraction;
+    randomRange(seed, [id, 'lean'], 0.04, 0.1) + 0.12 * radialFraction * radialFraction;
   const direction = normalize(add(UP, scale(outward, lean)));
   const height = randomRange(seed, [id, 'height'], ...stem.targetHeightM);
   const radius = randomRange(seed, [id, 'radius'], ...stem.baseRadiusM);

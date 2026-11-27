@@ -1,6 +1,6 @@
 {
   "note": "Where agents could and could not fetch sources, and why. Entries come from agent reports and are unverified until a person or a later run confirms them. access: ok, sometimes-blocked, always-blocked. cause: site-block (the site refused the agent), tool-limit (the fetch tool could not handle it), agent-error (the agent used a wrong address or id). A host marked always-blocked is dropped from the preferred list. Only site-block entries are places the owner has to visit; the rest are fixed by changing how the work is done.",
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "hosts": [
     {
       "host": "www.inaturalist.org",
@@ -199,6 +199,39 @@
       "observed": "worked in the built-in browser pane: typed a ZIP, pressed Look up, read the ecoregion",
       "worksInstead": null,
       "humanNeeds": "the ecoregion for a ZIP code, if blocked: https://homegrownnationalpark.org/ecoregion-finder/"
+    },
+    {
+      "host": "www.wilsonbrosgardens.com",
+      "kind": "nursery product page",
+      "reputable": false,
+      "access": "always-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-27",
+      "observed": "Cloudflare 'Sorry, you have been blocked' (403) in the built-in browser; not bypassed",
+      "worksInstead": null,
+      "humanNeeds": "the fifth product photograph of Ratibida pinnata (flower head seen from above), by viewing it in a person's own browser"
+    },
+    {
+      "host": "www.arboretum.purdue.edu",
+      "kind": "university arboretum plant explorer",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-27",
+      "observed": "connection reset by the server twice for the fetch tool; the owner could open it in her own browser",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the plant page"
+    },
+    {
+      "host": "webarchive.library.unt.edu",
+      "kind": "web archive copy of Missouri Botanical Garden",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-27",
+      "observed": "returned an empty page twice to the fetch tool; very slow to load even for the owner",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the plant page"
     }
   ]
 }

@@ -82,7 +82,7 @@ calendar built from cited real-world sources.
 | Chinese silver grass (_Miscanthus sinensis_)         | 'Malepartus'   | Caespitose warm-season grass clump, ~2.0 × 1.5 m                       | **No woody tissue at all**; the whole plant is rebuilt from the crown each year and cut to 10 cm each spring     |
 | Japanese fountain grass (_Pennisetum alopecuroides_) | 'Hameln'       | Compact hemispherical fountain, ~0.85 × 0.85 m                         | **Dense cylindrical bottlebrush heads**, greenish-cream to pink-beige and grey-brown, over narrow arching blades |
 | Purple coneflower (_Echinacea purpurea_)             | 'Magnus'       | Upright herbaceous clump, ~0.95 × 0.56 m                               | **Large broad rose-purple rays held nearly horizontal** around copper-orange cones; dry seed heads persist       |
-| Spotted Joe Pye weed (_Eutrochium maculatum_) | Species | Tall upright herbaceous clump with whorled leaves | Domed mauve-pink flower heads in late summer; dry stems stand through winter |
+| Spotted Joe Pye weed (_Eutrochium maculatum_) | Species | Upright herbaceous clump, about 1.8 × 1.1 m, stout unbranched stems with whorled leaves | **Flat-topped dusky-pink flower arrays**, July to October; bronze seed heads stand through winter until the late-winter cutback |
 | Gray-headed coneflower (_Ratibida pinnata_) | Species | Upright herbaceous clump, about 1.2 × 0.5 m, branching only near the top | **Heads on long bare stalks above the foliage**, drooping yellow rays around a tall gray-brown cone; dark seed cones stand through winter |
 
 All plants are modelled in **metres**, share the same wind clock and backend
