@@ -172,6 +172,26 @@ export {
   evaluatePinnataModel,
 } from './plants/ratibida/model.js';
 
+export { Schizachyrium } from './plants/schizachyrium/schizachyrium.js';
+export {
+  SCOPARIUM_PROFILE,
+  SCOPARIUM_RENDER_ASSUMPTIONS,
+  SCOPARIUM_SOURCES,
+} from './plants/schizachyrium/scoparium.js';
+export {
+  getScopariumPhenology,
+  getScopariumCareHints,
+  getScopariumCalendar,
+  SCOPARIUM_CALENDAR,
+  SCOPARIUM_CALENDAR_PROVENANCE,
+  SCOPARIUM_PHASE_ASSUMPTIONS,
+  SCOPARIUM_SEASON_PROFILES,
+} from './plants/schizachyrium/phenology.js';
+export {
+  createScopariumModel,
+  evaluateScopariumModel,
+} from './plants/schizachyrium/model.js';
+
 export { Cherrylaurel } from './plants/cherrylaurel/cherrylaurel.js';
 export {
   ROTUNDIFOLIA_PROFILE,

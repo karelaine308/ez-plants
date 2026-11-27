@@ -1,0 +1,867 @@
+{
+  "plant": "schizachyrium",
+  "species": "Schizachyrium scoparium (little bluestem; species modelled, cultivars noted only)",
+  "class": "Schizachyrium",
+  "entry": "src/lib/plants/schizachyrium/schizachyrium.js",
+  "peakAge": 5,
+  "peakDay": 270,
+  "note": "DRAFT written 2026-11-27 by a research agent from the sources listed; nothing has been built or measured, so these ranges are not tuned to any build. Each check says whether its numbers are sourced, an owner decision, an estimate from photographs, or a tolerance. This is a GRASS: the ratibida checks for bloom weeks (bloom-p10, bloom-p50, bloom-end, bloom-end-sourced, bloom-correlation), head-fraction and first-year-leaf are removed because they do not fit (iNaturalist's Flowers annotation has 4 Ohio records, a grass has no bloom end, and a plug's blades sprawl rather than point up). Checks whose type does not exist yet in the gate's TYPES table are marked needsNewType and are advisory until code exists. 'stems' in params means culms (flowering stems) and 'seedHeads' means culms carrying raceme fluff; the orchestrator maps them in stats. Height means culm-tip height; leaf mound height is its own check. Culm counts are estimates from photographs (no source gives a number), so every culm check is advisory except the cap and the winter presence check, both widened. Age 0 is a plug; a division from Karen's Pollinator Garden is not a plug and its starting age is an owner decision. Converted for the gate 27 Nov 2026: grass checks culmEmergence, seedFluff and cutback use stats only; culmMoundRatio needs the plant to expose _snapshot leaves and axes. Starting age is 0 (seed-grown), no division. Ranges still need the owner's approval at plan review.",
+  "sources": [
+    {
+      "id": "nrcs-pg",
+      "name": "USDA NRCS Plant Guide, Little bluestem (SCSC)",
+      "url": "https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_scsc.pdf",
+      "reputable": true,
+      "shows": "height 1 to 3 ft; blades 2 to 12 in long and 1.5 to 6 mm wide; one 1 to 3 in raceme per culm; new growth bluish maturing reddish-gold; seed fluffy silver-white; reddish tint through winter; growth begins late spring; slow to establish from seed",
+      "license": "public domain",
+      "published": "PDF created 2021-12-02, modified 2021-12-14 (metadata)",
+      "checked": "2026-11-27",
+      "status": "redirects to plants.sc.egov.usda.gov; fetch tool saved the binary; text read with pdftotext"
+    },
+    {
+      "id": "nrcs-seedling",
+      "name": "USDA NRCS Plant Materials, Seedling ID Guide for Native Prairie Plants (little bluestem entry, PDF page 31)",
+      "url": "https://www.nrcs.usda.gov/Internet/FSE_PLANTMATERIALS/publications/mopmcpu6313.pdf",
+      "reputable": true,
+      "shows": "leaves up to 12 in and under 1/4 in wide; height 2 to 4 ft; blooms August-September; juvenile (within 8 weeks of seed): about 4 leaves, tallest about 4.5 in; seed-grown",
+      "license": "public domain",
+      "published": "created 2005-12-06, modified 2007-06-29 (PDF metadata)",
+      "checked": "2026-11-27 (local copy review/sources/usda-nrcs-seedling-id-guide-native-prairie-plants.pdf read with pdftotext and page 31 viewed; the online address was recorded earlier and is not confirmed to be this publication)",
+      "status": "ok"
+    },
+    {
+      "id": "mdc",
+      "name": "Missouri Department of Conservation field guide, Little Bluestem",
+      "url": "https://mdc.mo.gov/discover-nature/field-guide/little-bluestem",
+      "reputable": true,
+      "shows": "flowering stems 1 to 4 ft; leaves about 1/4 in, bluish bases; copper at first frost; flower heads August-October, tan or grayish white and fluffy",
+      "license": "look-only",
+      "published": "undated (copyright 2026)",
+      "checked": "2026-11-27 (read, spot-checked by curl)",
+      "status": "ok"
+    },
+    {
+      "id": "lbj",
+      "name": "Lady Bird Johnson Wildflower Center, Schizachyrium scoparium",
+      "url": "https://www.wildflower.org/plants/result.php?id_plant=scsc",
+      "reputable": true,
+      "shows": "dense mounds 18 to 24 in; stems often 5 ft by September; clumps up to a foot across; mahogany-red with white seed tufts; colour remains nearly all winter",
+      "license": "look-only",
+      "published": "undated (record modified field blank)",
+      "checked": "2026-11-27 (read, spot-checked by curl)",
+      "status": "ok"
+    },
+    {
+      "id": "ncsu",
+      "name": "NC State Extension Plant Toolbox, Schizachyrium scoparium",
+      "url": "https://plants.ces.ncsu.edu/plants/Schizachyrium-scoparium",
+      "reputable": true,
+      "shows": "height 2 to 4 ft, width 1.5 to 3 ft; copper that does not fade in winter; racemes in August (listed June-October); cultivar list",
+      "license": "per photo",
+      "published": "undated",
+      "checked": "2026-11-27 (read, spot-checked by curl)",
+      "status": "ok"
+    },
+    {
+      "id": "uwex",
+      "name": "UW-Madison Extension Horticulture, Little Bluestem",
+      "url": "https://hort.extension.wisc.edu/articles/little-bluestem-schizachyrium-scoparium/",
+      "reputable": true,
+      "shows": "clumps 1 to 2 ft until late summer; flowering stems may reach 5 ft; slow to emerge in spring; fluffy 3 in inflorescences; copper that remains through winter; lodging in rich soil; cut back to 2 to 4 in in late winter or early spring",
+      "license": "look-only",
+      "published": "revised 2025-05-27",
+      "checked": "2026-11-27 (read, spot-checked by curl)",
+      "status": "ok"
+    },
+    {
+      "id": "umd",
+      "name": "University of Maryland Extension, Little Bluestem",
+      "url": "https://extension.umd.edu/resource/little-bluestem/",
+      "reputable": true,
+      "shows": "1.5 to 3 ft; silky seeds in fall; rusty-brown fall colour; arches over in snow and stands up again; trim in late spring if desired",
+      "license": "look-only",
+      "published": "updated 2023-03-06",
+      "checked": "2026-11-27 (read, date spot-checked by curl)",
+      "status": "ok"
+    },
+    {
+      "id": "uiuc",
+      "name": "University of Illinois Extension, Little Bluestem",
+      "url": "https://extension.illinois.edu/grasses/little-bluestem",
+      "reputable": true,
+      "shows": "about 3 ft; stems yellow to reddish brown with red nodes; late summer to early fall blooms",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "kstate",
+      "name": "K-State Turf and Landscape, ornamental grass trial, Little Bluestem (five dated photographs 2007 to 2009)",
+      "url": "https://www.k-state.edu/turf/resources/ornamental-grasses/grasses/schizachyrium-scoparium.html",
+      "reputable": true,
+      "shows": "measured size year 1 28 in tall by 12 in wide, year 2 32 by 20 in; photographs Sept 2007, Nov 2007, Sept 2008, Sept 2009, Nov 2009 (250 px thumbnails)",
+      "license": "look-only",
+      "published": "page updated 2026-03-27; photographs 2007-09 to 2009-11",
+      "checked": "2026-11-27 (page text read in the browser; thumbnails viewed)",
+      "status": "ok; planting date and plant size not stated"
+    },
+    {
+      "id": "ttu",
+      "name": "Texas Tech landscape sheet, Schizachyrium scoparium",
+      "url": "https://www.depts.ttu.edu/plantresources/Pages/directories/landscape-info-sheets/herbaceous-info/Schizachyrium_scoparium.php",
+      "reputable": true,
+      "shows": "2 to 3 ft by 1 to 2 ft; blue-green blades turning red, orange, purple in fall; shear close to ground before spring growth",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "npt",
+      "name": "Native Plant Trust Plant Finder, Schizachyrium scoparium",
+      "url": "https://plantfinder.nativeplanttrust.org/plant/Schizachyrium-scoparium",
+      "reputable": true,
+      "shows": "height 12 to 48 in, spread 8 to 24 in; orange to brown fall foliage; seed heads clustering up the blades in fall and winter",
+      "license": "look-only",
+      "published": "undated (copyright 2026)",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "bwsr",
+      "name": "Minnesota BWSR featured plant sheet, Little bluestem",
+      "url": "https://www.bwsr.state.mn.us/sites/default/files/2021-06/Featured%20Plant%20July%202021%20Little%20Bluestem%20ii.pdf",
+      "reputable": true,
+      "shows": "up to 3 ft in midsummer; blooms from July, fluffy white seed heads follow; blades up to 10 in; blue-green to copper-red after frost",
+      "license": "look-only",
+      "published": "PDF created 2021-06-29",
+      "checked": "2026-11-27 (PDF text read with pdftotext)",
+      "status": "ok"
+    },
+    {
+      "id": "umces",
+      "name": "Univ. of Maryland Center for Environmental Science, Little bluestem summary",
+      "url": "https://www.umces.edu/sites/default/files/Little-bluestem-summary.pdf",
+      "reputable": true,
+      "shows": "slow establishment, roots before shoots, full establishment may need more than 2 years; leaf height 2 to 12 in; height at seed head 1 to 4 ft",
+      "license": "look-only",
+      "published": "PDF created 2016-10-25",
+      "checked": "2026-11-27 (PDF text read with pdftotext)",
+      "status": "ok"
+    },
+    {
+      "id": "eiu",
+      "name": "Eastern Illinois University prairie page, Schizachyrium scoparium",
+      "url": "https://castle.eiu.edu/prairie/schiscop.htm",
+      "reputable": true,
+      "shows": "flowers August-September, fruit October; seedling tillers flat, hairy, reddish at base",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (thin page)"
+    },
+    {
+      "id": "mnwf",
+      "name": "Minnesota Wildflowers, Little Bluestem",
+      "url": "https://www.minnesotawildflowers.info/grass-sedge-rush/little-bluestem",
+      "reputable": false,
+      "shows": "blades up to 10 in and 1/4 in wide; large tight clumps; stems tan or reddish and persist through winter",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "prairiemoon",
+      "name": "Prairie Moon Nursery, Little Bluestem",
+      "url": "https://www.prairiemoon.com/schizachyrium-scoparium-little-bluestem",
+      "reputable": false,
+      "shows": "3 ft; bloom July-October; no pretreatment; foliage brown, copper and crimson through winter",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "inat-hist",
+      "name": "iNaturalist Ohio (place 31) weekly observations, taxon 122603, all observations and annotations",
+      "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=122603&place_id=31&date_field=observed&interval=week_of_year",
+      "reputable": true,
+      "shows": "Flowers annotation 4 records (weeks 32-34); Fruits annotation 10 (weeks 36-43); all observations peak weeks 39-40 (a photo-timing curve, not a bloom curve)",
+      "license": "data",
+      "published": "retrieved 2026-11-27",
+      "observed": "1984 to 2026; recent set 2021-2025",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "ph-stow-plug",
+      "name": "iNaturalist obs 360015670, planted plug, Stow OH",
+      "url": "https://www.inaturalist.org/observations/360015670",
+      "reputable": false,
+      "shows": "plug in May: about 12 bright yellow-green blades from 2 to 4 tillers, sprawling, no culms (photo https://inaturalist-open-data.s3.amazonaws.com/photos/656902232/large.jpg)",
+      "license": "look-only",
+      "published": "2026-05-09",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-gahanna",
+      "name": "iNaturalist obs 406572528, cultivated clump, Gahanna OH",
+      "url": "https://www.inaturalist.org/observations/406572528",
+      "reputable": false,
+      "shows": "young clump in October: about 20 separate pink-purple culms, mound about a third of height (photo https://inaturalist-open-data.s3.amazonaws.com/photos/746996730/large.jpg)",
+      "license": "look-only",
+      "published": "2026-10-07",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-delaware",
+      "name": "iNaturalist obs 63651220, small clumps, Delaware OH",
+      "url": "https://www.inaturalist.org/observations/63651220",
+      "reputable": false,
+      "shows": "young clumps, burgundy-purple blades, about 10 culms (photo https://inaturalist-open-data.s3.amazonaws.com/photos/102191877/large.jpg)",
+      "license": "look-only",
+      "published": "2020-10-27",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-beavercreek-winter",
+      "name": "iNaturalist obs 146355458, clump in winter, Beavercreek OH",
+      "url": "https://www.inaturalist.org/observations/146355458",
+      "reputable": false,
+      "shows": "winter stand: copper-orange upright culms, about 40 (30 to 50) estimated, fluff mostly gone (photo https://inaturalist-open-data.s3.amazonaws.com/photos/251600791/large.jpg)",
+      "license": "look-only",
+      "published": "2023-01-11",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-boone",
+      "name": "iNaturalist obs 139996674, clump, Boone NC",
+      "url": "https://www.inaturalist.org/observations/139996674",
+      "reputable": false,
+      "shows": "clump in October with red culms, about 30 (25 to 40) estimated (photo https://static.inaturalist.org/photos/239562147/large.jpg)",
+      "license": "look-only",
+      "published": "2022-10-25",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-cedarcreek",
+      "name": "iNaturalist obs 59891167, clump at a sign, Allentown PA",
+      "url": "https://www.inaturalist.org/observations/59891167",
+      "reputable": false,
+      "shows": "one clump in flower: about 35 (25 to 45) culms, mound 46 percent of height, culms flaring (photo https://inaturalist-open-data.s3.amazonaws.com/photos/95730503/large.jpg)",
+      "license": "look-only",
+      "published": "2020-09-16",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-traverse",
+      "name": "iNaturalist obs 182808396, large garden clump, Traverse City MI",
+      "url": "https://www.inaturalist.org/observations/182808396",
+      "reputable": false,
+      "shows": "largest clump: about 70 (50 to 100) culms; blue-green mound at most 34 percent of height; culm tips cut off by the frame (photo https://inaturalist-open-data.s3.amazonaws.com/photos/319133383/large.jpg)",
+      "license": "look-only",
+      "published": "2023-09-11",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-usbg",
+      "name": "iNaturalist obs 62290725, clump at US Botanic Garden, Washington DC",
+      "url": "https://www.inaturalist.org/observations/62290725",
+      "reputable": false,
+      "shows": "dense clump in October, about 70 (50 to 100) culms, may include a second plant (photo https://inaturalist-open-data.s3.amazonaws.com/photos/99786230/large.jpg)",
+      "license": "look-only",
+      "published": "2020-10-07",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-upperarlington",
+      "name": "iNaturalist obs 376925259, clump about a decade old, Upper Arlington OH",
+      "url": "https://www.inaturalist.org/observations/376925259",
+      "reputable": false,
+      "shows": "summer whole plant in leaf, blue-green fountain, a few culm tips emerging (photo https://static.inaturalist.org/photos/689214404/large.jpg)",
+      "license": "look-only",
+      "published": "2026-06-30",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "ph-spring-ohio",
+      "name": "iNaturalist obs 348574872 (Hocking County OH) and 351822339 (Cincinnati OH), spring",
+      "url": "https://www.inaturalist.org/observations/348574872",
+      "reputable": false,
+      "shows": "9 Apr: old tan stand with almost no green; 21 Apr: new bright green blades (photos https://inaturalist-open-data.s3.amazonaws.com/photos/635738290/large.jpg and https://inaturalist-open-data.s3.amazonaws.com/photos/642081337/large.jpg)",
+      "license": "look-only",
+      "published": "2026-04-09 and 2026-04-21",
+      "checked": "2026-11-27",
+      "status": "photos viewed; observation pages not opened"
+    },
+    {
+      "id": "ph-fluff",
+      "name": "iNaturalist obs 94638472 (West Lafayette IN), 323863332 (Denver CO), 185134973 (Akron OH), 66669781 (Springfield Township OH)",
+      "url": "https://www.inaturalist.org/observations/94638472",
+      "reputable": false,
+      "shows": "seed head fluff: Sept culms with white fluffy racemes; side view of a feathery awned raceme; red culms with pink-white fluff; 10 Dec Ohio fluff on standing culms (photos https://inaturalist-open-data.s3.amazonaws.com/photos/157013532/large.jpeg, https://inaturalist-open-data.s3.amazonaws.com/photos/586064437/large.jpg, https://inaturalist-open-data.s3.amazonaws.com/photos/323284600/large.jpg, https://inaturalist-open-data.s3.amazonaws.com/photos/107526774/large.jpeg)",
+      "license": "look-only",
+      "published": "2021-09-12, 2025-10-10, 2023-09-27, 2020-12-10",
+      "checked": "2026-11-27",
+      "status": "photos viewed; observation pages not opened"
+    },
+    {
+      "id": "ph-kstate-series",
+      "name": "K-State dated photographs of one planting, Sept 2007 to Nov 2009",
+      "url": "https://www.k-state.edu/turf/images/ornamental-grasses/schizachyrium-scoparium/Schizachyrium_scoparium_2009_11_tn.jpg",
+      "reputable": true,
+      "shows": "Sept 2007 small green tufts; Nov 2007 copper clump with culms; Sept 2008 fuller clump; Sept 2009 upright clump, mound 31 percent of height; Nov 2009 dense copper clump with fluff, about 60 (45 to 80) culms estimated",
+      "license": "look-only",
+      "published": "2007-09 to 2009-11",
+      "checked": "2026-11-27",
+      "status": "thumbnails only (250 px wide), counts low confidence"
+    },
+    {
+      "id": "owner",
+      "name": "Karen's chart row and decisions",
+      "url": "",
+      "reputable": false,
+      "shows": "little bluestem, 2 to 3 ft, dry soil, bloom August to September (grass), rust fall colour, front row, drifts; status Need (divide from her Pollinator Garden)",
+      "license": "owner",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    }
+  ],
+  "bloomData": {
+    "retrieved": "2026-11-27",
+    "note": "iNaturalist's Flowers annotation has only 4 Ohio records, so there is no usable weekly bloom curve and bloomPercentile / bloomEnd / bloomCorrelation are not proposed. The all-observation curve is when people photograph the plant (mostly seed heads and fall colour). Weekly sum 497, API total 505, which disagree by 8; for 2021-2025 sum 271 equals API total 271. Week numbers use iNaturalist's week_of_year and may differ by one from floor((day-1)/7)+1.",
+    "place": {
+      "name": "Ohio (verified by name through the places autocomplete address)",
+      "inaturalistPlaceId": 31
+    },
+    "weeklyFloweringObservations": {
+      "32": 1,
+      "33": 2,
+      "34": 1
+    },
+    "weeklyFruitingObservations": {
+      "36": 2,
+      "37": 4,
+      "38": 2,
+      "42": 1,
+      "43": 1
+    },
+    "weeklyAllObservations_allYears": {
+      "1": 3,
+      "2": 4,
+      "3": 1,
+      "6": 2,
+      "8": 1,
+      "9": 2,
+      "11": 2,
+      "13": 5,
+      "14": 2,
+      "15": 2,
+      "16": 1,
+      "17": 4,
+      "18": 5,
+      "19": 3,
+      "20": 3,
+      "22": 4,
+      "23": 6,
+      "24": 5,
+      "25": 14,
+      "26": 8,
+      "27": 9,
+      "28": 6,
+      "29": 9,
+      "30": 13,
+      "31": 16,
+      "32": 17,
+      "33": 12,
+      "34": 19,
+      "35": 18,
+      "36": 17,
+      "37": 32,
+      "38": 32,
+      "39": 60,
+      "40": 44,
+      "41": 29,
+      "42": 24,
+      "43": 10,
+      "44": 13,
+      "45": 17,
+      "46": 8,
+      "47": 6,
+      "48": 4,
+      "49": 2,
+      "50": 2,
+      "51": 1
+    },
+    "weeklyAllObservations_2021to2025": {
+      "1": 3,
+      "2": 1,
+      "6": 1,
+      "8": 1,
+      "9": 1,
+      "11": 1,
+      "13": 3,
+      "14": 1,
+      "15": 1,
+      "17": 1,
+      "18": 2,
+      "19": 2,
+      "20": 2,
+      "22": 2,
+      "23": 4,
+      "24": 2,
+      "25": 6,
+      "26": 3,
+      "27": 6,
+      "28": 5,
+      "29": 6,
+      "30": 7,
+      "31": 10,
+      "32": 11,
+      "33": 7,
+      "34": 9,
+      "35": 13,
+      "36": 10,
+      "37": 15,
+      "38": 18,
+      "39": 30,
+      "40": 31,
+      "41": 18,
+      "42": 10,
+      "43": 4,
+      "44": 7,
+      "45": 11,
+      "46": 3,
+      "47": 2,
+      "48": 1
+    }
+  },
+  "checks": [
+    {
+      "id": "culms-cap",
+      "label": "culms per clump: never above cap (ratibida heads-cap, renamed for a grass)",
+      "type": "cap",
+      "tier": "gate",
+      "origin": "estimated from photographs (largest about 70, outer range 100, Traverse City and USBG frames) plus margin; tolerance; no source gives a number",
+      "sources": [
+        "ph-traverse",
+        "ph-usbg",
+        "ph-kstate-series"
+      ],
+      "params": {
+        "stat": "stems",
+        "max": 130
+      }
+    },
+    {
+      "id": "culms-age1",
+      "label": "culms: median at age 1",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "estimated from photographs of young clumps (Delaware OH about 10, K-State year 1 about 25, Gahanna about 20; ages unknown, assumption); owner to confirm",
+      "sources": [
+        "ph-delaware",
+        "ph-gahanna",
+        "ph-kstate-series",
+        "owner"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          1
+        ],
+        "range": [
+          4,
+          20
+        ]
+      }
+    },
+    {
+      "id": "culms-age2",
+      "label": "culms: median at age 2",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "estimated from photographs (K-State year 2 fuller; Gahanna about 20); assumption; owner to confirm",
+      "sources": [
+        "ph-gahanna",
+        "ph-kstate-series",
+        "kstate"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          2
+        ],
+        "range": [
+          10,
+          35
+        ]
+      }
+    },
+    {
+      "id": "culms-age3",
+      "label": "culms: median at age 3",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "estimated from photographs (K-State year 3 Nov 2009 about 60 low confidence, Cedar Creek about 35); assumption; owner to confirm",
+      "sources": [
+        "ph-kstate-series",
+        "ph-cedarcreek",
+        "owner"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          3
+        ],
+        "range": [
+          20,
+          50
+        ]
+      }
+    },
+    {
+      "id": "culms-mature",
+      "label": "culms: median at age 5 (mature clump)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "estimated from five mature-looking clump photographs: 40, 30, 35, 70, 70, median 40, smallest 30, largest 70 (outer ranges 25 to 100); range widened. Estimated from photo, low confidence; replace with a count of Karen's own clump",
+      "sources": [
+        "ph-beavercreek-winter",
+        "ph-boone",
+        "ph-cedarcreek",
+        "ph-traverse",
+        "ph-usbg"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          5
+        ],
+        "range": [
+          25,
+          80
+        ]
+      }
+    },
+    {
+      "id": "growth-continues",
+      "label": "growth: culms keep increasing after age 3 (ages 3, 5)",
+      "type": "growth",
+      "tier": "advisory",
+      "origin": "chosen by Claude: K-State measured 12 to 20 in spread in year 2 and 'much fuller'; UMCES says full establishment may need more than 2 years",
+      "sources": [
+        "kstate",
+        "umces"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          3,
+          5
+        ],
+        "minRatio": 1.05
+      }
+    },
+    {
+      "id": "height-mean",
+      "label": "height: mean culm-tip height, age 5, day 270 (ft)",
+      "type": "heightMean",
+      "tier": "gate",
+      "origin": "sourced overlap 2 to 3 ft (NRCS 1-3, MDC 1-4, NCSU 2-4, TTU 2-3, UMD 1.5-3, NPT 1-4, UIUC about 3, K-State 2.3 and 2.7); owner chart 2 to 3 ft; range widened to 1.8 to 3.3 as tolerance",
+      "sources": [
+        "nrcs-pg",
+        "mdc",
+        "ncsu",
+        "ttu",
+        "umd",
+        "npt",
+        "kstate",
+        "owner"
+      ],
+      "params": {
+        "range": [
+          1.8,
+          3.3
+        ]
+      }
+    },
+    {
+      "id": "height-max",
+      "label": "height: tallest single plant (ft)",
+      "type": "heightMax",
+      "tier": "gate",
+      "origin": "sourced outlier edge: LBJ and UW say stems may reach 5 ft (wild or fertile soil); owner's bed is dry, so 5 ft is an absolute cap, not a target",
+      "sources": [
+        "lbj",
+        "uwex"
+      ],
+      "params": {
+        "max": 5.0
+      }
+    },
+    {
+      "id": "height-typical-max",
+      "label": "height: tallest single plant against the typical upper edge (ft)",
+      "type": "heightMax",
+      "tier": "advisory",
+      "origin": "sourced: MDC, NCSU and NPT agree on 4 ft as the upper end of the typical range; 0.2 ft margin as tolerance",
+      "sources": [
+        "mdc",
+        "ncsu",
+        "npt"
+      ],
+      "params": {
+        "max": 4.2
+      }
+    },
+    {
+      "id": "culm-over-mound",
+      "label": "culm-tip height / leaf mound height, age 5, day 270 (needsNewType: culmMoundRatio)",
+      "type": "culmMoundRatio",
+      "tier": "advisory",
+      "needsNewType": true,
+      "origin": "measured on screen from four whole-clump photographs (mound 46, at most 34, 32 and 31 percent of height, so 2.2 to 3.3 times), plus UW 'clumps 1 to 2 ft until the stems elongate to as much as 5 ft'; measured by Claude, plus or minus 10 percent",
+      "sources": [
+        "ph-cedarcreek",
+        "ph-traverse",
+        "ph-gahanna",
+        "ph-kstate-series",
+        "uwex"
+      ],
+      "params": {
+        "age": 5,
+        "day": 270,
+        "range": [
+          2.2,
+          3.3
+        ]
+      }
+    },
+    {
+      "id": "spread-mature",
+      "label": "clump spread: mean at age 5, widest point (ft)",
+      "type": "spreadRange",
+      "tier": "advisory",
+      "origin": "sourced overlap 1.5 to 2 ft (NCSU 1.5-3, TTU 1-2, NPT 0.7-2, UW cultivars 1.25-2, K-State 1.0 then 1.7); widened as tolerance. LBJ 'up to a foot' describes the crown, not the spread",
+      "sources": [
+        "ncsu",
+        "ttu",
+        "npt",
+        "uwex",
+        "kstate"
+      ],
+      "params": {
+        "range": [
+          1.3,
+          2.2
+        ]
+      }
+    },
+    {
+      "id": "spread-age1",
+      "label": "clump spread at age 1 (ft)",
+      "type": "spreadRange",
+      "tier": "advisory",
+      "origin": "K-State year 1 measured 12 in wide; K-State year 2 20 in; only source, a single planting of unknown plant size",
+      "sources": [
+        "kstate"
+      ],
+      "params": {
+        "age": 1,
+        "range": [
+          0.8,
+          1.4
+        ]
+      }
+    },
+    {
+      "id": "leaves-low",
+      "label": "structure: share of leaves below half height",
+      "type": "leavesLow",
+      "tier": "advisory",
+      "origin": "measured from photographs: blade mound is 31 to 46 percent of culm-tip height; UW 'coarse stems and basal leaves'",
+      "sources": [
+        "ph-cedarcreek",
+        "ph-gahanna",
+        "ph-kstate-series",
+        "uwex"
+      ],
+      "params": {
+        "range": [
+          0.9,
+          1.0
+        ]
+      }
+    },
+    {
+      "id": "leaf-free-top",
+      "label": "structure: leaf-free top of plant is at least half (needsNewType: leafFreeTop with a min)",
+      "type": "leafFreeTop",
+      "tier": "advisory",
+      "needsNewType": true,
+      "origin": "ratibida's leafFreeTop has only a max; for a grass the bare top is 54 to 69 percent of height (photographs), so it needs a min",
+      "sources": [
+        "ph-cedarcreek",
+        "ph-gahanna",
+        "ph-kstate-series",
+        "uwex"
+      ],
+      "params": {
+        "min": 0.5
+      }
+    },
+    {
+      "id": "culm-emergence",
+      "label": "culm emergence: first day culm tips clear the leaf mound at age 5 (needsNewType: culmEmergence)",
+      "type": "culmEmergence",
+      "tier": "advisory",
+      "needsNewType": true,
+      "origin": "sourced: August (NCSU racemes appear in August, MDC heads August-October, EIU August-September, NRCS seedling guide August-September); UW stems elongate in late summer; BWSR from July; Karen's August-September agrees. Days 200 to 245 (19 July to 2 September) as tolerance",
+      "sources": [
+        "ncsu",
+        "mdc",
+        "eiu",
+        "nrcs-seedling",
+        "uwex",
+        "bwsr",
+        "owner"
+      ],
+      "params": {
+        "age": 5,
+        "range": [
+          200,
+          245
+        ],
+        "stat": "stems"
+      }
+    },
+    {
+      "id": "fluff-window",
+      "label": "silvery fluff visible from about day 250 to about day 350 (needsNewType: seedFluff)",
+      "type": "seedFluff",
+      "tier": "advisory",
+      "needsNewType": true,
+      "origin": "sourced start: fall (UW late summer or early fall, UMD fall, NPT fall and winter, MDC fluffy when mature); end from photographs only (fluff on Ohio culms 10 Dec 2020, mostly gone 11 Jan 2023); iNaturalist Fruits annotation weeks 36-43 (10 records) agrees with the start",
+      "sources": [
+        "uwex",
+        "umd",
+        "npt",
+        "mdc",
+        "ph-fluff",
+        "ph-beavercreek-winter",
+        "inat-hist"
+      ],
+      "params": {
+        "startRange": [
+          244,
+          270
+        ],
+        "endRange": [
+          330,
+          365
+        ],
+        "stat": "fluff"
+      }
+    },
+    {
+      "id": "winter-standing",
+      "label": "winter: standing culms on day 20 (age 5)",
+      "type": "winterStanding",
+      "tier": "gate",
+      "origin": "sourced presence (UW 'remains through the winter, allow to stand', NCSU colour does not fade, LBJ nearly all winter, K-State looks very good through winter, UMD arches in snow and recovers); count chosen by Claude as about 40 percent of the estimated mature clump (40 culms seen standing on 11 Jan 2023 at Beavercreek OH)",
+      "sources": [
+        "uwex",
+        "ncsu",
+        "lbj",
+        "kstate",
+        "umd",
+        "ph-beavercreek-winter"
+      ],
+      "params": {
+        "stat": "seedHeads",
+        "day": 20,
+        "min": 15
+      }
+    },
+    {
+      "id": "cutback",
+      "label": "cutback: stubble 2 to 4 in from late winter until regrowth (needsNewType: cutback)",
+      "type": "cutback",
+      "tier": "advisory",
+      "needsNewType": true,
+      "origin": "sourced: UW cut to 2 to 4 in in late winter or early spring, TTU shear close before spring growth, UMD late spring if desired. The date the model cuts is an owner decision; proposed end of March (day 90); regrowth seen mid to late April in Ohio photographs",
+      "sources": [
+        "uwex",
+        "ttu",
+        "umd",
+        "ph-spring-ohio",
+        "owner"
+      ],
+      "params": {
+        "heightIn": [
+          2,
+          4
+        ],
+        "cutDayRange": [
+          60,
+          100
+        ],
+        "regrowthStartRange": [
+          100,
+          125
+        ]
+      }
+    },
+    {
+      "id": "culms-age0",
+      "label": "culms: median at age 0 (seed-grown plug year)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "tolerance: a seed-grown plug may carry a few culms by autumn; none in spring (NRCS seedling guide, K-State trial)",
+      "sources": [
+        "ph-stow-plug",
+        "owner"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          0
+        ],
+        "range": [
+          0,
+          6
+        ]
+      }
+    }
+  ],
+  "visual": [
+    "Plug (age 0): about 12 bright yellow-green blades from 2 to 4 tillers, sprawling and arching, longest blade roughly 8 in (judged against about 1 in mulch pieces), no culms (Stow OH, 2026-05-09). Seed-grown juvenile at 8 weeks (NRCS seedling guide, PDF page 31): about 4 thin blades, tallest about 4.5 in.",
+    "Mature mound: blue-green to grey-green blades with purple-tinged bases, folded, pointed, arching in a fountain; mound about 30 to 45 percent of culm-tip height; culms rise from the centre and flare, leaning in different directions at the tips.",
+    "Culms: thin, flattened, yellow to reddish-brown with red nodes (UIUC), branching only toward the tip into paired racemes 1 to 3 in long that are pink-purple, then silvery white and feathery; fluff along the upper half of each culm in September (West Lafayette, Akron).",
+    "Fall: culms red-purple and blades burgundy to purple-red late October (Delaware OH), copper through November, copper-orange standing in January (Beavercreek OH).",
+    "Spring: old stand is tan; fresh bright green shoots seen 21 April in Cincinnati; leaf mound complete by late June.",
+    "Not viewed: flower head from above; close bloom stage with anthers. Culm counts are estimates read from photographs, not counts.",
+    "Judged by eye (no gate check yet): blade length 8 to 12 in and width 1.5 to 6 mm; a plug's blades sprawl, about 12 of them in spring; crown 0.25 to 0.5 and top 0.45 to 0.85 of the culm height in width; colour blue-green to grey-green with a purple base in summer, copper to burgundy from about day 265, tan to copper in winter."
+  ],
+  "stats": {
+    "stems": "visibleCulms",
+    "seedHeads": "visibleSeedHeads",
+    "flowers": "visibleFlowers",
+    "height": "dimensions.heightM",
+    "spread": "dimensions.spreadM",
+    "fluff": "visiblePlumes"
+  }
+}

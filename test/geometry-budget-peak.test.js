@@ -179,6 +179,17 @@ const PEAKS = Object.freeze({
     triangles: [15038, 7626, 3426],
     draws: [3, 3, 3],
   },
+  // Swept over ages 3, 5 and 8, every tenth day and five seeds (the budget
+  // seed carries 69 culms, the top of its range): worst in early September
+  // with every culm up and every raceme drawn. Three draws at every band for
+  // the reason the sibling file gives. Band 0 is at 17,256 of 25,000 on the
+  // heaviest seed swept (about 300 more than this one).
+  schizachyrium: {
+    age: 8,
+    day: 255,
+    triangles: [16944, 7082, 3032],
+    draws: [3, 3, 3],
+  },
   pennisetum: {
     age: 8,
     day: 220,

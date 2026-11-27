@@ -178,6 +178,13 @@ const RECORDED = Object.freeze({
   // already gone — a band-2 clump spends 976 on them — so what is left here is
   // one draw call, and correctness is worth more than it.
   miscanthus: { triangles: [23526, 8468, 3760], draws: [3, 3, 3] },
+
+  // Three parts at every band, as the other grasses and the herbaceous
+  // plants above record: a grass has no wood, so its culms are an instanced
+  // kind, and dropping culms or racemes past band 0 leaves silvery heads
+  // floating over a bare mound. Far inside the triangle budget at every band
+  // (about half of band 0, a quarter of band 1, half of band 2 used).
+  schizachyrium: { triangles: [13086, 4890, 2316], draws: [3, 3, 3] },
 });
 
 function triangleCount(geometry) {

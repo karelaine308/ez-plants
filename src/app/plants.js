@@ -27,6 +27,9 @@ import {
   Ratibida,
   ROTUNDIFOLIA_PROFILE,
   ROTUNDIFOLIA_SOURCES,
+  SCOPARIUM_PROFILE,
+  SCOPARIUM_SOURCES,
+  Schizachyrium,
   SMARAGD_PROFILE,
   SMARAGD_SOURCES,
   TISEL_PROFILE,
@@ -741,6 +744,74 @@ export const PLANTS = Object.freeze({
     create(state) {
       return new Ratibida({
         seed: state.seed ?? 1822,
+        leafWind: state.leafWind,
+        maxYears: 20,
+        ageYears: state.age,
+        dayOfYear: state.day,
+        seasonProfile: state.phenologyProfile,
+      });
+    },
+  }),
+
+  schizachyrium: Object.freeze({
+    id: 'schizachyrium',
+    label: 'Little bluestem',
+    labelPl: 'Little bluestem',
+    cultivar: 'Species',
+    species: SCOPARIUM_PROFILE.species,
+    kicker: 'Garden digital twin · Sproutline 03',
+    profile: SCOPARIUM_PROFILE,
+    sources: SCOPARIUM_SOURCES,
+    // Late September: culms full height, silvery seed heads at their best,
+    // blades just starting to turn.
+    defaults: Object.freeze({ age: 5, day: 270 }),
+    maxYears: 20,
+    size: Object.freeze({
+      heightM: SCOPARIUM_PROFILE.architecture.matureHeightM,
+      radiusM: SCOPARIUM_PROFILE.architecture.matureRadiusM,
+    }),
+    bedRadiusM: 0.45,
+    profileControl: Object.freeze({
+      key: 'seasonProfile',
+      label: 'Season timing',
+      options: Object.freeze([
+        ['typical', 'Typical'],
+        ['early', 'Early'],
+        ['late', 'Late'],
+      ]),
+    }),
+    seasons: Object.freeze([
+      { label: 'Winter stand', day: 25 },
+      { label: 'Cut back', day: 85 },
+      { label: 'Regrowth', day: 125 },
+      { label: 'Leaf mound', day: 185 },
+      { label: 'Culms rising', day: 225 },
+      { label: 'Silver heads', day: 270 },
+      { label: 'Copper', day: 320 },
+    ]),
+    stats: Object.freeze([
+      { key: 'visibleCulms', label: 'Culms' },
+      { key: 'visibleBlades', label: 'Blades' },
+      { key: 'visiblePanicles', label: 'Racemes' },
+      { key: 'visiblePlumes', label: 'Silvery seed heads' },
+      { key: 'visibleFlowers', label: 'In bloom' },
+    ]),
+    yieldLine: Object.freeze({
+      label: 'Modelled height × spread',
+      key: 'dimensions',
+      unit: 'm',
+      format: (value) =>
+        value
+          ? `${value.heightM.toFixed(2)} × ${value.spreadM.toFixed(2)} m`
+          : '—',
+      note: 'Culm counts are estimates from photographs; each raceme is one alpha card whose awns live in a generated texture.',
+    }),
+    actions: Object.freeze([]),
+    modelNote:
+      '<strong>A native bunchgrass: blue-green blades, wiry culms and silver seed heads.</strong> A tight mound of narrow blades builds slowly from May; culms rise through it in August and carry small pink-purple flowers, then silvery seed heads from September. Blades turn burgundy then copper, and the clump stands through winter until the cut to 2 to 4&nbsp;inches.',
+    create(state) {
+      return new Schizachyrium({
+        seed: state.seed ?? 1927,
         leafWind: state.leafWind,
         maxYears: 20,
         ageYears: state.age,
