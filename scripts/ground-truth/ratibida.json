@@ -3,13 +3,14 @@
   "species": "Ratibida pinnata (gray-headed coneflower)",
   "class": "Ratibida",
   "entry": "src/lib/plants/ratibida/ratibida.js",
-  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm. Plan review, 26 Nov 2026: the owner approved bloom to October with a thin tail, tolerances of 2 weeks on bloom start and midpoint with a month-level window for the end, the 90 percent week dropped, the winter check and the head ramp kept as gate checks. Age 0 is a plug (a small first-year seedling as bought in spring, or from winter-sown seed); the planner may start a bought-bigger plant at an older age.",
+  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm. Plan review, 26 Nov 2026: the owner approved bloom to October with a thin tail, tolerances of 2 weeks on bloom start and midpoint with a month-level window for the end, the 90 percent week dropped, the winter check and the head ramp kept as gate checks. Age 0 is a plug (a small first-year seedling as bought in spring, or from winter-sown seed); the planner may start a bought-bigger plant at an older age. Clump rerun, 27 Nov 2026: the 12-head cap and the 9-to-12 ramp are replaced by the draft ranges above (heads at ages 2 and 3, a mature clump of about 40 heads as advisory, stems and spread as advisory); the owner approved the approach and still has to confirm the age 2 and 3 numbers.",
   "stats": {
     "heads": "visibleHeads",
     "flowers": "visibleFlowers",
     "stems": "visibleStems",
     "seedHeads": "visibleSeedHeads",
-    "height": "dimensions.heightM"
+    "height": "dimensions.heightM",
+    "spread": "dimensions.spreadM"
   },
   "sources": [
     {
@@ -21,7 +22,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": true,
-      "published": "not recorded"
+      "published": "undated (copyright 2026)"
     },
     {
       "id": "lbj",
@@ -32,7 +33,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": true,
-      "published": "not recorded"
+      "published": "2026-11-24 (record modified)"
     },
     {
       "id": "ncsu",
@@ -43,7 +44,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": true,
-      "published": "not recorded"
+      "published": "undated"
     },
     {
       "id": "epa",
@@ -87,7 +88,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": true,
-      "published": "not recorded"
+      "published": "archive capture 2025 (exact date not recorded)"
     },
     {
       "id": "inat",
@@ -110,7 +111,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": false,
-      "published": "not recorded"
+      "published": "copyright 2006-2026; photos 2002, 2006, 2009"
     },
     {
       "id": "mnseasons",
@@ -132,7 +133,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": false,
-      "published": "not recorded"
+      "published": "undated"
     },
     {
       "id": "ozark",
@@ -154,7 +155,7 @@
       "checked": "2026-11, found by a research agent, not re-opened since",
       "status": "unverified",
       "reputable": false,
-      "published": "not recorded"
+      "published": "undated"
     },
     {
       "id": "growit",
@@ -177,6 +178,117 @@
       "status": "needs-url: find this photograph again and record its address",
       "reputable": false,
       "published": "not recorded"
+    },
+    {
+      "id": "purdue",
+      "name": "Purdue Arboretum Explorer, Ratibida pinnata",
+      "url": "https://www.arboretum.purdue.edu/explorer/?p=5999",
+      "reputable": true,
+      "shows": "height 3-5 ft; spread 1.5-2 ft; clump-forming",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "sdsu",
+      "name": "SDSU Open PRAIRIE native plant, Ratibida pinnata (R. N. Reese)",
+      "url": "https://openprairie.sdstate.edu/nativeplant/221",
+      "reputable": true,
+      "shows": "stems 30-120 cm, single or clustered, branched only in the inflorescence; 1 to 12 heads per plant; June-Sep (wild, South Dakota)",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "usda-pg",
+      "name": "USDA NRCS Plant Guide, Yellow coneflower",
+      "url": "https://plants.usda.gov/DocumentLibrary/plantguide/pdf/pg_rapi.pdf",
+      "reputable": true,
+      "shows": "up to 1 m or taller; 5-7 leaf segments; disk gray then brown; long-lived; seed heads eaten by birds late fall",
+      "license": "public domain",
+      "published": "2002-01-10 (edited)",
+      "checked": "2026-11-27",
+      "status": "redirects to plants.sc.egov.usda.gov; PDF text read with pdftotext"
+    },
+    {
+      "id": "epa-glnpo",
+      "name": "US EPA GLNPO, Prairie Coneflower sheet",
+      "url": "https://archive.epa.gov/ecopage/web/pdf/ratibida_pinnata.pdf",
+      "reputable": true,
+      "shows": "size 3-6 ft; bloom July-Sep",
+      "license": "public domain",
+      "published": "2001-06-26",
+      "checked": "2026-11-27",
+      "status": "ok (PDF text read with pdftotext)"
+    },
+    {
+      "id": "newmoon",
+      "name": "New Moon Nursery, Ratibida pinnata",
+      "url": "https://www.newmoonnursery.com/plant/Ratibida-pinnata",
+      "reputable": false,
+      "shows": "2-5 ft, 2 ft spread; numerous branched flowering stems; usually blooms second year from seed",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "inat-hist",
+      "name": "iNaturalist weekly flowering observations, Ohio (place 31), taxon 85331",
+      "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=85331&place_id=31&term_id=12&term_value_id=13&date_field=observed&interval=week_of_year",
+      "reputable": true,
+      "shows": "bloom timing",
+      "license": "data",
+      "published": "retrieved 2026-11-27",
+      "observed": "2013-2026; recent set 2021-2025",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "inat-clump-detroit",
+      "name": "iNaturalist obs 52846429, planted clump, Detroit MI",
+      "url": "https://www.inaturalist.org/observations/52846429",
+      "reputable": false,
+      "shows": "mature garden clump in flower: about 30 open heads plus about 15 buds (counted from photo https://inaturalist-open-data.s3.amazonaws.com/photos/84025917/large.jpg)",
+      "license": "look-only",
+      "published": "2020-07-09",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "inat-clump-london",
+      "name": "iNaturalist obs 231503863, garden clump, London ON",
+      "url": "https://www.inaturalist.org/observations/231503863",
+      "reputable": false,
+      "shows": "garden clump in bud: about 35 heads, about 12-15 stems visible; leaves in lower ~60% (counted from photo https://inaturalist-open-data.s3.amazonaws.com/photos/411180030/large.jpeg)",
+      "license": "look-only",
+      "published": "2024-07-24",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "inat-spring-castalia",
+      "name": "iNaturalist obs 213543178, spring rosette, Castalia OH",
+      "url": "https://www.inaturalist.org/observations/213543178",
+      "reputable": false,
+      "shows": "spring crown: low rosette of pinnate leaves (photo https://inaturalist-open-data.s3.amazonaws.com/photos/377395175/large.jpg)",
+      "license": "look-only",
+      "published": "2024-05-04",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-winter-oh",
+      "name": "iNaturalist obs 336858754 (Oregon OH) and 340096176 (Wooster OH), winter seed heads",
+      "url": "https://www.inaturalist.org/observations/336858754",
+      "reputable": false,
+      "shows": "winter stand: dark seed heads on standing tan stems in Jan-Feb (photos https://inaturalist-open-data.s3.amazonaws.com/photos/612232923/large.jpg and https://inaturalist-open-data.s3.amazonaws.com/photos/618828773/large.jpg)",
+      "license": "look-only",
+      "published": "2026-01-31 and 2026-02-24",
+      "checked": "2026-11-27",
+      "status": "photos viewed"
     }
   ],
   "bloomData": {
@@ -218,14 +330,16 @@
       "label": "heads: never above cap",
       "type": "cap",
       "tier": "gate",
-      "origin": "sourced",
+      "origin": "counted from photographs: the largest count was about 65 heads (Dziuk clump), plus margin; replaces the 12-head cap, which came from wild-plant sources",
       "sources": [
-        "mnwf",
-        "mnseasons"
+        "sdsu",
+        "inat-clump-detroit",
+        "inat-clump-london",
+        "mnwf"
       ],
       "params": {
         "stat": "heads",
-        "max": 12
+        "max": 70
       }
     },
     {
@@ -233,7 +347,7 @@
       "label": "heads: median at age 1",
       "type": "ramp",
       "tier": "gate",
-      "origin": "owner decision",
+      "origin": "owner decision (unchanged: 2 to 4); no source gives heads by age",
       "sources": [
         "owner"
       ],
@@ -253,7 +367,7 @@
       "label": "heads: median at age 2",
       "type": "ramp",
       "tier": "gate",
-      "origin": "owner decision",
+      "origin": "draft by Claude so a mature clump reaches about 40 heads; owner to confirm",
       "sources": [
         "owner"
       ],
@@ -263,8 +377,8 @@
           2
         ],
         "range": [
-          5,
-          8
+          6,
+          15
         ]
       }
     },
@@ -273,20 +387,18 @@
       "label": "heads: median at age 3+",
       "type": "ramp",
       "tier": "gate",
-      "origin": "owner decision",
+      "origin": "draft by Claude so a mature clump reaches about 40 heads; owner to confirm",
       "sources": [
         "owner"
       ],
       "params": {
         "stat": "heads",
         "ages": [
-          3,
-          5,
-          8
+          3
         ],
         "range": [
-          9,
-          12
+          15,
+          30
         ]
       }
     },
@@ -485,6 +597,86 @@
       ],
       "params": {
         "minDeg": 35
+      }
+    },
+    {
+      "id": "heads-mature",
+      "label": "heads: median at age 5 (mature clump)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "counted from three garden-clump photographs: about 55, 45 and 35 (median 45; one photograph read as 40, 55 and 65 by different counters)",
+      "sources": [
+        "inat-clump-detroit",
+        "inat-clump-london",
+        "mnwf",
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          5
+        ],
+        "range": [
+          30,
+          60
+        ]
+      }
+    },
+    {
+      "id": "stems-mature",
+      "label": "stems: median at age 5 (mature clump)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "counted from photographs, low confidence: about 8 to 12 (Sonnet) and 12 to 15 (Opus, one photograph)",
+      "sources": [
+        "inat-clump-detroit",
+        "mnwf"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          5
+        ],
+        "range": [
+          8,
+          15
+        ]
+      }
+    },
+    {
+      "id": "spread-mature",
+      "label": "spread: mean at age 5 (ft)",
+      "type": "spreadRange",
+      "tier": "advisory",
+      "origin": "sourced 1.5 to 2 ft, widened a little",
+      "sources": [
+        "purdue",
+        "mobot"
+      ],
+      "params": {
+        "range": [
+          1.4,
+          2.2
+        ]
+      }
+    },
+    {
+      "id": "bloom-end-sourced",
+      "label": "bloom: sourced end, last week with open heads",
+      "type": "bloomEnd",
+      "tier": "advisory",
+      "origin": "reputable sources end bloom by September; Ohio iNaturalist shows a thin tail to early October",
+      "sources": [
+        "inat-hist",
+        "lbj",
+        "mdc"
+      ],
+      "params": {
+        "fraction": 0.1,
+        "range": [
+          36,
+          41
+        ]
       }
     }
   ],

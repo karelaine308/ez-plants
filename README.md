@@ -236,6 +236,19 @@ head count, bloom window, native status); two agreeing reputable sources for any
 number that becomes the edge of a pass range. Where that cannot be met, the entry
 says "only source" and the owner decides.
 
+**Combining sources.** Do not average. For each number, list each source's range
+with its date and whether it describes wild or garden plants. The overlap of the
+reputable ranges is the typical range; anything outside it is listed as an outlier.
+Check up to three independent reputable sources and stop once two agree; sites that
+copy each other count once. For a count no source gives (stems or heads per clump),
+count at least three photographs of mature garden clumps and aim for five, preferring
+ones of known age, and report the median and the smallest and largest, tagged "counted from photo" with
+the page and its date. Count every head, whether bud, open or finished, and report
+buds separately. Count only a clearly separate clump; if a frame may hold several plants,
+say so. For plants meant for gardens, garden sources outrank wild floras for size and counts. Wild stands mix many plants, so use them only as a second
+reference. The builder models the typical value (the median); the gate checks the
+observed range, widened a little.
+
 **D. Lessons.** What the looking taught you goes into the cultivar profile as a
 corrected date, a revised colour or a habit that arched further than assumed,
 recorded as an observation or a declared assumption under rule 3.

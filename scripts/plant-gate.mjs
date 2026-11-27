@@ -128,6 +128,7 @@ const TYPES = {
     return [f(r), r >= minR, `>= ${minR}`, 'timing of observations, not amount in bloom'];
   },
   heightMean({ range }) { const h = each(SEEDS, PA, PD, (p) => statVal(p, 'height') / FT); return [f(mean(h)), inRange(mean(h), range), `${range.join(' to ')} ft`]; },
+  spreadRange({ range }) { const w = each(SEEDS, PA, PD, (p) => statVal(p, 'spread') / FT); return [f(mean(w)), inRange(mean(w), range), `${range.join(' to ')} ft`]; },
   heightMax({ max }) { const h = each(SEEDS, PA, PD, (p) => statVal(p, 'height') / FT); return [f(Math.max(...h)), Math.max(...h) <= max, `<= ${max} ft`]; },
   headFraction({ range }) { const v = structure().hf; return [f(v), inRange(v, range), range.join(' to ')]; },
   leavesLow({ range }) { const v = structure().lo; return [f(v), inRange(v, range), range.join(' to ')]; },
