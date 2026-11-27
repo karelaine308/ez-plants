@@ -137,12 +137,64 @@ const TYPES = {
   heightMax({ max }) { const h = each(SEEDS, PA, PD, (p) => statVal(p, 'height') / FT); return [f(Math.max(...h)), Math.max(...h) <= max, `<= ${max} ft`]; },
   headFraction({ range }) { const v = structure().hf; return [f(v), inRange(v, range), range.join(' to ')]; },
   leavesLow({ range }) { const v = structure().lo; return [f(v), inRange(v, range), range.join(' to ')]; },
-  leafFreeTop({ max }) { const v = structure().top; return [f(v), v <= max, `<= ${max}`]; },
+  leafFreeTop({ max, min }) { const v = structure().top; return [f(v), (max === undefined || v <= max) && (min === undefined || v >= min), [max !== undefined && `<= ${max}`, min !== undefined && `>= ${min}`].filter(Boolean).join(' and ')]; },
   leafElevation({ minDeg, age = 0, day = 160 }) {
     const e = [];
     for (const s of SEEDS.slice(0, 6)) { const p = make(s, age, day); for (const l of snapshotOf(p).leaves) { const d = l.direction ?? l.dir ?? l.normal; if (d && Number.isFinite(d.y)) e.push(Math.abs(Math.asin(Math.max(-1, Math.min(1, d.y / Math.hypot(d.x, d.y, d.z)))) * 180 / Math.PI)); } p.dispose(); }
     if (!e.length) throw new NotChecked('no leaf direction in _snapshot');
     return [f(median(e), 0), median(e) >= minDeg, `>= ${minDeg} deg`];
+  },
+  // ---- checks for grasses and other plants whose season is a sequence of events (added 27 Nov 2026) ----
+  // Each sweeps the year in 5-day steps over six seeds and reports the median day. They read only stats()
+  // (and, for the ratio, _snapshot), so any plant that reports the mapped stat can use them.
+  culmEmergence({ stat = 'stems', age = PA, range }) {
+    // New culms appear after the plant has been cut back: the first day on or after day 100 on which the stat
+    // rises above its low point of days 60 to 200. A stat that never changes in that window cannot be read.
+    const days = each(SEEDS.slice(0, 6), age, PD, (p) => {
+      const at = []; for (let d = 60; d <= 365; d += 5) { p.setTime({ ageYears: age, dayOfYear: d }); at.push([d, statVal(p, stat)]); }
+      const low = Math.min(...at.filter(([d]) => d <= 200).map(([, v]) => v));
+      const hit = at.find(([d, v]) => d >= 100 && v > low);
+      return hit ? hit[0] : null;
+    });
+    if (days.every((d) => d === null)) throw new NotChecked(`${stat} never rises after its low point in days 60 to 200`);
+    const m = median(days.filter((d) => d !== null));
+    return [m, inRange(m, range), `day ${range.join(' to ')}`];
+  },
+  seedFluff({ stat = 'seedHeads', startRange, endRange, fraction = 0.1, age = PA }) {
+    const out = each(SEEDS.slice(0, 6), age, PD, (p) => {
+      const at = []; for (let d = 150; d <= 365; d += 5) { p.setTime({ ageYears: age, dayOfYear: d }); at.push([d, statVal(p, stat)]); }
+      const mx = Math.max(...at.map(([, v]) => v));
+      if (mx <= 0) return null;
+      return [at.find(([, v]) => v > 0)[0], [...at].reverse().find(([, v]) => v >= fraction * mx)[0]];
+    });
+    if (out.every((o) => o === null)) throw new NotChecked(`${stat} is zero from day 150 to 365`);
+    const ok = out.filter(Boolean), st = median(ok.map((o) => o[0])), en = median(ok.map((o) => o[1]));
+    return [`day ${st} to ${en}`, inRange(st, startRange) && inRange(en, endRange), `start ${startRange.join(' to ')}, end ${endRange.join(' to ')}`, `end = last day with the stat >= ${fraction * 100}% of its peak`];
+  },
+  cutback({ stat = 'height', heightIn, cutDayRange, regrowthStartRange, age = PA }) {
+    const r = each(SEEDS.slice(0, 6), age, PD, (p) => {
+      const at = []; for (let d = 1; d <= 200; d += 5) { p.setTime({ ageYears: age, dayOfYear: d }); at.push([d, statVal(p, stat)]); }
+      const stub = Math.min(...at.filter(([d]) => d >= 30 && d <= 150).map(([, v]) => v));
+      const cut = at.find(([d, v]) => d >= 30 && v <= stub + 0.02);
+      const grow = cut && at.find(([d, v]) => d > cut[0] && v > stub + 0.05);
+      return { stub: stub / 0.0254, cut: cut?.[0], grow: grow?.[0] };
+    });
+    const cut = median(r.map((x) => x.cut).filter((x) => x != null)), grow = median(r.map((x) => x.grow).filter((x) => x != null)), stub = median(r.map((x) => x.stub));
+    if (![cut, grow].every(Number.isFinite)) throw new NotChecked('no cutback and regrowth found in days 30 to 200');
+    const ok = inRange(stub, heightIn) && inRange(cut, cutDayRange) && inRange(grow, regrowthStartRange);
+    return [`${f(stub, 1)} in, cut day ${cut}, regrowth day ${grow}`, ok, `${heightIn.join(' to ')} in, cut ${cutDayRange.join(' to ')}, regrowth ${regrowthStartRange.join(' to ')}`];
+  },
+  culmMoundRatio({ range, age = PA, day = PD }) {
+    const r = each(SEEDS.slice(0, 6), age, day, (p) => {
+      const sn = p._snapshot;
+      if (!sn?.leaves || !sn?.axes) throw new NotChecked('_snapshot has no leaves and axes');
+      const culm = Math.max(...sn.axes.flatMap((a) => a.points.map((q) => q.y)), 0.01);
+      const tips = sn.leaves.filter((l) => l.visible !== false && !l.fallen).map((l) => l.position.y + (l.direction?.y ?? 0) * (l.lengthM ?? 0)).sort((x, y) => x - y);
+      if (!tips.length) throw new NotChecked('no visible leaves');
+      return culm / tips[Math.floor(0.95 * (tips.length - 1))];
+    });
+    const m = mean(r);
+    return [f(m), inRange(m, range), range.join(' to '), 'culm tip height over the 95th percentile leaf tip'];
   },
   winterStanding({ stat, day, min }) { const v = mean(each(SEEDS, PA, day, (p) => statVal(p, stat))); return [f(v, 1), v >= min, `>= ${min}`]; }
 };
