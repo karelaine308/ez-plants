@@ -52,8 +52,8 @@
       "reputable": true,
       "access": "sometimes-blocked",
       "cause": "site-block",
-      "seen": "2026-11-26",
-      "observed": "certificate error on both plant-finder addresses; only search snippets were read",
+      "seen": "2026-11-27",
+      "observed": "certificate error on both plant-finder addresses; only search snippets were read; certificate error twice on two addresses (Joe Pye review, 2026-11-27)",
       "worksInstead": "a web.archive copy of the plant finder page",
       "humanNeeds": "plant finder page text: height, spread, bloom, winter"
     },
@@ -232,6 +232,50 @@
       "observed": "returned an empty page twice to the fetch tool; very slow to load even for the owner",
       "worksInstead": null,
       "humanNeeds": "a screenshot of the plant page"
+    },
+    {
+      "host": "dnr.illinois.gov",
+      "kind": "state agency PDF",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "agent-error",
+      "seen": "2026-11-27",
+      "observed": "both spotted Joe Pye PDF addresses returned 404; the address may have moved",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the page"
+    },
+    {
+      "host": "www.clemson.edu",
+      "kind": "university extension plant profile",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "agent-error",
+      "seen": "2026-11-27",
+      "observed": "plant profile address returned 404 and curl 403; numbers read only through the fetch tool quote",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the page"
+    },
+    {
+      "host": "acorn.mortonarb.org",
+      "kind": "arboretum plant database",
+      "reputable": true,
+      "access": "always-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-27",
+      "observed": "'not a robot' challenge; not bypassed",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the page"
+    },
+    {
+      "host": "canr.msu.edu",
+      "kind": "university extension page",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-27",
+      "observed": "drive-by-botany page returned empty text",
+      "worksInstead": null,
+      "humanNeeds": "a screenshot of the page"
     }
   ]
 }

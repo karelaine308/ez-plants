@@ -98,7 +98,8 @@ export const MACULATUM_PROFILE = Object.freeze({
     woody: false,
     deciduous: true,
     crownOrigin: 'persistent rhizomatous basal crown',
-    matureHeightM: 1.8,
+    // 5.7 ft, the owner's decision (27 Nov 2026): inside the sourced overlap of 4.9 to 6 ft and her chart's 4 to 6 ft.
+    matureHeightM: 1.74,
     matureRadiusM: 0.55,
     // A tight crown: the clump's width comes from stems splaying out of it.
     matureCrownRadiusM: 0.17,
@@ -131,7 +132,8 @@ export const MACULATUM_PROFILE = Object.freeze({
   }),
   stem: Object.freeze({
     kind: 'annual herbaceous flowering stem, solid',
-    targetHeightM: Object.freeze([1.5, 2.0]),
+    // Stem targets set so the age 5 clump averages about 5.7 ft at its tallest point (owner's decision, 27 Nov 2026).
+    targetHeightM: Object.freeze([1.3, 1.75]),
     baseRadiusM: Object.freeze([0.005, 0.0075]),
     mainAxisSections: 12,
     lateralAxisSections: 3,

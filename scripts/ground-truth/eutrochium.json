@@ -1,0 +1,706 @@
+{
+  "plant": "eutrochium",
+  "species": "Eutrochium maculatum (spotted Joe Pye weed), species, no cultivar",
+  "class": "Eutrochium",
+  "peakAge": 5,
+  "peakDay": 218,
+  "stats": {
+    "heads": "visibleHeads",
+    "flowers": "visibleFlowers",
+    "stems": "visibleStems",
+    "seedHeads": "visibleSeedHeads",
+    "height": "dimensions.heightM",
+    "spread": "dimensions.spreadM"
+  },
+  "note": "Draft ground truth, review of a plant whose model was built before the process existed; written blind (no model code read) on 2026-11-27 by a research agent. Ranges are sourced overlaps with tolerances I chose; every check records its origin. Karen's chart gives height 4-6 ft and bloom July to September; the sourced height overlap is 4.9-6 ft so the two agree. Age 0 is a plug. No source gives stem or array counts by age; counts are from four photographs of unknown age and are advisory. Bloom checks are advisory because only 21 annotated flowering observations exist for Ohio. peakDay 218 is August 6, the iNaturalist median week. Stats are left for the orchestrator. Owner statement 27 Nov 2026: her clump is about 10 years old, divided about 5 years ago; the 15 Nov bed photograph shows roughly 15 to 25 stems splayed wide (a rough reading, not a count). The model holds flat from age 5, so age 5 is the right model age for this plant. Review changes 27 Nov 2026: stems range now 10 to 30 from the owner's photograph; array check reworded to side clusters per stem; leaf-whorl check moved to by-eye; bloom end moved in the model from 9 Sep to 20 Sep.",
+  "sources": [
+    {
+      "id": "ncsu",
+      "name": "NC State Extension Plant Toolbox, Eutrochium maculatum",
+      "url": "https://plants.ces.ncsu.edu/plants/eutrochium-maculatum",
+      "reputable": true,
+      "shows": "height 4-7 ft; width 3-4 ft; blooms July to October; whorls of 4 or 5 leaves 8 x 2.5 in; flat-topped cluster of 8-20 florets; achenes Aug-Nov; cut to the ground in late winter; small clonal colonies",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (read twice)"
+    },
+    {
+      "id": "lbj",
+      "name": "Lady Bird Johnson Wildflower Center, Eutrochium maculatum",
+      "url": "https://www.wildflower.org/plants/result.php?id_plant=EUMA9",
+      "reputable": true,
+      "shows": "2-6 feet tall, to about 6 ft; whorls of 4 or 5 leaves; bloom Aug-Oct, pink and purple; moist to wet",
+      "license": "look-only",
+      "published": "record modified 2026-11-06",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "mdc",
+      "name": "Missouri Department of Conservation, Joe-Pye Weeds",
+      "url": "https://mdc.mo.gov/discover-nature/field-guide/joe-pye-weeds",
+      "reputable": true,
+      "shows": "spotted: leaves usually 4 or 5 per whorl, usually flat-topped clusters, stems usually solid; all species bloom July-September; 3-7 ft (genus page)",
+      "license": "look-only",
+      "published": "undated (copyright 2026)",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "cbg",
+      "name": "Chicago Botanic Garden Plant Evaluation Notes 37, A Comparative Study of Joe-Pye Weeds (Hawke)",
+      "url": "https://www.chicagobotanic.org/downloads/planteval_notes/no37_joepyeweed.pdf",
+      "reputable": true,
+      "shows": "species E. maculatum, seed-grown, 5 plants, zone 5b, 2001-2013: 67 in tall, 44 in wide, bloom late Jul to early Sep, clusters to 9 in, 3-4 leaves per whorl, crown injury in 3 of 5 winters; seed heads not ornamental; larger plants may be cut to 2 ft in late spring",
+      "license": "look-only",
+      "published": "2014 (trial 2001-2013)",
+      "checked": "2026-11-27",
+      "status": "ok (PDF read with pdftotext)"
+    },
+    {
+      "id": "hgic",
+      "name": "Clemson HGIC, Rain garden plants: Eutrochium spp.",
+      "url": "https://hgic.clemson.edu/factsheet/rain-garden-plants-eutrochium-spp-joe-pye-weed/",
+      "reputable": true,
+      "shows": "3-5 (occasionally 6) ft in drier soil, 7-10 ft in consistently moist soil; bloom July to Sep; cut back late winter or early spring to 6-8 in; dried seed heads until cut back (genus-level)",
+      "license": "look-only",
+      "published": "2016-03-26",
+      "checked": "2026-11-27",
+      "status": "ok in fetch tool; 403 to curl"
+    },
+    {
+      "id": "npt",
+      "name": "Native Plant Trust Plant Finder, Eutrochium maculatum",
+      "url": "https://plantfinder.nativeplanttrust.org/plant/Eutrochium-maculatum",
+      "reputable": true,
+      "shows": "height 3-7 ft, to 8 ft but shorter in gardens; spread 3-4 ft",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "rhs",
+      "name": "Royal Horticultural Society, Eutrochium maculatum",
+      "url": "https://www.rhs.org.uk/plants/248226/wd/details",
+      "reputable": true,
+      "shows": "1.5-2.5 m tall, 0.5-1 m wide, time to maturity 2-5 years; cut back late autumn (UK garden)",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "osu",
+      "name": "Ohio State University weed guide, Joepyeweeds",
+      "url": "https://weedguide.cfaes.osu.edu/singlerecord.asp?id=61",
+      "reputable": true,
+      "shows": "Ohio: spotted joepyeweed; leaves in whorls, 5 per node; heads 8-21 florets, 9-15 heads per flat-topped cluster 4-5.5 in; rhizomes and seed",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "bwsr",
+      "name": "Minnesota BWSR Featured Plant, Spotted Joe Pye Weed",
+      "url": "https://bwsr.state.mn.us/sites/default/files/2018-12/March%202015%20Featured%20Plant%20Joe%20Pye%20Weed.pdf",
+      "reputable": true,
+      "shows": "grows in clumps; bloom July-September; leaves about 9 x 2 in whorled in 4 or 5; rhizomes and fibrous roots",
+      "license": "look-only",
+      "published": "2015-03",
+      "checked": "2026-11-27",
+      "status": "ok (saved PDF read with pdftotext)"
+    },
+    {
+      "id": "mobot",
+      "name": "Missouri Botanical Garden Plant Finder, Eutrochium maculatum",
+      "url": "https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=292659&isprofile=1&basic=eutrochium",
+      "reputable": true,
+      "shows": "height 4 to 7 ft; spread 3 to 4 ft; bloom July to September, purple-pink; zone 4 to 8; full sun; water medium to wet; native to Missouri",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (screenshot supplied by owner, 2026-11-27; the page gives certificate errors to the fetch tool)"
+    },
+    {
+      "id": "ildnr",
+      "name": "Illinois DNR, Spotted Joe-Pye Weed sheet",
+      "url": "https://dnr.illinois.gov/content/dam/soi/en/web/dnr/education/cdindex/spottedjoepyeweed.pdf",
+      "reputable": true,
+      "shows": "two to seven feet (search snippet only)",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "dropped: both addresses 404 and only a snippet was ever seen; illinoiswildflowers (ilwf) covers the same ground"
+    },
+    {
+      "id": "gobotany",
+      "name": "Native Plant Trust Go Botany, Eutrochium maculatum",
+      "url": "https://gobotany.nativeplanttrust.org/species/Eutrochium/maculatum",
+      "reputable": true,
+      "shows": "whorled leaves, habitat, photo captions (no height)",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "ilwf",
+      "name": "Illinois Wildflowers, Spotted Joe-Pye Weed",
+      "url": "https://illinoiswildflowers.info/wetland/plants/sp_joepye.htm",
+      "reputable": false,
+      "shows": "3-5 ft wild; whorls of 4-5 leaves up to 7 in; panicle 3-6 in; bloom 3-4 weeks mid to late summer; clonal colonies",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "mnwf",
+      "name": "Minnesota Wildflowers, Eutrochium maculatum",
+      "url": "https://minnesotawildflowers.info/flower/spotted-joe-pye-weed",
+      "reputable": false,
+      "shows": "2-10 ft wild; whorls of 3-6; clusters 3-5 in; July-September",
+      "license": "look-only",
+      "published": "undated (photos undated)",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "pmoon",
+      "name": "Prairie Moon Nursery, Eutrochium maculatum",
+      "url": "https://www.prairiemoon.com/eutrochium-maculatum-joe-pye-weed",
+      "reputable": false,
+      "shows": "5 ft, up to 6 ft; Jul-Sep; no first-year bloom statement",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "inat-hist",
+      "name": "iNaturalist weekly observations, Ohio (place 31), taxon 117440 (Eutrochium maculatum)",
+      "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=117440&place_id=31&date_field=observed&interval=week_of_year&term_id=12&term_value_id=13",
+      "reputable": true,
+      "shows": "annotated flowering (21 observations) and all observations (977 in histogram, 981 in listing)",
+      "license": "data",
+      "published": "retrieved 2026-11-27",
+      "checked": "2026-11-27",
+      "status": "ok",
+      "observed": "1986-2026; observations before 2016 are very few; recent set 2021-2025"
+    },
+    {
+      "id": "inat-garden-nyc",
+      "name": "iNaturalist 126825465, planted clump in flower, Garden City NY",
+      "url": "https://www.inaturalist.org/observations/126825465",
+      "reputable": false,
+      "shows": "whole clump in flower, about 6 stems, about 14 arrays (counted from photo https://inaturalist-open-data.s3.amazonaws.com/photos/215233559/large.jpeg); dome close-up photos/215233484/large.jpeg",
+      "license": "look-only",
+      "published": "2022-07-18",
+      "checked": "2026-11-27",
+      "status": "photo viewed; observation page not opened"
+    },
+    {
+      "id": "inat-garden-ua",
+      "name": "iNaturalist 240708857, garden plant in flower, Makariv, Ukraine",
+      "url": "https://www.inaturalist.org/observations/240708857",
+      "reputable": false,
+      "shows": "whole plant, about 4 stems, about 6 large dark mauve arrays (counted from photo https://inaturalist-open-data.s3.amazonaws.com/photos/428880581/large.jpg)",
+      "license": "look-only",
+      "published": "2024-09-08",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-cincy",
+      "name": "iNaturalist 132141399, planted stand, St Xavier High School, Cincinnati OH",
+      "url": "https://www.inaturalist.org/observations/132141399",
+      "reputable": false,
+      "shows": "central clump about 7 stems, about 9 arrays; leaves to about 0.8 of height (counted from photo https://inaturalist-open-data.s3.amazonaws.com/photos/224985806/large.jpg)",
+      "license": "look-only",
+      "published": "2022-08-24",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-reynoldsburg",
+      "name": "iNaturalist 55603077, Reynoldsburg OH",
+      "url": "https://www.inaturalist.org/observations/55603077",
+      "reputable": false,
+      "shows": "3-4 stems, about 10 arrays, woodland edge (photo https://inaturalist-open-data.s3.amazonaws.com/photos/88551119/large.jpeg)",
+      "license": "look-only",
+      "published": "2020-08-06",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-cox",
+      "name": "iNaturalist 128101430, Cox Arboretum Park, Dayton OH",
+      "url": "https://www.inaturalist.org/observations/128101430",
+      "reputable": false,
+      "shows": "array from above: broad dome of many small head-clusters, mauve-purple with long styles (photo https://static.inaturalist.org/photos/217560798/large.jpg)",
+      "license": "look-only",
+      "published": "2022-07-18",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-leaf-findlay",
+      "name": "iNaturalist 291229715, leaf whorl close-up, Findlay OH",
+      "url": "https://www.inaturalist.org/observations/291229715",
+      "reputable": false,
+      "shows": "whorl of 4 puckered serrate leaves, mid-green, purple-tinged new leaves (photo https://inaturalist-open-data.s3.amazonaws.com/photos/523968116/large.jpg)",
+      "license": "look-only",
+      "published": "2025-06-20",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-spring-mtvernon",
+      "name": "iNaturalist 278210050, spring shoots, Mount Vernon OH",
+      "url": "https://www.inaturalist.org/observations/278210050",
+      "reputable": false,
+      "shows": "emerging shoots with purple-spotted stems, opposite leaf pairs (photo https://static.inaturalist.org/photos/499543661/large.jpg)",
+      "license": "look-only",
+      "published": "2025-05-02",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-spring-keene",
+      "name": "iNaturalist 359988485, young shoot with whorl, Keene Township OH",
+      "url": "https://www.inaturalist.org/observations/359988485",
+      "reputable": false,
+      "shows": "shoot with a whorl of 5-6 bright yellow-green toothed leaves (photo https://inaturalist-open-data.s3.amazonaws.com/photos/656851802/large.jpg)",
+      "license": "look-only",
+      "published": "2026-05-09",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-young-columbus",
+      "name": "iNaturalist 87885818, small planted plant with buds, N High St, Columbus OH",
+      "url": "https://www.inaturalist.org/observations/87885818",
+      "reputable": false,
+      "shows": "small young plant, several leafy shoots, tiny buds in July (photo https://inaturalist-open-data.s3.amazonaws.com/photos/144945694/large.jpg); age not stated",
+      "license": "look-only",
+      "published": "2021-07-20",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-winter-fairborn",
+      "name": "iNaturalist 197709015, winter stalk, Fairborn OH",
+      "url": "https://www.inaturalist.org/observations/197709015",
+      "reputable": false,
+      "shows": "standing grey-brown panicle on a leafless stalk, most seed gone (photo https://inaturalist-open-data.s3.amazonaws.com/photos/348287869/large.jpg)",
+      "license": "look-only",
+      "published": "2024-01-27",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-autumn-clark",
+      "name": "iNaturalist 405326416, autumn plant, Clark County OH",
+      "url": "https://www.inaturalist.org/observations/405326416",
+      "reputable": false,
+      "shows": "lower leaves yellow-brown, upper leaves blotched, few arrays left (photo https://inaturalist-open-data.s3.amazonaws.com/photos/744482706/large.jpg)",
+      "license": "look-only",
+      "published": "2026-10-02",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "inat-nov-indianhill",
+      "name": "iNaturalist 189676418, November clump base, Indian Hill OH",
+      "url": "https://www.inaturalist.org/observations/189676418",
+      "reputable": false,
+      "shows": "leaves yellowing on stems, old dead stems standing at the clump base (photo https://inaturalist-open-data.s3.amazonaws.com/photos/332338674/large.jpg)",
+      "license": "look-only",
+      "published": "2023-11-01",
+      "checked": "2026-11-27",
+      "status": "photo viewed"
+    },
+    {
+      "id": "owner",
+      "name": "Karen's chart row and decisions",
+      "url": "owner",
+      "reputable": false,
+      "shows": "height 4-6 ft, moist to wet, bloom July to September, mauve to pink, Existing mature plant, age unknown; the owner's 303 bed plant is about 10 years old and was divided about 5 years ago, so the clump in her 15 Nov photograph is roughly a 5-year-old division on a 10-year-old root system (owner statement, 2026-11-27)",
+      "license": "owner",
+      "published": "2026-11",
+      "checked": "2026-11-27",
+      "status": "ok"
+    }
+  ],
+  "bloomData": {
+    "place": {
+      "name": "Ohio",
+      "inaturalistPlaceId": 31
+    },
+    "note": "iNaturalist shows when people post photographs, not how much is in bloom. Annotated flowering observations number only 21 (all years) and 11 (2021-2025), too few for firm percentile checks, so bloom checks are advisory. Week numbers use iNaturalist's week_of_year as returned; the gate uses floor((day-1)/7)+1, which may differ by one. Unannotated observation counts (977 all years, 557 for 2021-2025; the listing total is 981) give the same shape: peak week 32 (31 recent), 10 percent week 27 (28), 90 percent week 38 (38).",
+    "retrieved": "2026-11-27",
+    "weeklyFloweringObservations": {
+      "27": 1,
+      "29": 2,
+      "30": 2,
+      "31": 4,
+      "32": 2,
+      "33": 2,
+      "35": 4,
+      "36": 1,
+      "37": 2,
+      "39": 1
+    },
+    "weeklyFloweringObservationsLast5Years": {
+      "years": "2021-2025",
+      "29": 1,
+      "30": 1,
+      "31": 3,
+      "32": 1,
+      "33": 2,
+      "35": 2,
+      "36": 1
+    },
+    "weeklyAllObservationsReference": {
+      "all": {
+        "17": 4,
+        "18": 1,
+        "19": 2,
+        "20": 8,
+        "21": 8,
+        "22": 6,
+        "23": 12,
+        "24": 4,
+        "25": 12,
+        "26": 17,
+        "27": 25,
+        "28": 46,
+        "29": 55,
+        "30": 98,
+        "31": 104,
+        "32": 106,
+        "33": 76,
+        "34": 80,
+        "35": 87,
+        "36": 64,
+        "37": 44,
+        "38": 34,
+        "39": 34,
+        "40": 22,
+        "41": 15,
+        "42": 7,
+        "43": 2,
+        "44": 2
+      },
+      "years2021to2025": {
+        "17": 2,
+        "18": 1,
+        "19": 1,
+        "20": 5,
+        "21": 4,
+        "22": 1,
+        "23": 6,
+        "24": 1,
+        "25": 5,
+        "26": 5,
+        "27": 13,
+        "28": 22,
+        "29": 33,
+        "30": 64,
+        "31": 67,
+        "32": 63,
+        "33": 39,
+        "34": 45,
+        "35": 52,
+        "36": 42,
+        "37": 26,
+        "38": 12,
+        "39": 15,
+        "40": 14,
+        "41": 9,
+        "42": 6,
+        "43": 1,
+        "44": 1
+      }
+    },
+    "totals": {
+      "annotatedWeeklySum": 21,
+      "annotatedApiTotal": 21,
+      "annotated5yWeeklySum": 11,
+      "annotated5yApiTotal": 11,
+      "allWeeklySum": 977,
+      "allListingTotal": 981
+    }
+  },
+  "checks": [
+    {
+      "id": "height-mean",
+      "label": "height: mean tallest point, age 5 (ft)",
+      "type": "heightMean",
+      "tier": "gate",
+      "origin": "sourced overlap of reputable ranges 4.9-6 ft (ncsu 4-7, mobot 4-7 snippet, npt 3-7, rhs 4.9-8.2, lbj 2-6, mdc 3-7); range widened to 4.5-6.5 as tolerance; owner chart 4-6; cbg measured 5.6 ft",
+      "sources": [
+        "ncsu",
+        "mobot",
+        "npt",
+        "rhs",
+        "lbj",
+        "mdc",
+        "cbg",
+        "owner"
+      ],
+      "params": {
+        "range": [
+          4.5,
+          6.5
+        ]
+      }
+    },
+    {
+      "id": "height-max",
+      "label": "height: tallest single plant (ft)",
+      "type": "heightMax",
+      "tier": "gate",
+      "origin": "sourced maximum for the species (ncsu, mobot, npt all 7 ft); genus-level 10-13 ft figures are other species or moist-soil garden advice and are excluded",
+      "sources": [
+        "ncsu",
+        "mobot",
+        "npt",
+        "hgic"
+      ],
+      "params": {
+        "max": 7.0
+      }
+    },
+    {
+      "id": "spread-mature",
+      "label": "spread: mean at age 5 (ft)",
+      "type": "spreadRange",
+      "tier": "advisory",
+      "origin": "sourced 3-4 ft (ncsu, npt, mobot snippet, cbg measured 3.7); RHS lower 1.7-3.3 is the one outlier; widened slightly as tolerance",
+      "sources": [
+        "ncsu",
+        "npt",
+        "mobot",
+        "cbg",
+        "rhs"
+      ],
+      "params": {
+        "range": [
+          2.8,
+          4.2
+        ]
+      }
+    },
+    {
+      "id": "stems-mature",
+      "label": "stems: median at age 5 (mature clump)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "owner photograph of her 10-year-old clump (divided about 5 years ago), 15 Nov 2026: a rough reading of 15 to 25 stems, widened; replaces the 3 to 9 from four photographs of unknown age",
+      "sources": [
+        "inat-garden-nyc",
+        "inat-garden-ua",
+        "inat-cincy",
+        "inat-reynoldsburg",
+        "owner"
+      ],
+      "params": {
+        "stat": "stems",
+        "ages": [
+          5
+        ],
+        "range": [
+          10,
+          30
+        ]
+      }
+    },
+    {
+      "id": "heads-mature",
+      "label": "flower arrays and side clusters: median at age 5 (about 3 to 8 per stem)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "tolerance: the model counts the main panicle plus side clusters on each stem; 16 stems times 3 to 8, from the research photographs (one main array plus a few side arrays per stem). Not sourced.",
+      "sources": [
+        "inat-garden-nyc",
+        "inat-garden-ua",
+        "inat-cincy",
+        "inat-reynoldsburg"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          5
+        ],
+        "range": [
+          48,
+          128
+        ]
+      }
+    },
+    {
+      "id": "heads-age0",
+      "label": "flower arrays at age 0 (plug year)",
+      "type": "ramp",
+      "tier": "advisory",
+      "origin": "first-year bloom is possible but not typical: seed-grown plants usually bloom in year two (Everwilde snippet); a small planted Columbus plant carried tiny buds in July; tolerance chosen by Claude",
+      "sources": [
+        "inat-young-columbus",
+        "owner"
+      ],
+      "params": {
+        "stat": "heads",
+        "ages": [
+          0
+        ],
+        "range": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "id": "bloom-p10",
+      "label": "bloom: week reached 10% of season",
+      "type": "bloomPercentile",
+      "tier": "advisory",
+      "origin": "iNaturalist annotated flowering week 29 all years, 30 for 2021-2025 (n=21 and 11, too few for gate); tolerance 2 weeks chosen by Claude",
+      "sources": [
+        "inat-hist"
+      ],
+      "params": {
+        "q": 0.1,
+        "tolerance": 2,
+        "weeks": [
+          24,
+          44
+        ]
+      }
+    },
+    {
+      "id": "bloom-p50",
+      "label": "bloom: week reached 50% of season",
+      "type": "bloomPercentile",
+      "tier": "advisory",
+      "origin": "iNaturalist annotated flowering median week 32 (Aug 6-12) in both sets; unannotated median also 32; tolerance 2 weeks chosen by Claude",
+      "sources": [
+        "inat-hist",
+        "cbg",
+        "mdc"
+      ],
+      "params": {
+        "q": 0.5,
+        "tolerance": 2,
+        "weeks": [
+          24,
+          44
+        ]
+      }
+    },
+    {
+      "id": "bloom-end",
+      "label": "bloom: last week with open flowers",
+      "type": "bloomEnd",
+      "tier": "gate",
+      "origin": "sourced: mdc and bwsr end September, cbg early September, ncsu and lbj October; Ohio iNaturalist annotated last week 39 (Sep 24-30); Karen's chart July to September; tolerance range",
+      "sources": [
+        "mdc",
+        "bwsr",
+        "cbg",
+        "ncsu",
+        "lbj",
+        "inat-hist",
+        "owner"
+      ],
+      "params": {
+        "fraction": 0.1,
+        "range": [
+          36,
+          40
+        ]
+      }
+    },
+    {
+      "id": "bloom-correlation",
+      "label": "bloom: weekly shape against iNaturalist",
+      "type": "bloomCorrelation",
+      "tier": "advisory",
+      "origin": "tolerance chosen by Claude; annotated sample is only 21, so this proves little",
+      "sources": [
+        "inat-hist"
+      ],
+      "params": {
+        "weeks": [
+          24,
+          44
+        ],
+        "minR": 0.7
+      }
+    },
+    {
+      "id": "winter-standing",
+      "label": "winter: standing stems or dried panicles on day 20",
+      "type": "winterStanding",
+      "tier": "advisory",
+      "origin": "sourced hgic (dried seed heads until cut back, 2016) and ncsu (cut to the ground in late winter); one photograph of a single winter stalk (Fairborn 2024-01-27); count chosen by Claude",
+      "sources": [
+        "hgic",
+        "ncsu",
+        "inat-winter-fairborn"
+      ],
+      "params": {
+        "stat": "seedHeads",
+        "day": 20,
+        "min": 3
+      }
+    },
+    {
+      "id": "head-fraction",
+      "label": "structure: mean array height / plant height",
+      "type": "headFraction",
+      "tier": "advisory",
+      "origin": "measured by Claude from two whole-clump photos: about 0.75 (Ukraine 2024-09-08) and 0.79 (Cincinnati 2022-08-24)",
+      "sources": [
+        "inat-garden-ua",
+        "inat-cincy"
+      ],
+      "params": {
+        "range": [
+          0.7,
+          0.88
+        ]
+      }
+    },
+    {
+      "id": "leaf-free-top",
+      "label": "structure: leaf-free top of plant",
+      "type": "leafFreeTop",
+      "tier": "advisory",
+      "origin": "measured from two photos: leaves to about 0.7-0.8 of height, arrays on short branches above the top whorl",
+      "sources": [
+        "inat-garden-ua",
+        "inat-cincy",
+        "ilwf",
+        "lbj"
+      ],
+      "params": {
+        "max": 0.3
+      }
+    }
+  ],
+  "visual": [
+    "Leaves: whorls of 4 or 5 (3 to 6) at each node up the whole stem, simple lance-shaped blades 7-9 in long by 2-2.5 in wide, sharply toothed, puckered with conspicuous veins, narrowed at both ends, short-stalked; mid to yellow-green, new tip leaves purple-tinged (Findlay 2025-06-20, Bexley 2023-07-20, lbj, ncsu).",
+    "Stems: stout, unbranched below the flower stalks, purple-spotted on green or solid purple-red (Bexley 2023-07-20, ncsu, ilwf); upright from the crown, leaning outward in the top third.",
+    "Array: terminal flat-topped to domed panicle 3-9 in across (up to 12 in on large plants) of many small heads with 8-20 disk florets, no rays, long pale exserted styles giving a fuzzy halo; mauve-pink to purple (Cox Arboretum 2022-07-18, Garden City 2022-07-18); one main array per stem plus a few smaller side arrays.",
+    "Proportions of height (by eye from photographs, plus or minus 0.1): array zone 0.4-0.6; mean array height 0.75-0.8; clump width at head height 0.5-1.0 and at base 0.25-0.6; leaves from the base to 0.7-0.8; lower blade length about 0.15.",
+    "Spring: purple-spotted shoots with opposite pairs first, then whorls at the tip, bright yellow-green and toothed (Mount Vernon 2025-05-02, Keene Township 2026-05-09).",
+    "Autumn and winter: lower leaves yellow and brown first from late summer, upper leaves blotched (Clark County 2026-10-02); a brittle leafless stalk with a loose grey-brown dried panicle stands to late winter (Fairborn 2024-01-27); old dead stems stand at the clump base (Indian Hill 2023-11-01).",
+    "Not viewed: whole clump in winter, early September seed head, straight-down view of one array, Karen's own plant.",
+    "Leaf whorls (judged by eye, no gate check): 4 or 5 leaves per node up the whole stem (ilwf, ncsu, lbj)."
+  ],
+  "entry": "src/lib/plants/eutrochium/eutrochium.js"
+}

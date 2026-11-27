@@ -43,7 +43,8 @@ export const MACULATUM_PHASE_ASSUMPTIONS = Object.freeze({
     floweringPeak: monthDayToDay(7, 31),
     fadeStart: monthDayToDay(8, 20),
     seedHeadStart: monthDayToDay(8, 28),
-    floweringEnd: monthDayToDay(9, 9),
+    // Sept 20, up from Sept 9: reputable sources run to the end of September and iNaturalist has Ohio flowering to week 39 (Joe Pye review, 27 Nov 2026).
+    floweringEnd: monthDayToDay(9, 20),
     lowerLeafDropStart: monthDayToDay(8, 10),
     autumnStart: monthDayToDay(9, 25),
     firstFrost: monthDayToDay(10, 22),
