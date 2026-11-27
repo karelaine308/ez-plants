@@ -188,27 +188,51 @@ through a season, and a photograph settles that where a spec sheet does not. A
 render that looks plausible but does not match the photograph is a bug. Render on
 the demo page in a browser, or with `scripts/shoot.mjs` if Playwright is
 installed. Open photographs in the browser; do not download them. A photograph
-from a source without a licence is for looking only. A photograph the owner
+from a source without a licence is for looking only. If a photograph cannot be
+viewed, follow "When a source is blocked" in C. A photograph the owner
 supplies is a reference, with her words saying which stage it shows. Photographs
 of the species are acceptable when none exist for the cultivar; the profile says
 so.
 
 **C. Sources.** The ground-truth file keeps a `sources` list of links, never
 copies of images. Each entry has an id, the URL, the page's name, what it shows
-(stage, view, season), its licence (look-only or reusable), the date checked, and
+(stage, view, season), its licence (look-only or reusable), the date it was published or last updated, the date checked, and
 the check or lesson it informed. Every check lists the source ids it rests on, and
 the gate fails a check that lists none. A dead link stays in the list, marked
 dead. The owner's own photographs are listed by description.
 
-Prefer sources that rarely move: government agencies, universities and extension
-services, botanical gardens such as the Lady Bird Johnson Wildflower Center, and
-long-established organisations. Individual-run sites and companies are less
-stable and need a stable source that agrees.
+**Reputable** means published or reviewed by an organisation that answers for its
+accuracy: a government agency, a university or extension service, a botanical garden
+or herbarium, or an established native-plant or conservation society (the Lady Bird
+Johnson Wildflower Center, a state conservation department). Individual-run sites and
+companies are useful but are not reputable on their own, and need a reputable source
+that agrees. Reputable is about credibility, not about whether an address will move;
+a link that dies stays in the list, marked dead.
 
-Minimum sources: one stable source for each view judged by eye (whole plant in
+Every source records when it was published or last updated and, for observation data,
+the years it covers. When sources disagree, report each side's date: bloom times and
+ranges shift with climate, so how recent the evidence is matters. The newer side is not
+automatically right; the owner decides with the dates in view.
+
+**When a source is blocked.** If a page or image cannot be fetched (403, 404, a bot
+challenge, a login wall, a certificate error, a PDF that will not open, a view too small
+to read), try at most twice, then use another equally reputable source for the same
+fact. Do not fill the gap from memory, and do not describe an image that was not seen.
+If no equally reputable source answers it, mark the fact or view "not viewed" and list it
+as **needs a human**: the address, what is needed from it, and why it matters. The
+person running the work collects these once and asks the owner to open the page or send
+the text or image. A check or view that rests on a pending item stays "pending human",
+never a pass.
+
+Every blocked, dead or certificate-failing address goes into
+`scripts/source-registry.json` with the date and the error. A host that blocks agents
+every time is marked `always-blocked` and dropped from the preferred list. The registry
+is also the owner's list of where to go when a human is needed.
+
+Minimum sources: one reputable source for each view judged by eye (whole plant in
 leaf, in flower, in winter, spring emergence or first year, and the flower head
-from the side and from above); one stable source for each sourced number (height,
-head count, bloom window, native status); two agreeing stable sources for any
+from the side and from above); one reputable source for each sourced number (height,
+head count, bloom window, native status); two agreeing reputable sources for any
 number that becomes the edge of a pass range. Where that cannot be met, the entry
 says "only source" and the owner decides.
 

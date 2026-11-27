@@ -142,13 +142,13 @@ const TYPES = {
 };
 
 const srcIds = new Set((gt.sources ?? []).map((s) => s.id)); srcIds.add('owner');
-const stable = new Set((gt.sources ?? []).filter((s) => s.stable).map((s) => s.id));
+const reputable = new Set((gt.sources ?? []).filter((s) => s.reputable ?? s.stable).map((s) => s.id));
 const rows = [];
 for (const c of gt.checks) {
   const row = { id: c.id, name: c.label, tier: c.tier ?? 'gate', origin: c.origin, sources: c.sources ?? [] };
   const bad = row.sources.filter((id) => !srcIds.has(id));
-  const stableN = row.sources.filter((id) => stable.has(id)).length;
-  row.stable = stableN;
+  const reputableN = row.sources.filter((id) => reputable.has(id)).length;
+  row.reputable = reputableN;
   try {
     if (!row.sources.length) throw Object.assign(new Error('lists no sources (rule 4C)'), { sourceFail: true });
     if (bad.length) throw Object.assign(new Error(`unknown source ids: ${bad.join(', ')}`), { sourceFail: true });
@@ -172,7 +172,7 @@ const sect = (tier, title) => {
   console.log(`\n${title}`);
   for (const r of rows.filter((x) => x.tier === tier)) {
     const tag = r.ok === null ? 'NOT CHECKED' : r.ok ? 'PASS       ' : 'FAIL       ';
-    console.log(`${tag} ${r.name.padEnd(w)}  ${String(r.value).padEnd(18)} ${r.want ? `want ${r.want}` : ''}${r.note ? `  (${r.note})` : ''}${r.stable === 0 && !r.sources.every((s) => s === 'owner') ? '  [no stable source]' : ''}`);
+    console.log(`${tag} ${r.name.padEnd(w)}  ${String(r.value).padEnd(18)} ${r.want ? `want ${r.want}` : ''}${r.note ? `  (${r.note})` : ''}${r.reputable === 0 && !r.sources.every((s) => s === 'owner') ? '  [no reputable source]' : ''}`);
   }
 };
 sect('gate', 'GATE CHECKS (count toward the result)');

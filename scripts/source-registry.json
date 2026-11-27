@@ -1,0 +1,193 @@
+{
+  "note": "Where agents could and could not fetch sources, and why. Entries come from agent reports and are unverified until a person or a later run confirms them. access: ok, sometimes-blocked, always-blocked. cause: site-block (the site refused the agent), tool-limit (the fetch tool could not handle it), agent-error (the agent used a wrong address or id). A host marked always-blocked is dropped from the preferred list. Only site-block entries are places the owner has to visit; the rest are fixed by changing how the work is done.",
+  "updated": "2026-11-26",
+  "hosts": [
+    {
+      "host": "www.inaturalist.org",
+      "kind": "observation database",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-26",
+      "observed": "observation grid pages returned a 403 bot challenge; not bypassed",
+      "worksInstead": null,
+      "humanNeeds": "photographs and observation lists for a plant, place and month"
+    },
+    {
+      "host": "static.inaturalist.org",
+      "kind": "observation photographs",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-26",
+      "observed": "first loads worked, then 403 from the content network after repeated requests",
+      "worksInstead": null,
+      "humanNeeds": "photographs by id"
+    },
+    {
+      "host": "inaturalist-open-data.s3.amazonaws.com",
+      "kind": "observation photographs",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "unknown",
+      "seen": "2026-11-26",
+      "observed": "some image ids returned 404 and others loaded; cause not established",
+      "worksInstead": null,
+      "humanNeeds": "photographs by id"
+    },
+    {
+      "host": "api.inaturalist.org",
+      "kind": "observation database API",
+      "reputable": true,
+      "access": "ok",
+      "cause": "agent-error",
+      "seen": "2026-11-26",
+      "observed": "weekly histograms work with the right place id (Ohio is 31) and taxon; a wrong place id returned all zeros; listings are cut off at about 100,000 characters, so ask for ids only",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "www.missouribotanicalgarden.org",
+      "kind": "botanical garden",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-26",
+      "observed": "certificate error on both plant-finder addresses; only search snippets were read",
+      "worksInstead": "a web.archive copy of the plant finder page",
+      "humanNeeds": "plant finder page text: height, spread, bloom, winter"
+    },
+    {
+      "host": "plants.usda.gov",
+      "kind": "government plant database",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-26",
+      "observed": "plant guide PDF redirects to plants.sc.egov.usda.gov and the fetch tool could not read it",
+      "worksInstead": null,
+      "humanNeeds": "the plant guide PDF text"
+    },
+    {
+      "host": "publications.iowa.gov",
+      "kind": "state publications (PDF)",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-26",
+      "observed": "a seedling guide PDF was over the 10 MB fetch limit",
+      "worksInstead": null,
+      "humanNeeds": "seedling and first-year description"
+    },
+    {
+      "host": "www.canr.msu.edu",
+      "kind": "university extension",
+      "reputable": true,
+      "access": "sometimes-blocked",
+      "cause": "unknown",
+      "seen": "2026-11-26",
+      "observed": "a native plant fact page came back empty",
+      "worksInstead": null,
+      "humanNeeds": "height, spread, bloom, winter"
+    },
+    {
+      "host": "www.prairiemoon.com",
+      "kind": "native seed nursery",
+      "reputable": false,
+      "access": "ok",
+      "cause": "agent-error",
+      "seen": "2026-11-26",
+      "observed": "a 404 came from a guessed address; use the address from a search result, never guess one",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "www.wildflower.org",
+      "kind": "university botanical garden",
+      "reputable": true,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "mdc.mo.gov",
+      "kind": "state conservation agency",
+      "reputable": true,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "plants.ces.ncsu.edu",
+      "kind": "university extension",
+      "reputable": true,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "castle.eiu.edu",
+      "kind": "university",
+      "reputable": true,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "arboretum.purdue.edu",
+      "kind": "university arboretum",
+      "reputable": true,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "www.illinoiswildflowers.info",
+      "kind": "individual-run site",
+      "reputable": false,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "www.minnesotawildflowers.info",
+      "kind": "small nonprofit site",
+      "reputable": false,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "www.newmoonnursery.com",
+      "kind": "nursery",
+      "reputable": false,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the coneflower runs",
+      "worksInstead": null,
+      "humanNeeds": null
+    }
+  ]
+}

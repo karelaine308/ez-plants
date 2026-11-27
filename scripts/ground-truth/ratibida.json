@@ -16,151 +16,167 @@
       "id": "mdc",
       "name": "Missouri Department of Conservation field guide",
       "url": "https://mdc.mo.gov/discover-nature/field-guide/gray-headed-coneflower",
-      "stable": true,
       "shows": "description, habit, bloom",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "lbj",
       "name": "Lady Bird Johnson Wildflower Center plant page",
       "url": "https://www.wildflower.org/plants/result.php?id_plant=RAPI",
-      "stable": true,
       "shows": "height, bloom period, habit",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "ncsu",
       "name": "NC State Extension Plant Toolbox",
       "url": "https://plants.ces.ncsu.edu/plants/ratibida-pinnata/",
-      "stable": true,
       "shows": "height range, habit, photos",
       "license": "per photo",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "epa",
       "name": "EPA Green Acres archive",
       "url": "https://archive.epa.gov/greenacres/web/html/ylwcoflwr.html",
-      "stable": true,
       "shows": "description",
       "license": "public domain text",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "nrcs",
       "name": "USDA NRCS plant materials publication",
       "url": "https://www.nrcs.usda.gov/Internet/FSE_PLANTMATERIALS/publications/mopmcpu6313.pdf",
-      "stable": true,
       "shows": "establishment, seed, growth",
       "license": "public domain",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "eiu",
       "name": "Eastern Illinois University prairie page",
       "url": "https://castle.eiu.edu/prairie/ratipinn.htm",
-      "stable": true,
       "shows": "description",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "mobot",
       "name": "Missouri Botanical Garden plant finder (web archive copy)",
       "url": "https://webarchive.library.unt.edu/eot2008/20080921094222/http://www.mobot.org/gardeninghelp/plantfinder/Plant.asp?code=L940",
-      "stable": true,
       "shows": "height, bloom",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded"
     },
     {
       "id": "inat",
       "name": "iNaturalist Ohio weekly flowering observations (place 31, taxon 85331, Flowers annotation)",
       "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=85331&place_id=31&term_id=12&term_value_id=13&date_field=observed&interval=week_of_year",
-      "stable": true,
       "shows": "when people photograph flowering plants, by week of year",
       "license": "data",
       "checked": "2026-11, read live; a later check showed 319 observations because of one week-48 record",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": true,
+      "published": "not recorded",
+      "observed": "all years to 2026-11 (not split by year)"
     },
     {
       "id": "mnwf",
       "name": "Minnesota Wildflowers",
       "url": "https://www.minnesotawildflowers.info/flower/gray-headed-coneflower",
-      "stable": false,
       "shows": "heads per plant, leaves, photos",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "mnseasons",
       "name": "Minnesota Seasons",
       "url": "https://minnesotaseasons.com/Plants/gray-headed_coneflower.html",
-      "stable": false,
       "shows": "heads per plant, season",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "ilwf",
       "name": "Illinois Wildflowers",
       "url": "https://www.illinoiswildflowers.info/prairie/plantx/yl_coneflowerx.htm",
-      "stable": false,
       "shows": "leaf color photographs, habit",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "ozark",
       "name": "Ozark Edge Wildflowers",
       "url": "https://ozarkedgewildflowers.com/native-plants/gray-headed-coneflower-ratibida-pinnata",
-      "stable": false,
       "shows": "winter stand, head close-up, rosette",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "prairiemoon",
       "name": "Prairie Moon Nursery",
       "url": "https://www.prairiemoon.com/ratibida-pinnata-yellow-coneflower-prairie-moon-nursery.html",
-      "stable": false,
       "shows": "second-season flowering, seed treatment",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "growit",
       "name": "Grow It Build It",
       "url": "https://growitbuildit.com/ratibida-pinnata-grayhead-coneflower/",
-      "stable": false,
       "shows": "height range",
       "license": "look-only",
       "checked": "2026-11, found by a research agent, not re-opened since",
-      "status": "unverified"
+      "status": "unverified",
+      "reputable": false,
+      "published": "not recorded"
     },
     {
       "id": "mayfield",
       "name": "Wikimedia Commons photograph of a mature stand in flower by Mayfield, CC BY-SA 2.0",
       "url": null,
-      "stable": false,
       "shows": "whole plant in flower, head height and foliage spread",
       "license": "CC BY-SA 2.0",
       "checked": "not recorded",
-      "status": "needs-url: find this photograph again and record its address"
+      "status": "needs-url: find this photograph again and record its address",
+      "reputable": false,
+      "published": "not recorded"
     }
   ],
   "bloomData": {
@@ -190,6 +206,10 @@
       "45": 1,
       "46": 1,
       "47": 1
+    },
+    "place": {
+      "name": "Ohio",
+      "inaturalistPlaceId": 31
     }
   },
   "checks": [
