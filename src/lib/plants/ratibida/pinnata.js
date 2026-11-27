@@ -102,6 +102,9 @@ export const PINNATA_RENDER_ASSUMPTIONS = Object.freeze([
   'central-Ohio phase dates other than the July start, the peak near day 205 and the thin tail into October (observations in the report) are assumed',
   'all colours are estimates from described and photographed plants, not measurements',
   'the pinnate leaf plate is generated in code: 3 leaflet pairs and a terminal leaflet, where the sources give 3-7 segments',
+  'the basal rosette stays through winter as a low rosette at 40% of full leaf length, leaning 5-17 degrees above the ground and fading to mixed green and bronze; it carries on into spring regrowth (size and colour are assumed)',
+  'stem leaves brown in October and drop between 28 October and 14 November in a seeded order; they lie flat on the ground within the plant spread at 60% of their length (curled and shrivelled), never cleaned up, and stay until new growth covers them over the three weeks after the leaf-expansion date, 15 April (assumed)',
+  'leaf litter decomposition is assumed slow (leafLitterDecomposition: slow): a fast value drops the litter in autumn and leaves bare ground; the garden is never tidied, so the model never clears litter',
 ]);
 
 /** Species profile for one maintained plant in a central-Ohio garden. */
@@ -225,7 +228,16 @@ export const PINNATA_PROFILE = Object.freeze({
     widthToLength: 0.7,
     stemLeafScaleLowTop: Object.freeze([1, 0.3]),
     colour: 'medium green to slightly grey-green, rough',
+    // The stem leaves are deciduous; the basal rosette stays low through winter.
     persistentThroughWinter: false,
+    persistentBasalRosette: true,
+    // Share of full leaf length a basal leaf keeps through winter (assumption).
+    winterRosetteSize: 0.4,
+    // ASSUMPTION: fallen stem leaves decompose slowly, so litter lies on the
+    // ground until spring growth covers it. 'fast' drops the litter in autumn.
+    leafLitterDecomposition: 'slow',
+    litterScale: 0.6,
+    litterCoverDays: 21,
   }),
   head: Object.freeze({
     kind: 'capitulum with a tall gray-then-brown cone and strongly reflexed yellow rays',

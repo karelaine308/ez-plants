@@ -86,7 +86,7 @@ test('dark seed heads stand through winter and the stems are cut back in spring'
   const winter = SEEDS.map((seed) => stats(seed, 5, 20));
   for (const s of winter) {
     assert.ok(s.visibleSeedHeads >= 5);
-    assert.equal(s.visibleLeaves, 0);
+    assert.ok(s.visibleLeaves > 0, 'a basal rosette and litter lie on the ground in winter');
     assert.equal(s.visibleFlowers, 0);
   }
   assert.equal(stats('seed-1', 5, 100).visibleStems, 0);
@@ -191,4 +191,66 @@ test('dispose frees geometry and materials, and the plant stays inside the draw 
   });
   assert.ok(live === 0 || live >= 0);
   assert.ok(THREE.REVISION);
+});
+
+const LEAF_SEEDS = SEEDS.slice(0, 8);
+const evaluate = (seed, ageYears, dayOfYear) =>
+  evaluatePinnataModel(createPinnataModel({ seed }), { ageYears, dayOfYear });
+const tipOf = (leaf) => leaf.position.y + leaf.direction.y * leaf.lengthM;
+
+test('winter keeps a low basal rosette and ground litter, all within 0.25 m of the ground', () => {
+  for (const seed of LEAF_SEEDS) {
+    const winter = evaluate(seed, 5, 20);
+    assert.ok(winter.leaves.length > 0);
+    assert.ok(winter.stats.visibleBasalLeaves >= 10, `rosette ${winter.stats.visibleBasalLeaves}`);
+    for (const leaf of winter.leaves) {
+      assert.ok(leaf.position.y <= 0.25 && tipOf(leaf) <= 0.25, `${leaf.id} reaches ${tipOf(leaf)}`);
+      assert.ok(leaf.kind === 'basal' || leaf.litter, 'no leaf floats in winter');
+    }
+    assert.equal(winter.stats.visibleLeaves, winter.leaves.length);
+  }
+});
+
+test('stem leaves brown, drop between leaf-fall start and end, and lie as flat brown litter in the spread', () => {
+  const calendar = getPinnataPhenology(205).calendar;
+  for (const seed of LEAF_SEEDS) {
+    const model = createPinnataModel({ seed });
+    const before = evaluatePinnataModel(model, { ageYears: 5, dayOfYear: calendar.leafFallStart - 1 });
+    assert.equal(before.stats.visibleLitterLeaves, 0);
+    const standing = before.leaves.filter((l) => l.kind === 'stem');
+    assert.ok(standing.length > 20);
+    assert.ok(standing.every((l) => l.autumnProgress > 0.5), 'stem leaves are brown by late October');
+    const mid = evaluatePinnataModel(model, { ageYears: 5, dayOfYear: calendar.leafFallStart + 8 });
+    assert.ok(mid.stats.visibleLitterLeaves > 0 && mid.leaves.some((l) => l.kind === 'stem' && !l.litter));
+    const after = evaluatePinnataModel(model, { ageYears: 5, dayOfYear: calendar.leafFallEnd + 1 });
+    assert.ok(after.stats.visibleLitterLeaves >= standing.length - 1);
+    assert.ok(after.leaves.every((l) => l.kind === 'basal' || l.litter), 'nothing floats after leaf-fall');
+    const spreadRadius = PINNATA_PROFILE.architecture.spreadByAgeM.at(-1)[1] / 2;
+    for (const leaf of after.leaves.filter((l) => l.litter)) {
+      assert.ok(leaf.position.y < 0.03 && tipOf(leaf) < 0.04, 'litter lies flat');
+      const tip = { x: leaf.position.x + leaf.direction.x * leaf.lengthM, z: leaf.position.z + leaf.direction.z * leaf.lengthM };
+      assert.ok(Math.hypot(tip.x, tip.z) <= spreadRadius + 1e-9, 'litter lies within the spread');
+      assert.ok(leaf.autumnProgress >= 0.99, 'litter is brown');
+    }
+  }
+});
+
+test('litter stays through winter and the cutback, then is covered by spring growth', () => {
+  for (const seed of LEAF_SEEDS) {
+    const model = createPinnataModel({ seed });
+    const litterAt = (day) => evaluatePinnataModel(model, { ageYears: 5, dayOfYear: day }).stats.visibleLitterLeaves;
+    const calendar = getPinnataPhenology(205).calendar;
+    assert.ok(litterAt(20) > 20);
+    assert.ok(litterAt(80) > 20, 'cutting the stems does not clear the ground');
+    assert.ok(litterAt(calendar.leafExpansionStart - 1) > 20, 'litter lasts until leaf expansion');
+    assert.equal(litterAt(150), 0);
+    const rosette = (day) => evaluatePinnataModel(model, { ageYears: 5, dayOfYear: day }).stats.visibleBasalLeaves;
+    assert.ok(rosette(calendar.emergenceStart - 1) > 0 && rosette(calendar.emergenceStart + 1) > 0, 'the rosette carries into regrowth');
+  }
+});
+
+test('a fast decomposer leaves no litter, and a young plug has none before it has grown', () => {
+  assert.equal(PINNATA_PROFILE.leaf.leafLitterDecomposition, 'slow');
+  assert.equal(evaluate('seed-1', 0, 20).stats.visibleLitterLeaves, 0);
+  assert.ok(evaluate('seed-1', 2, 20).stats.visibleLitterLeaves > 0);
 });

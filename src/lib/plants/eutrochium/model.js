@@ -427,17 +427,13 @@ function localArrayState(array, phenology, dryMode) {
 const DEAD_LEAF_RETAINED = 0.15;
 
 /**
- * A leaf that has dropped lies where it landed, under its own node, until
- * the spring cleanup clears it along with the old stems.
+ * A leaf that has dropped lies where it landed, under its own node. The beds
+ * are never tidied: litter stays through winter and the cutback, and is only
+ * left undrawn once the new shoots emerge over it. A fast decomposer would
+ * leave bare ground instead.
  */
 function fallenLeaf(leaf, node, { ageScale, phenology, seed, fellInSummer }) {
-  // Cleared in the late-winter tidy, in the same random order as the stems.
-  if (
-    phenology.dayOfYear < phenology.calendar.cutbackEnd &&
-    keyedRandom(seed, leaf.id, 'ground-clear') >= phenology.standingDryVisibility
-  ) {
-    return null;
-  }
+  if (MACULATUM_PROFILE.leaf.leafLitterDecomposition === 'fast') return null;
   const azimuth = randomRange(seed, [leaf.id, 'ground-azimuth'], 0, Math.PI * 2);
   const reach = leaf.lengthM * ageScale * randomRange(seed, [leaf.id, 'ground-reach'], 0.1, 0.9);
   const outwardX = leaf.direction.x;
@@ -471,8 +467,13 @@ function fallenLeaf(leaf, node, { ageScale, phenology, seed, fellInSummer }) {
 function evaluateLeaf(
   leaf,
   { standingAxes, groundAxes },
-  { mode, ageScale, leafExpansion, stemGrowth, phenology, seed },
+  { mode, ageScale, leafExpansion, stemGrowth, phenology, seed, winterLitter = false },
 ) {
+  if (winterLitter) {
+    // After the cutback, before emergence: every leaf of last year's stand is on the ground.
+    const ground = groundAxes.get(leaf.axisId)?.points[leaf.pointIndex];
+    return ground ? fallenLeaf(leaf, ground, { ageScale, phenology, seed, fellInSummer: false }) : null;
+  }
   if (mode === 'dormant') return null;
   const dryMode = mode === 'previous-dry' || mode === 'current-dry';
   const node = groundAxes.get(leaf.axisId)?.points[leaf.pointIndex];
@@ -494,7 +495,8 @@ function evaluateLeaf(
 
   if (!dryMode && (mode !== 'current' || leafExpansion <= 0.01)) return null;
   const position = standingAxes.get(leaf.axisId)?.points[leaf.pointIndex];
-  if (!position) return null; // its stem has been cut
+  // Its stem has been cut: a leaf still hanging on it falls to the ground.
+  if (!position) return fallenLeaf(leaf, node, { ageScale, phenology, seed, fellInSummer: false });
 
   // Every whorl is present on the shoot from the start, folded small at the
   // tip, and unfolds from the bottom up as the stem elongates. A whorl near
@@ -663,6 +665,35 @@ export function evaluateMaculatumModel(
       if (evaluated) leaves.push(evaluated);
     }
   }
+  // Between the cutback and emergence the stems are gone but last year's
+  // leaves still lie where they fell.
+  if (mode === 'dormant' && ageYears > 0 && phenology.dayOfYear < phenology.calendar.emergenceStart) {
+    const litterAge = ageYears - 1;
+    const litterAgeScale = sampleAnchors(MACULATUM_PROFILE.growth.plantAgeScaleAnchors, litterAge);
+    const litterCrownScale =
+      sampleAnchors(MACULATUM_PROFILE.architecture.crownRadiusAnchorsM, litterAge) /
+      MACULATUM_PROFILE.architecture.matureCrownRadiusM;
+    const litterShoots = model.shoots.filter((shoot) => shoot.birthAgeYears <= litterAge);
+    const litterAxes = new Map();
+    for (const shoot of litterShoots) {
+      const primary = shoot.axes[0];
+      litterAxes.set(primary.id, transformPrimaryAxis(primary, litterCrownScale, litterAgeScale));
+    }
+    for (const shoot of litterShoots) {
+      for (const leaf of shoot.leaves) {
+        const evaluated = evaluateLeaf(leaf, { standingAxes: new Map(), groundAxes: litterAxes }, {
+          mode,
+          ageScale: litterAgeScale,
+          leafExpansion: 0,
+          stemGrowth: 0,
+          phenology,
+          seed: model.seed,
+          winterLitter: true,
+        });
+        if (evaluated) leaves.push(evaluated);
+      }
+    }
+  }
 
   const arrays = [];
   for (const shoot of activeShoots) {
@@ -693,6 +724,7 @@ export function evaluateMaculatumModel(
     visibleStems,
     visibleAxes: axes.length,
     visibleLeaves: leaves.length,
+    visibleLitterLeaves: leaves.filter((l) => l.fallen).length,
     visibleHeads: arrays.length,
     visibleFlowers: arrays.filter((a) => a.stage === 'open' || a.stage === 'opening').length,
     visibleFlowerBuds: arrays.filter((a) => a.stage === 'bud').length,

@@ -417,33 +417,8 @@ function localHeadState(head, phenology, cohortAgeYears, dryMode) {
   };
 }
 
-function evaluateLeaf(leaf, ctx) {
-  const { mode, axisMap, phenology, cohortAgeYears, crownScale, leafExpansion, stemGrowth, seed } = ctx;
-  if (mode !== 'current') return null;
-  const day = phenology.dayOfYear;
-  const { calendar } = phenology;
-  // Leaves let go through the first weeks of November, in a seeded order.
-  if (day >= calendar.leafFallStart + leaf.dropOrder * (calendar.leafFallEnd - calendar.leafFallStart)) {
-    return null;
-  }
-  const length = sampleAnchors(LEAF.basalLengthAnchorsM, Math.min(cohortAgeYears, MATURE_AGE)) * leaf.sizeFactor;
-  const senescence = phenology.autumnProgress;
-  const outward = vector(Math.cos(leaf.azimuth), 0, Math.sin(leaf.azimuth));
-  let position;
-  let elevation;
-  let expansion;
-  if (leaf.kind === 'basal') {
-    const rootRadius = ARCH.matureCrownRadiusM * crownScale * leaf.root;
-    position = vector(outward.x * rootRadius, 0.03, outward.z * rootRadius);
-    elevation = lerp(leaf.elevationYoung, leaf.elevationMature, progress(cohortAgeYears, 0, 3));
-    expansion = smoothstep01(leafExpansion);
-  } else {
-    position = axisMap.get(leaf.axisId)?.points[leaf.pointIndex];
-    if (!position) return null;
-    elevation = leaf.elevationMature;
-    expansion = smoothstep01(clamp01((stemGrowth * 1.2 - leaf.fraction * 0.7) / 0.35));
-  }
-  if (expansion <= 0.01) return null;
+function leafFrame(azimuth, elevation) {
+  const outward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
   const direction = normalize(add(scale(outward, Math.cos(elevation)), scale(UP, Math.sin(elevation))));
   const sideways = vector(-outward.z, 0, outward.x);
   const normal = normalize(
@@ -453,11 +428,78 @@ function evaluateLeaf(leaf, ctx) {
       sideways.x * direction.y - sideways.y * direction.x,
     ),
   );
+  return { outward, direction, normal };
+}
+
+const crownScaleAt = (age) =>
+  sampleAnchors(ARCH.crownRadiusAnchorsM, Math.min(age, MATURE_AGE)) / ARCH.matureCrownRadiusM;
+
+/** Basal rosette leaf: full in summer, a low rosette all winter, regrowing in spring. */
+function evaluateBasalLeaf(leaf, ctx) {
+  const { mode, phenology, rosetteAge, leafExpansion, ageYears, seed } = ctx;
+  const day = phenology.dayOfYear;
+  const { calendar } = phenology;
+  const floor = LEAF.winterRosetteSize;
+  let size = floor;
+  if (mode === 'current') {
+    // Leaves that already existed last year start spring at the winter size.
+    const springFloor = leaf.birthAgeYears < ageYears ? floor : 0;
+    const spring = springFloor + (1 - springFloor) * smoothstep01(leafExpansion);
+    size = lerp(spring, floor, progress(day, calendar.leafFallStart, calendar.dryFull));
+  }
+  if (size <= 0.01) return null;
+  const winterness = 1 - clamp01((size - floor) / (1 - floor));
+  const normalElevation = lerp(leaf.elevationYoung, leaf.elevationMature, progress(rosetteAge, 0, 3));
+  const winterElevation = lerp(0.09, 0.3, keyedRandom(seed, leaf.id, 'winter-elevation'));
+  const elevation = lerp(normalElevation, winterElevation, winterness);
+  const rootRadius = ARCH.matureCrownRadiusM * crownScaleAt(rosetteAge) * leaf.root;
+  const { outward, direction, normal } = leafFrame(leaf.azimuth, elevation);
+  const length = sampleAnchors(LEAF.basalLengthAnchorsM, Math.min(rosetteAge, MATURE_AGE)) * leaf.sizeFactor;
+  const lengthM = length * lerp(0.15, 1, size);
+  // Mixed green and bronze through winter; the autumn blend caps at 0.55.
+  const autumnProgress =
+    mode === 'current' && day >= calendar.autumnStart
+      ? Math.min(phenology.autumnProgress, 0.55)
+      : 0.55 * winterness;
+  return {
+    id: leaf.id,
+    visible: true,
+    kind: 'basal',
+    litter: false,
+    position: vector(outward.x * rootRadius, 0.03, outward.z * rootRadius),
+    direction,
+    normal,
+    roll: leaf.roll,
+    fraction: 0,
+    lengthM,
+    widthM: lengthM * LEAF.widthToLength,
+    autumnProgress,
+    seed,
+  };
+}
+
+/** Stem leaf on the standing stem, from spring growth until its seeded drop day. */
+function evaluateStemLeaf(leaf, ctx) {
+  const { mode, axisMap, phenology, cohortAgeYears, stemGrowth, seed } = ctx;
+  if (mode !== 'current') return null;
+  const day = phenology.dayOfYear;
+  const { calendar } = phenology;
+  // Leaves let go through the first weeks of November, in a seeded order.
+  if (day >= calendar.leafFallStart + leaf.dropOrder * (calendar.leafFallEnd - calendar.leafFallStart)) {
+    return null;
+  }
+  const position = axisMap.get(leaf.axisId)?.points[leaf.pointIndex];
+  if (!position) return null;
+  const expansion = smoothstep01(clamp01((stemGrowth * 1.2 - leaf.fraction * 0.7) / 0.35));
+  if (expansion <= 0.01) return null;
+  const length = sampleAnchors(LEAF.basalLengthAnchorsM, Math.min(cohortAgeYears, MATURE_AGE)) * leaf.sizeFactor;
+  const { direction, normal } = leafFrame(leaf.azimuth, leaf.elevationMature);
   const lengthM = length * lerp(0.15, 1, expansion);
   return {
     id: leaf.id,
     visible: true,
-    kind: leaf.kind,
+    kind: 'stem',
+    litter: false,
     position,
     direction,
     normal,
@@ -465,7 +507,50 @@ function evaluateLeaf(leaf, ctx) {
     fraction: leaf.fraction,
     lengthM,
     widthM: lengthM * LEAF.widthToLength,
-    autumnProgress: senescence,
+    autumnProgress: phenology.autumnProgress,
+    seed,
+  };
+}
+
+/**
+ * A fallen stem leaf lying flat near the crown. It is never cleaned up: it
+ * stays from its drop day through winter and is covered by new growth over
+ * the weeks after the leaf-expansion date. A fast decomposer leaves no litter.
+ */
+function evaluateLitterLeaf(leaf, ctx) {
+  if (LEAF.leafLitterDecomposition === 'fast') return null;
+  const { phenology, litterAge, seed } = ctx;
+  if (litterAge === null) return null;
+  const day = phenology.dayOfYear;
+  const { calendar } = phenology;
+  if (day < calendar.stemElongationStart) {
+    const coverDay =
+      calendar.leafExpansionStart + keyedRandom(seed, leaf.id, 'litter-cover') * LEAF.litterCoverDays;
+    if (day >= coverDay) return null;
+  } else if (day < calendar.leafFallStart + leaf.dropOrder * (calendar.leafFallEnd - calendar.leafFallStart)) {
+    return null;
+  }
+  const spreadRadius = sampleAnchors(ARCH.spreadByAgeM, Math.min(litterAge, MATURE_AGE)) / 2;
+  const crownRadius = ARCH.matureCrownRadiusM * crownScaleAt(litterAge);
+  const radius = crownRadius * Math.sqrt(keyedRandom(seed, leaf.id, 'litter-radius'));
+  const around = keyedRandom(seed, leaf.id, 'litter-around') * Math.PI * 2;
+  const azimuth = keyedRandom(seed, leaf.id, 'litter-azimuth') * Math.PI * 2;
+  const fullLength = sampleAnchors(LEAF.basalLengthAnchorsM, Math.min(litterAge, MATURE_AGE)) * leaf.sizeFactor;
+  const lengthM = Math.min(fullLength * LEAF.litterScale, Math.max(0.04, spreadRadius - radius));
+  const { direction, normal } = leafFrame(azimuth, 0.03);
+  return {
+    id: leaf.id,
+    visible: true,
+    kind: 'stem',
+    litter: true,
+    position: vector(Math.cos(around) * radius, 0.012, Math.sin(around) * radius),
+    direction,
+    normal,
+    roll: leaf.roll,
+    fraction: 0,
+    lengthM,
+    widthM: lengthM * LEAF.widthToLength,
+    autumnProgress: 1,
     seed,
   };
 }
@@ -591,26 +676,52 @@ export function evaluatePinnataModel(
   }
 
   const leaves = [];
+  const day = phenology.dayOfYear;
+  // Before the spring regrowth the winter rosette and litter are last year's.
+  const rosetteAge = mode === 'dormant' ? ageYears - 1 : cohortAgeYears;
+  // Litter is last year's through spring, this year's after the November drop.
+  const litterAge =
+    day < phenology.calendar.stemElongationStart
+      ? ageYears - 1
+      : day >= phenology.calendar.leafFallStart
+        ? ageYears
+        : null;
   const leafContext = {
     mode,
     axisMap,
     phenology,
     cohortAgeYears,
-    crownScale,
+    rosetteAge,
+    litterAge: litterAge !== null && litterAge >= 0 ? litterAge : null,
+    ageYears,
     leafExpansion: Math.max(phenology.leafProgress, phenology.emergenceProgress * 0.8),
     stemGrowth,
     seed: model.seed,
   };
-  for (const leaf of model.basalLeaves) {
-    if (leaf.birthAgeYears > cohortAgeYears) continue;
-    const evaluated = evaluateLeaf(leaf, leafContext);
-    if (evaluated) leaves.push(evaluated);
-  }
-  for (const shoot of active) {
-    for (const leaf of shoot.leaves) {
-      if (leaf.birthAgeYears > cohortAgeYears) continue;
-      const evaluated = evaluateLeaf(leaf, leafContext);
+  if (rosetteAge >= 0) {
+    for (const leaf of model.basalLeaves) {
+      if (leaf.birthAgeYears > rosetteAge) continue;
+      const evaluated = evaluateBasalLeaf(leaf, leafContext);
       if (evaluated) leaves.push(evaluated);
+    }
+  }
+  for (const shoot of model.shoots) {
+    for (const leaf of shoot.leaves) {
+      if (shoot.birthAgeYears <= cohortAgeYears && leaf.birthAgeYears <= cohortAgeYears) {
+        const evaluated = evaluateStemLeaf(leaf, leafContext);
+        if (evaluated) {
+          leaves.push(evaluated);
+          continue;
+        }
+      }
+      if (
+        leafContext.litterAge !== null &&
+        shoot.birthAgeYears <= leafContext.litterAge &&
+        leaf.birthAgeYears <= leafContext.litterAge
+      ) {
+        const fallen = evaluateLitterLeaf(leaf, leafContext);
+        if (fallen) leaves.push(fallen);
+      }
     }
   }
 
@@ -644,6 +755,8 @@ export function evaluatePinnataModel(
     visibleStems,
     visibleAxes: axes.length,
     visibleLeaves: leaves.length,
+    visibleBasalLeaves: leaves.filter((l) => l.kind === 'basal').length,
+    visibleLitterLeaves: leaves.filter((l) => l.litter).length,
     visibleHeads: heads.length,
     visibleFlowers: heads.filter((h) => h.stage === 'open' || h.stage === 'opening').length,
     visibleFlowerBuds: heads.filter((h) => h.stage === 'bud').length,

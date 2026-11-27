@@ -79,7 +79,7 @@ export const MACULATUM_RENDER_ASSUMPTIONS = Object.freeze([
   'all colours are estimates from description and the owner and botanic-garden photographs, not measurements',
   'stems splay from a tight crown, outer ones about 20 degrees from vertical, matched by eye to the photographs',
   'frost-killed leaves hang straight down and shrivel to half width (owner photograph); 15% stay on the stems until cutback and the rest fall over about 80 days',
-  'fallen leaves lie under their own node until the late-winter cleanup',
+  'fallen leaves lie under their own node and are never cleaned up: they stay through winter and the cutback (leaves still on a cut stem fall with it) and are simply no longer drawn once the new shoots emerge, on 10 April; leaf litter is assumed to decompose slowly (leafLitterDecomposition: slow)',
   'central-Ohio phase dates other than the late-July early-bloom point are assumed',
 ]);
 
@@ -152,6 +152,9 @@ export const MACULATUM_PROFILE = Object.freeze({
     leafyNodes: 10,
     autumnColours: Object.freeze(['yellow green', 'tan', 'brown']),
     persistentThroughWinter: false,
+    // ASSUMPTION: fallen leaves decompose slowly, so litter lies on the ground
+    // until the plant emerges in spring. 'fast' drops the litter in autumn.
+    leafLitterDecomposition: 'slow',
   }),
   inflorescence: Object.freeze({
     kind: 'flat-topped compound corymb of small discoid heads',
