@@ -188,6 +188,17 @@
       "observed": "worked in the coneflower runs",
       "worksInstead": null,
       "humanNeeds": null
+    },
+    {
+      "host": "homegrownnationalpark.org",
+      "kind": "nonprofit ecoregion finder (EPA Level II data)",
+      "reputable": false,
+      "access": "ok",
+      "cause": null,
+      "seen": "2026-11-26",
+      "observed": "worked in the built-in browser pane: typed a ZIP, pressed Look up, read the ecoregion",
+      "worksInstead": null,
+      "humanNeeds": "the ecoregion for a ZIP code, if blocked: https://homegrownnationalpark.org/ecoregion-finder/"
     }
   ]
 }

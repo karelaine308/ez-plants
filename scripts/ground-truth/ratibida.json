@@ -3,7 +3,7 @@
   "species": "Ratibida pinnata (gray-headed coneflower)",
   "class": "Ratibida",
   "entry": "src/lib/plants/ratibida/ratibida.js",
-  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm.",
+  "note": "Ground truth for the coneflower. Ranges were written by Claude from the sources listed plus tolerances Claude chose; some numbers are the owner's decisions. They were written after the first four builds had been measured with earlier scripts, so they are not blind. The bloom-end check and the tiers were added after the independent review, I had already seen the old p90 results (3 of 4 builds ended near week 32), so the new end window is not blind either. Checks marked advisory are reported but never fail the gate: they rest on one photo or on a leaf reading that a photograph cannot confirm. Plan review, 26 Nov 2026: the owner approved bloom to October with a thin tail, tolerances of 2 weeks on bloom start and midpoint with a month-level window for the end, the 90 percent week dropped, the winter check and the head ramp kept as gate checks. Age 0 is a plug (a small first-year seedling as bought in spring, or from winter-sown seed); the planner may start a bought-bigger plant at an older age.",
   "stats": {
     "heads": "visibleHeads",
     "flowers": "visibleFlowers",
@@ -295,7 +295,7 @@
       "label": "planting season: no stems or heads",
       "type": "absent",
       "tier": "gate",
-      "origin": "sourced + owner decision",
+      "origin": "sourced (Prairie Moon: second-season flowering for seed-grown plants) + owner decision; age 0 is a plug (first-year seedling)",
       "sources": [
         "prairiemoon",
         "owner"
