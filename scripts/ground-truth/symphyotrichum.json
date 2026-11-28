@@ -1,0 +1,600 @@
+{
+  "plant": "symphyotrichum",
+  "species": "Symphyotrichum novae-angliae (New England aster), straight species, no cultivar",
+  "class": "Symphyotrichum",
+  "peakAge": 4,
+  "peakDay": 266,
+  "stats": {
+    "heads": "visibleHeads",
+    "flowers": "visibleFlowers",
+    "stems": "visibleStems",
+    "seedHeads": "visibleSeedHeads",
+    "height": "dimensions.heightM",
+    "spread": "dimensions.spreadM"
+  },
+  "note": "Draft ground truth written 2026-11-27 by a research agent, blind to model code. Stats left for the orchestrator. peakAge 4 is a tolerance: no source gives a time to maturity for the straight species; sources say large clumps, and USDA advises dividing every 3 years to keep vigor. peakDay 266 is 23 Sep, the median-week (39) of iNaturalist annotated flowering in Ohio. Karen's chart row (3-6 ft, blooms Aug-Oct, medium to wet, sun to part shade) agrees with the sourced overlap on height and months; the Ohio photo record peaks later than August (weeks 36-41 hold 80 percent of annotated observations), so August is an early, thin shoulder. No source gives stems, heads or shoot counts per clump by age, and no mature-clump photograph could be counted, so there is NO stems or heads check; they are listed as needs-a-human in the report. Age 0 first-year flowering conflicts between sources (a volunteer botanical atlas, bplant.org: flowers, few blooms, usually one stem, a fraction of mature height; a nursery text: seed-grown blooms in year 2); no reputable source says, so no absent/flower check at age 0. Leaf litter speed is unknown (no source), treated as slow per the rules. The winterLeaves share is a tolerance set from one winter photograph (Delaware OH, 4 Feb 2026) in which dead brown leaves hang on the standing stems, so less than all leaf mass lies low. PROXY FOLLOW-UP 2026-11-27: no related aster was rated a close match (swamp aster, smooth blue aster and New York aster are partial; aromatic and calico aster are poor), so no check rests on a proxy alone; proxies are only named in proxySupport fields. Owner fact: her plant was set out in spring 2026 as a one-year-old, so it is age 1 in Nov 2026, did not bloom in 2026, and was browsed.",
+  "sources": [
+    {
+      "id": "ncsu",
+      "name": "NC State Extension Plant Toolbox, Symphyotrichum novae-angliae",
+      "url": "https://plants.ces.ncsu.edu/plants/symphyotrichum-novae-angliae/",
+      "reputable": true,
+      "shows": "large bushy clumps 3 to 6 ft tall, 1 to 3 ft wide; Aug to Oct; rays up to 100, purple; leaves up to 4 in x 1 in, clasp the stem; seed display fall to winter; pinching in spring delays bloom and bushes; tall plants may need staking",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ via fetch tool; height sentence re-checked with curl)"
+    },
+    {
+      "id": "lbj",
+      "name": "Lady Bird Johnson Wildflower Center, Symphyotrichum novae-angliae",
+      "url": "https://www.wildflower.org/plants/result.php?id_plant=SYNO2",
+      "reputable": true,
+      "shows": "up to about 6 ft; bloom Aug, Sep, Oct; pink, purple; hairy clasping leaves densely on stout stems; moist; part shade; seed heads remain intact several weeks after first frost; needs 3 months cold-moist stratification",
+      "license": "look-only",
+      "published": "record modified 2026-07-01",
+      "checked": "2026-11-27",
+      "status": "ok (READ; height and months re-checked with curl)"
+    },
+    {
+      "id": "mdc",
+      "name": "Missouri Department of Conservation, New England Aster",
+      "url": "https://mdc.mo.gov/discover-nature/field-guide/new-england-aster",
+      "reputable": true,
+      "shows": "to 8 ft (wild, tallest Missouri aster); branching toward the top; leaves alternate, clasping, auriculate; more than 40 reddish-purple rays; blooms Aug-Oct",
+      "license": "look-only",
+      "published": "undated (copyright 2026)",
+      "checked": "2026-11-27",
+      "status": "ok (READ; 'clasping the stem' re-checked with curl)"
+    },
+    {
+      "id": "psu",
+      "name": "Penn State Extension, Rain garden plants: New England aster",
+      "url": "https://extension.psu.edu/rain-garden-plants-new-england-aster",
+      "reputable": true,
+      "shows": "36 to 72 in; Aug to Oct; leaves 4 to 5 in, very hairy; rhizomes, spreads vegetatively; tall plants may need staking",
+      "license": "look-only",
+      "published": "updated 2026-07-09",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "morton",
+      "name": "Morton Arboretum, New England aster",
+      "url": "https://mortonarb.org/?p=2880",
+      "reputable": true,
+      "shows": "3 to 6 ft high and 2 to 3 ft wide; leaves alternate, stiff, lance-shaped up to 4 in, clasping; flowers 1.5 in; late summer and autumn; pinch early to bushier, shorter; otherwise staking",
+      "license": "look-only",
+      "published": "undated (copyright 2026)",
+      "checked": "2026-11-27",
+      "status": "ok (READ via fetch tool; not confirmed by curl, page text did not match)"
+    },
+    {
+      "id": "mtcuba",
+      "name": "Mt. Cuba Center, New England aster",
+      "url": "https://mtcubacenter.org/plants/new-england-aster/",
+      "reputable": true,
+      "shows": "to 6 ft; late Aug to Oct; lower leaves tend to become unsightly and die as bloom approaches; deciduous; stems may be left standing for overwintering insects or cut after flowering; pinching before mid-July gives shorter fuller plant",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "npt",
+      "name": "Native Plant Trust Plant Finder, Symphyotrichum novae-angliae",
+      "url": "https://plantfinder.nativeplanttrust.org/plant/Symphyotrichum-novae-angliae",
+      "reputable": true,
+      "shows": "2 to 4 ft tall, 2 to 3 ft spread (outlier on height); sun to part shade; average to wet; loses its lower leaves as it grows",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "usda",
+      "name": "USDA NRCS Plant Guide, New England Aster (SYNO2)",
+      "url": "https://plants.sc.egov.usda.gov/DocumentLibrary/plantguide/pdf/pg_syno2.pdf",
+      "reputable": true,
+      "shows": "perennial with several erect stems in clumps, stems 0.8 to 2 m (2 ft 8 in to 6 ft 7 in); leaves 2 to 9 cm x 1 to 2 cm; sun, partial shade; sow fresh in fall or spring, pre-chill spring seed; divide every 3 years in spring to maintain vigor",
+      "license": "look-only",
+      "published": "edited 2002-01-09",
+      "checked": "2026-11-27",
+      "status": "ok (fetch tool saved the PDF; read with pdftotext)"
+    },
+    {
+      "id": "bwsr",
+      "name": "Minnesota BWSR Featured Plant, September 2024, New England aster",
+      "url": "https://bwsr.state.mn.us/sites/default/files/2024-08/featured_plant_september_2024_new_england_aster_0.pdf",
+      "reputable": true,
+      "shows": "up to 5 ft; leaves up to 4 in clasp the stem, abundant along branches; 40 to 100 rays, purple to dark pink; heads to 1.5 in; fibrous roots; fall seeding recommended",
+      "license": "look-only",
+      "published": "2024-09 (PDF metadata 2024-08-22)",
+      "checked": "2026-11-27",
+      "status": "ok (fetch tool saved the PDF; read with pdftotext)"
+    },
+    {
+      "id": "uvm",
+      "name": "University of Vermont Extension, Late-blooming beauty: New England aster (VanZandt)",
+      "url": "https://www.uvm.edu/extension/news/late-blooming-beauty-new-england-aster",
+      "reputable": true,
+      "shows": "3 to 5 ft; form clumps; many lower leaves turn brown and fall off as season fades; seeds need cold winter to germinate",
+      "license": "look-only",
+      "published": "2024-08-28",
+      "checked": "2026-11-27",
+      "status": "ok (READ; lower-leaf sentence re-checked with curl)"
+    },
+    {
+      "id": "uconn",
+      "name": "UConn IPM, Connecticut Native Meadow Seedlings",
+      "url": "https://ipm.cahnr.uconn.edu/ct-native-meadow-seedlings",
+      "reputable": true,
+      "shows": "seedling: cotyledons oval, entire; simple, oval, sessile, hairy leaves (no rosette statement on page text; a search snippet of the PDF guide said its key lists a basal rosette)",
+      "license": "look-only",
+      "published": "updated 2023-06",
+      "checked": "2026-11-27",
+      "status": "ok (READ via fetch tool)"
+    },
+    {
+      "id": "sdsu",
+      "name": "South Dakota State University Open PRAIRIE, Symphyotrichum novae-angliae profile (R. Neil Reese)",
+      "url": "https://openprairie.sdstate.edu/nativeplant/403",
+      "reputable": true,
+      "shows": "90 to 180 cm (3 to 6 ft); basal leaves with short petioles may be withered by flowering; leaves 5-15 cm x 1-3 cm; panicles to 30 cm wide; short stout rhizomes forming upright clumps not colonies",
+      "license": "look-only",
+      "published": "undated (repository record since 2026-02-10)",
+      "checked": "2026-11-27",
+      "status": "ok (READ via fetch tool); institutional repository, publisher of the profile not named on page"
+    },
+    {
+      "id": "usfs",
+      "name": "USDA Forest Service, Wildflower Plant of the Week, Symphyotrichum novae-angliae",
+      "url": "https://www.fs.usda.gov/wildflowers/plant-of-the-week/symphyotrichum_novae-angliae.shtml",
+      "reputable": true,
+      "shows": "up to 2 m (6 ft) but usually 3 to 4 ft; by flowering many lower leaves have fallen leaving a bare brown stem",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "ilwf",
+      "name": "Illinois Wildflowers, New England Aster",
+      "url": "https://illinoiswildflowers.info/prairie/plantx/ne_asterx.htm",
+      "reputable": false,
+      "shows": "up to 4 ft; central stem branching occasionally near top; leaves smaller up the stems; lower leaves dropped in hot dry weather; 30+ rays purple, lavender or light pink; blooms about 2 months; short thick rhizomes; stems often flop without support",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "pmoon",
+      "name": "Prairie Moon Nursery, Symphyotrichum novae-angliae",
+      "url": "https://www.prairiemoon.com/symphyotrichum-novae-angliae-new-england-aster",
+      "reputable": false,
+      "shows": "5 ft; Aug-Oct; lower leaves can dry up and it is normal; need not be cut down; hollow stems used by overwintering bees; 80,000 seeds per oz",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ; seed count re-checked with curl)"
+    },
+    {
+      "id": "bplant",
+      "name": "bplant.org volunteer botanical atlas, New England Aster",
+      "url": "https://bplant.org/plant/80",
+      "reputable": false,
+      "shows": "clumping, stems to 2 m, tall stems initially straight but often do not support their own weight; first-year plants a fraction of mature height; usually flower but only a few blooms; in moist conditions can retain nearly all leaves",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ via fetch tool)"
+    },
+    {
+      "id": "osu",
+      "name": "Ohio State University plants page, Symphyotrichum novae-angliae (citing Missouri Botanical Garden)",
+      "url": "https://u.osu.edu/plants/symphyotrichum-novae-angliae/",
+      "reputable": true,
+      "shows": "SNIPPET only: 3 to 6 ft tall, 2 to 3 ft wide, Aug-Sep, zone 4-8, self-seeds",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "blocked: redirected to a university sign-in; snippet only, not used for any range"
+    },
+    {
+      "id": "inat-hist",
+      "name": "iNaturalist weekly annotated flowering observations, Ohio (place 31), taxon 117443",
+      "url": "https://api.inaturalist.org/v1/observations/histogram?taxon_id=117443&place_id=31&term_id=12&term_value_id=13&date_field=observed&interval=week_of_year",
+      "reputable": true,
+      "shows": "574 annotated flowering observations (weekly sum 574, API total 574, agree); 2021-2025: 319 (sum 319, API 319, agree)",
+      "license": "data",
+      "published": "retrieved 2026-11-27",
+      "checked": "2026-11-27",
+      "status": "ok",
+      "observed": "all years 2005-2026; recent set 2021-2025"
+    },
+    {
+      "id": "inat-photos",
+      "name": "iNaturalist observation photographs viewed (see report for ids and dates)",
+      "url": "https://api.inaturalist.org/v1/observations?taxon_id=117443&place_id=31",
+      "reputable": false,
+      "shows": "winter stand and base (Sharonville OH 2024-12-28 obs 261028746; Doylestown OH 2025-02-08 obs 261008928; Delaware OH 2026-02-04 obs 337357836), spring emergence (Cincinnati 2025-04-25 obs 273055888; Keene Twp OH 2025-05-04 obs 278544364; Columbus 2026-05-11 obs 360737435), garden clumps in flower (St Xavier, Cincinnati 2022-09-15 obs 135117064; Grafton OH 2024-09-20 obs 244169658)",
+      "license": "look-only",
+      "published": "2022 to 2026 (per observation)",
+      "checked": "2026-11-27",
+      "status": "photographs viewed in the browser pane"
+    },
+    {
+      "id": "owner",
+      "name": "Owner decisions and photographs",
+      "url": "owner",
+      "reputable": false,
+      "shows": "chart row: 3-6 ft, full sun to part shade, medium to wet, purple, blooms Aug-Oct; existing plant in 303 AC bed wet pocket by the air conditioner; age unknown",
+      "license": "owner",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok"
+    },
+    {
+      "id": "cbg36",
+      "name": "Chicago Botanic Garden Plant Evaluation Notes 36, A Comparative Study of Cultivated Asters (Hawke)",
+      "url": "https://ChicagoBotanic.org/downloads/planteval_notes/no36_asters.pdf",
+      "reputable": true,
+      "shows": "zone 5b, 5 plants per taxon, trial 2003-2009: S. novae-angliae species 69 in tall x 60 in wide, bloom late Sep to mid Nov, measured before flopping; novi-belgii 44x40, laeve 44x39, lateriflorum 39x60, oblongifolium 36x40; NEA, novi-belgii and lateriflorum need crown division every few years; lower leaves desiccate; NEA species no winter injury; rabbit browsing reduced flowers and delayed bloom",
+      "license": "look-only",
+      "published": "2013 (trial 2003-2009)",
+      "checked": "2026-11-27",
+      "status": "ok (fetch tool saved the PDF; read with pdftotext). Seed or nursery origin and plant age not stated"
+    },
+    {
+      "id": "mtcuba-trial",
+      "name": "Mt. Cuba Center aster trial page",
+      "url": "https://mtcubacenter.org/trials/aster/",
+      "reputable": true,
+      "shows": "trial 2003-2005, 56 selections of eastern native asters, weekly ratings; no species figures on the page; summary report is script-rendered",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok for page; report not readable (https://publuu.com/flip-book/948685/2087270)"
+    },
+    {
+      "id": "ncsu-laeve",
+      "name": "NC State Extension, Symphyotrichum laeve (PROXY, partial)",
+      "url": "https://plants.ces.ncsu.edu/plants/symphyotrichum-laeve/",
+      "reputable": true,
+      "shows": "2-4 ft tall and wide; clumping; leaves partly encircle stem; dry to medium soils; blue-green foliage",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "ncsu-novibelgii",
+      "name": "NC State Extension, Symphyotrichum novi-belgii (PROXY, partial)",
+      "url": "https://plants.ces.ncsu.edu/plants/symphyotrichum-novi-belgii/",
+      "reputable": true,
+      "shows": "3-5 ft x 1-2 ft; sessile and clasping leaves; moist, well-drained",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "ncsu-oblong",
+      "name": "NC State Extension, Symphyotrichum oblongifolium (PROXY, poor)",
+      "url": "https://plants.ces.ncsu.edu/plants/symphyotrichum-oblongifolium/",
+      "reputable": true,
+      "shows": "1-3 ft mound, stolons; dead stems remain standing until they disintegrate",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "ncsu-lateri",
+      "name": "NC State Extension, Symphyotrichum lateriflorum (PROXY, poor)",
+      "url": "https://plants.ces.ncsu.edu/plants/symphyotrichum-lateriflorum/",
+      "reputable": true,
+      "shows": "2-4 ft x 1-2 ft, clumps, moist well-drained",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "npt-puniceum",
+      "name": "Native Plant Trust Plant Finder, Symphyotrichum puniceum (PROXY, partial)",
+      "url": "https://plantfinder.nativeplanttrust.org/plant/Symphyotrichum-puniceum",
+      "reputable": true,
+      "shows": "4-6 ft x 2-3 ft; strongly upright clumping; average to wet; wet meadows and wetlands",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "ok (READ)"
+    },
+    {
+      "id": "ndsu-laeve",
+      "name": "NDSU Dickinson Research Extension Center DREC 17-1130, Autecology of smooth blue aster (Manske) (PROXY, partial)",
+      "url": "https://ndsu.edu/agriculture/sites/default/files/2022-10/Smooth%20blue%20aster%202017%20Drec%201130.pdf",
+      "reputable": true,
+      "shows": "groups of 5-10 stout erect stems, unbranched below and widely branched above, 30-100 cm, from a persistent crown with short rhizomes; basal leaves early deciduous by flowering; leaves clasping (wild North Dakota prairie)",
+      "license": "look-only",
+      "published": "2017 (report number)",
+      "checked": "2026-11-27",
+      "status": "ok (fetch tool saved the PDF; read with pdftotext)"
+    },
+    {
+      "id": "msu-snippet",
+      "name": "Michigan State University native plant sheets (New England aster, smooth blue aster)",
+      "url": "https://canr.msu.edu/nativeplants/plant_facts/new_england_aster",
+      "reputable": true,
+      "shows": "SNIPPET only: seed-grown plants flower in the second or third year; plug plants in the first or second year (search tool matched the sentence to both sheets; species not confirmed)",
+      "license": "look-only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "blocked: empty page to the fetch tool, twice per address; not used for any range"
+    },
+    {
+      "id": "mtcuba-report",
+      "name": "Mt Cuba Center Research Report, Asters for the Mid-Atlantic Region (trial 2003-2005; nine New England aster cultivars, no straight species)",
+      "url": "https://publuu.com/flip-book/948685/2087270",
+      "reputable": true,
+      "shows": "NEA cultivars 25-61 in tall, 36-72 in wide by year 3 or less; peak bloom 20-30 Sep; 'frequently splay from the weight of the flowers'; need frequent division; foliage grayish-green",
+      "license": "look-only",
+      "published": "2009 (PDF created 29 Jul 2009)",
+      "checked": "2026-11-27",
+      "status": "ok: read by the orchestrator with pdftotext from a PDF Karen supplied; the flip-book itself is unreadable to the fetch tool"
+    }
+  ],
+  "bloomData": {
+    "place": {
+      "name": "Ohio, US",
+      "inaturalistPlaceId": 31
+    },
+    "taxonId": 117443,
+    "weeklyFloweringObservations": {
+      "23": 1,
+      "25": 1,
+      "26": 2,
+      "27": 1,
+      "28": 1,
+      "29": 4,
+      "30": 3,
+      "31": 2,
+      "32": 1,
+      "33": 2,
+      "34": 6,
+      "35": 20,
+      "36": 56,
+      "37": 65,
+      "38": 94,
+      "39": 155,
+      "40": 82,
+      "41": 35,
+      "42": 27,
+      "43": 10,
+      "44": 3,
+      "45": 1,
+      "46": 1,
+      "47": 1
+    },
+    "weeklyFloweringObservations_2021_2025": {
+      "26": 1,
+      "27": 1,
+      "28": 1,
+      "29": 1,
+      "30": 2,
+      "31": 2,
+      "32": 1,
+      "33": 2,
+      "34": 4,
+      "35": 15,
+      "36": 46,
+      "37": 45,
+      "38": 56,
+      "39": 59,
+      "40": 47,
+      "41": 19,
+      "42": 9,
+      "43": 5,
+      "44": 2,
+      "47": 1
+    },
+    "note": "Retrieved 2026-11-27 from the histogram endpoint with the Flowers annotation (term 12 value 13), week_of_year. Sums equal the API total_results (574 and 319; the histogram's own total_results field of 53 counts buckets). Quantiles of observation counts, week 10/25/50/75/90 percent: all years 36/37/39/40/41; 2021-2025 36/37/38/40/41, so no clear shift. iNaturalist week numbers may be off by one against floor((day-1)/7)+1. Counts show when people post photographs, not how much is in bloom."
+  },
+  "checks": [
+    {
+      "id": "height-mean",
+      "label": "Mature clump height (ft), overlap of reputable ranges; matches owner chart 3-6 ft",
+      "type": "heightMean",
+      "tier": "gate",
+      "origin": "sourced",
+      "sources": [
+        "ncsu",
+        "psu",
+        "morton",
+        "lbj",
+        "mtcuba",
+        "uvm",
+        "usda",
+        "owner",
+        "cbg36"
+      ],
+      "params": {
+        "range": [
+          3,
+          6
+        ]
+      },
+      "proxySupport": "NEA itself: Chicago trial 69 in (cbg36) inside 3-6 ft. PROXY: S. puniceum 4-6 ft (npt-puniceum), match partial, READ."
+    },
+    {
+      "id": "height-max",
+      "label": "No plant above 7 ft (USDA 2.2-6.6 ft; MDC says 8 ft for wild plants; Native Plant Trust 2-4 ft is a low outlier)",
+      "type": "heightMax",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "usda",
+        "mdc",
+        "ncsu"
+      ],
+      "params": {
+        "max": 7
+      }
+    },
+    {
+      "id": "bloom-median",
+      "label": "Median week of annotated flowering observations, Ohio",
+      "type": "bloomPercentile",
+      "tier": "advisory",
+      "origin": "sourced",
+      "sources": [
+        "inat-hist"
+      ],
+      "params": {
+        "q": 0.5,
+        "tolerance": 2,
+        "weeks": [
+          31,
+          47
+        ]
+      }
+    },
+    {
+      "id": "bloom-end",
+      "label": "Last week with at least 10 percent of peak open flowers; observation counts fall to 10 percent of peak (about 16) at week 43",
+      "type": "bloomEnd",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "inat-hist",
+        "ncsu",
+        "mdc",
+        "lbj"
+      ],
+      "params": {
+        "fraction": 0.1,
+        "range": [
+          41,
+          44
+        ]
+      }
+    },
+    {
+      "id": "bloom-shape",
+      "label": "Weekly bloom shape correlates with Ohio observation counts",
+      "type": "bloomCorrelation",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "inat-hist"
+      ],
+      "params": {
+        "weeks": [
+          31,
+          47
+        ],
+        "minR": 0.75
+      }
+    },
+    {
+      "id": "owner-bloom-months",
+      "label": "Owner chart: blooms August to October; the sourced range for open flowers is the same, though Ohio photographs concentrate in Sep to early Oct",
+      "type": "bloomPercentile",
+      "tier": "advisory",
+      "origin": "owner",
+      "sources": [
+        "owner",
+        "ncsu",
+        "lbj",
+        "mdc",
+        "psu"
+      ],
+      "params": {
+        "q": 0.5,
+        "tolerance": 3,
+        "weeks": [
+          31,
+          44
+        ]
+      }
+    },
+    {
+      "id": "seedheads-winter",
+      "label": "Dry seed heads stand through winter on the stems (photographs Dec to Mar, Ohio; lbj says intact several weeks after first frost; only a limited source for how long)",
+      "type": "winterStanding",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "lbj",
+        "ncsu",
+        "mtcuba",
+        "inat-photos"
+      ],
+      "params": {
+        "stat": "seedHeads",
+        "day": 20,
+        "min": 4
+      },
+      "proxySupport": "PROXY: S. oblongifolium, match poor, READ (ncsu-oblong): dead stems remain standing until they disintegrate."
+    },
+    {
+      "id": "winter-leaves",
+      "label": "Winter leaves: dead brown leaves cling to standing stems (Delaware OH 4 Feb 2026) while basal leaves, some purple-tinged, sit at the ground (Sharonville OH 28 Dec 2024); lower leaves dropped before bloom lie as litter. Share low is set low because many hang on the stems",
+      "type": "winterLeaves",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "inat-photos",
+        "uvm",
+        "mtcuba",
+        "usfs"
+      ],
+      "params": {
+        "day": 20,
+        "minCount": 10,
+        "maxHeightM": 0.25,
+        "minShare": 0.4
+      }
+    },
+    {
+      "id": "age0-no-flowers",
+      "label": "An age-0 plant (plug or winter-sown seedling) carries no flowers in its first season: MSU says seed-grown plants flower in year 2-3, plugs in year 1-2 (SNIPPET); the owner's plug of age 1 did not bloom in 2026 (browsed). Not backed by a close-match proxy; advisory",
+      "type": "absent",
+      "tier": "advisory",
+      "origin": "tolerance",
+      "sources": [
+        "msu-snippet",
+        "owner"
+      ],
+      "params": {
+        "age": 0,
+        "stats": [
+          "flowers"
+        ]
+      },
+      "note": "Conflict: bplant.org (not reputable) says first-year plants usually flower a little. Owner decides."
+    }
+  ],
+  "visual": [
+    "Judged by eye, no number: leaves clasp the stem with ear-like lobes, narrowly lance-shaped, 2-4 in on flowering stems (to 5 in lower), hairy, mid-green; rays 40-100, purple (some pink), disc yellow to orange, heads about 1.5 in; stems branch near the top into a leafy corymb-like panicle; lower leaves dead by bloom; seed heads fluffy tan to brown pappus in fall and persist; spring shoots lance-leaved and green, come up through brown leaf litter. No measured proportions (head zone, width at head height, leafy share) because no whole-clump photograph was found that could be measured honestly.",
+    "Leaf colour: Mt Cuba trial (cultivars, 2009) calls the foliage grayish-green; the plan says mid to light green. Judge by eye."
+  ],
+  "proposals": [
+    {
+      "id": "spread-by-age",
+      "label": "Clump width: NC State 1-3 ft, Morton 2-3 ft, Native Plant Trust 2-3 ft (garden overlap 2-3 ft); Chicago trial NEA species 5 ft wide, 5 ft 9 in tall (6-year trial, undivided). Needs a spread check type or a ramp on spread; units to confirm",
+      "sources": [
+        "ncsu",
+        "morton",
+        "npt",
+        "cbg36"
+      ],
+      "origin": "sourced",
+      "tier": "advisory",
+      "note": "No close-match proxy; proxies in the same Chicago table: novi-belgii 40 in, laeve 39 in, oblongifolium 40 in, lateriflorum 60 in wide (PROXY, partial or poor, READ)"
+    }
+  ],
+  "ownerApproval": "Plan approved by Karen on 27 Nov 2026 with the recommended decisions in modeling-decisions.md. Ranges fixed before any build. Head counts revised by Karen on 27 Nov 2026 (age 1: 10-60, age 3: 250-500, age 5: 400-900) from her photos; the earlier 75-150 was set before any build and replaced before any build. Unsourced; advisory only. Width revised by Karen on 28 Nov 2026 from 2 ft 6 in to about 3 ft 6 in at head height, after two repair rounds; chosen after seeing renders, so not blind. No spread check exists yet (see proposals)."
+}

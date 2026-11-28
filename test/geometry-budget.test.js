@@ -167,6 +167,15 @@ const RECORDED = Object.freeze({
   // leaves. Far inside the triangle budget at every band: about a tenth of it.
   ratibida: { triangles: [15038, 7626, 3426], draws: [3, 3, 3] },
 
+  // Three parts at every band for the reason Echinacea gives above: a
+  // herbaceous plant has no wood, so its stems are an instanced kind, and
+  // dropping them past band 0 leaves the heads floating over a clump of
+  // leaves. Up to about 1,080 heads on 33 to 38 stems: each is an 11-triangle dish at band 0 (star,
+  // disc and an upright puff card for the spent head), 5 at band 1 and 2 at band 2, with
+  // the 55 rays and the puff's hairs a texture, no twig stems, and half the branches
+  // dropped at band 2. Every band is within about 300 to 800 of its ceiling.
+  symphyotrichum: { triangles: [23363, 9221, 4720], draws: [3, 3, 3] },
+
   // Bands 1 and 2 came down when the culms stopped thinning: their segments
   // now stay put at every band and drop from a six-triangle tube to a
   // two-triangle card, so a coarse band is the fine band with nothing moved.

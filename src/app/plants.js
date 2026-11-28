@@ -21,6 +21,8 @@ import {
   MACULATUM_SOURCES,
   MAGNUS_PROFILE,
   MAGNUS_SOURCES,
+  NOVAE_ANGLIAE_PROFILE,
+  NOVAE_ANGLIAE_SOURCES,
   PINNATA_PROFILE,
   PINNATA_SOURCES,
   Pennisetum,
@@ -32,6 +34,7 @@ import {
   Schizachyrium,
   SMARAGD_PROFILE,
   SMARAGD_SOURCES,
+  Symphyotrichum,
   TISEL_PROFILE,
   TISEL_SOURCES,
   Thuja,
@@ -744,6 +747,73 @@ export const PLANTS = Object.freeze({
     create(state) {
       return new Ratibida({
         seed: state.seed ?? 1822,
+        leafWind: state.leafWind,
+        maxYears: 20,
+        ageYears: state.age,
+        dayOfYear: state.day,
+        seasonProfile: state.phenologyProfile,
+      });
+    },
+  }),
+
+  symphyotrichum: Object.freeze({
+    id: 'symphyotrichum',
+    label: 'New England aster',
+    labelPl: 'Aster nowoangielski',
+    cultivar: 'Species',
+    species: NOVAE_ANGLIAE_PROFILE.species,
+    kicker: 'Garden digital twin · Sproutline 04',
+    profile: NOVAE_ANGLIAE_PROFILE,
+    sources: NOVAE_ANGLIAE_SOURCES,
+    defaults: Object.freeze({ age: 5, day: 266 }),
+    maxYears: 20,
+    size: Object.freeze({
+      heightM: NOVAE_ANGLIAE_PROFILE.architecture.matureHeightM,
+      radiusM: NOVAE_ANGLIAE_PROFILE.architecture.matureRadiusM,
+    }),
+    bedRadiusM: 0.5,
+    profileControl: Object.freeze({
+      key: 'seasonProfile',
+      label: 'Season timing',
+      options: Object.freeze([
+        ['typical', 'Typical'],
+        ['early', 'Early'],
+        ['late', 'Late'],
+      ]),
+    }),
+    seasons: Object.freeze([
+      { label: 'Winter stand', day: 25 },
+      { label: 'Emerging', day: 125 },
+      { label: 'Leafy stems', day: 190 },
+      { label: 'Buds', day: 220 },
+      { label: 'Peak bloom', day: 266 },
+      { label: 'Seed heads', day: 310 },
+      { label: 'Winter', day: 345 },
+    ]),
+    stats: Object.freeze([
+      { key: 'visibleStems', label: 'Stems' },
+      { key: 'visibleLeaves', label: 'Leaves' },
+      { key: 'visibleFlowers', label: 'Open heads' },
+      { key: 'visibleFlowerBuds', label: 'Buds' },
+      { key: 'visibleSeedHeads', label: 'Seed heads' },
+      { key: 'visibleLitterLeaves', label: 'Litter leaves' },
+    ]),
+    yieldLine: Object.freeze({
+      label: 'Modelled height × spread',
+      key: 'dimensions',
+      unit: 'm',
+      format: (value) =>
+        value
+          ? `${value.heightM.toFixed(2)} × ${value.spreadM.toFixed(2)} m`
+          : '—',
+      note: 'Each head is one instance: a dish of ray plate with 55 painted rays around a small yellow disc.',
+    }),
+    actions: Object.freeze([]),
+    modelNote:
+      '<strong>A persistent crown and entirely annual top growth.</strong> Leafy stems flare out of a tight crown, lose their lower leaves by bloom and branch in the top two fifths into dense clusters of violet heads from August to October. Dry stems, seed heads and clinging brown leaves stand through winter over a small green tuft and slow litter until the stems break down in spring.',
+    create(state) {
+      return new Symphyotrichum({
+        seed: state.seed ?? 1790,
         leafWind: state.leafWind,
         maxYears: 20,
         ageYears: state.age,

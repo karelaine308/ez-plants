@@ -128,6 +128,9 @@ const EXPECTED = Object.freeze({
   'eutrochium/heads': ['subset'],
   'eutrochium/leaves': ['subset'],
   'eutrochium/stems': ['subset'],
+  'symphyotrichum/heads': ['subset'],
+  'symphyotrichum/leaves': ['subset'],
+  'symphyotrichum/stems': ['subset'],
   'ratibida/heads': ['subset'],
   'ratibida/leaves': ['subset'],
   'ratibida/stems': ['subset'],
@@ -652,7 +655,7 @@ test('the compositional path has a majority of organ kinds to serve', () => {
     [],
     'a kind stopped composing; it cannot share one allocation across its bands',
   );
-  assert.equal(Object.keys(EXPECTED).length, 39);
+  assert.equal(Object.keys(EXPECTED).length, 42);
 });
 
 test('the reconstruction margin is reported, not merely asserted', () => {

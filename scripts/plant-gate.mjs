@@ -287,5 +287,5 @@ console.log(`Advisory: ${adv.filter((r) => r.ok).length} passed, ${adv.filter((r
 const nourl = (gt.sources ?? []).filter((s) => !s.url);
 if (nourl.length) console.log(`Sources with no URL recorded: ${nourl.map((s) => s.id).join(', ')}`);
 if (g.some((r) => r.ok === null)) console.log('INCOMPLETE: some gate checks could not run, so this is not a pass (exit 3).');
-console.log('\nJudged by eye, not by this gate:\n - ' + (gt.visual ?? []).join('\n - '));
+console.log('\nJudged by eye, not by this gate:\n - ' + [].concat(gt.visual ?? []).join('\n - '));
 process.exit(exitCode);

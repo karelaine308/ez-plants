@@ -67,7 +67,7 @@ duplicate module is always bundler-side.
 
 # The plants
 
-Eleven plants so far (nine cultivars and two native species), each a digital twin rather than a generic plant: a
+Twelve plants so far (nine cultivars and three native species), each a digital twin rather than a generic plant: a
 persistent structure driven by an **age** and a **day of year**, with a phenology
 calendar built from cited real-world sources.
 
@@ -84,6 +84,7 @@ calendar built from cited real-world sources.
 | Purple coneflower (_Echinacea purpurea_)             | 'Magnus'       | Upright herbaceous clump, ~0.95 × 0.56 m                               | **Large broad rose-purple rays held nearly horizontal** around copper-orange cones; dry seed heads persist       |
 | Spotted Joe Pye weed (_Eutrochium maculatum_) | Species | Upright herbaceous clump, about 1.8 × 1.1 m, stout unbranched stems with whorled leaves | **Flat-topped dusky-pink flower arrays**, July to October; bronze seed heads stand through winter until the late-winter cutback |
 | Gray-headed coneflower (_Ratibida pinnata_) | Species | Upright herbaceous clump, about 1.2 × 0.5 m, branching only near the top | **Heads on long bare stalks above the foliage**, drooping yellow rays around a tall gray-brown cone; dark seed cones stand through winter |
+| New England aster (_Symphyotrichum novae-angliae_) | Species | Splayed herbaceous clump, about 1.4 × 1.1 m, densely leafy stems leaning out from a wide crown, branching in the top two fifths | **Dense clusters of violet-rayed heads on many short branches**, August to October; dry stems, seed heads and clinging brown leaves stand through winter |
 
 All plants are modelled in **metres**, share the same wind clock and backend
 contract, instance pools, LOD controller and validated state cycle, and extend a

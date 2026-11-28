@@ -172,6 +172,26 @@ export {
   evaluatePinnataModel,
 } from './plants/ratibida/model.js';
 
+export { Symphyotrichum } from './plants/symphyotrichum/symphyotrichum.js';
+export {
+  NOVAE_ANGLIAE_PROFILE,
+  NOVAE_ANGLIAE_RENDER_ASSUMPTIONS,
+  NOVAE_ANGLIAE_SOURCES,
+} from './plants/symphyotrichum/novaeangliae.js';
+export {
+  getNovaeAngliaePhenology,
+  getNovaeAngliaeCareHints,
+  getNovaeAngliaeCalendar,
+  NOVAE_ANGLIAE_CALENDAR,
+  NOVAE_ANGLIAE_CALENDAR_PROVENANCE,
+  NOVAE_ANGLIAE_PHASE_ASSUMPTIONS,
+  NOVAE_ANGLIAE_SEASON_PROFILES,
+} from './plants/symphyotrichum/phenology.js';
+export {
+  createNovaeAngliaeModel,
+  evaluateNovaeAngliaeModel,
+} from './plants/symphyotrichum/model.js';
+
 export { Schizachyrium } from './plants/schizachyrium/schizachyrium.js';
 export {
   SCOPARIUM_PROFILE,

@@ -179,6 +179,21 @@ const PEAKS = Object.freeze({
     triangles: [15038, 7626, 3426],
     draws: [3, 3, 3],
   },
+  // Swept over ages 0-5, 8 and 12, every fifth day and eight seeds (and 80
+  // seeds at the worst day): worst in early August (day 216), when every
+  // bud is out on a full clump with its leaves up and almost no litter down.
+  // The recorded seed carries 1,065 heads on 35 stems; the most any swept seed
+  // gave is about 1,080 (845 the least; the median is about 920). Eight seeds
+  // gave at most 23,375 / 9,221 / 4,720 and 80 more at the worst day at most
+  // 23,322 / 9,224 / 4,732, so band 2 is the one to watch if heads, leaves or
+  // branches gain triangles. Three draws at every band for the reason the
+  // sibling file gives.
+  symphyotrichum: {
+    age: 5,
+    day: 216,
+    triangles: [23375, 9221, 4720],
+    draws: [3, 3, 3],
+  },
   // Swept over ages 3, 5 and 8, every tenth day and five seeds (the budget
   // seed carries 69 culms, the top of its range): worst in early September
   // with every culm up and every raceme drawn. Three draws at every band for

@@ -1,6 +1,6 @@
 {
   "note": "Where agents could and could not fetch sources, and why. Entries come from agent reports and are unverified until a person or a later run confirms them. access: ok, sometimes-blocked, always-blocked. cause: site-block (the site refused the agent), tool-limit (the fetch tool could not handle it), agent-error (the agent used a wrong address or id). A host marked always-blocked is dropped from the preferred list. Only site-block entries are places the owner has to visit; the rest are fixed by changing how the work is done.",
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "hosts": [
     {
       "host": "www.inaturalist.org",
@@ -129,8 +129,8 @@
       "reputable": true,
       "access": "ok",
       "cause": null,
-      "seen": "2026-11-26",
-      "observed": "worked in the coneflower runs",
+      "seen": "2026-11-27",
+      "observed": "worked in the coneflower runs; 2026-11-27: a guessed Symphyotrichum puniceum address 404'd; species pages load fine",
       "worksInstead": null,
       "humanNeeds": null
     },
@@ -273,9 +273,64 @@
       "access": "sometimes-blocked",
       "cause": "tool-limit",
       "seen": "2026-11-27",
-      "observed": "drive-by-botany page returned empty text",
+      "observed": "drive-by-botany page returned empty text; 2026-11-27: New England, smooth blue and purplestem aster pages and PDFs returned empty to the fetch tool, twice each (27 Nov 2026)",
       "worksInstead": null,
       "humanNeeds": "a screenshot of the page"
+    },
+    {
+      "host": "u.osu.edu",
+      "kind": "university plant pages",
+      "reputable": true,
+      "access": "always-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-27",
+      "observed": "redirects to a university sign-in; snippet only (New England aster and little bluestem pages)",
+      "worksInstead": null,
+      "humanNeeds": "plant facts sheet text"
+    },
+    {
+      "host": "issuu.com",
+      "kind": "document host",
+      "reputable": true,
+      "access": "always-blocked",
+      "cause": "site-block",
+      "seen": "2026-11-27",
+      "observed": "Mt Cuba aster report address returned 404 (dead link)",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "publuu.com",
+      "kind": "flip-book host",
+      "reputable": true,
+      "access": "always-blocked",
+      "cause": "tool-limit",
+      "seen": "2026-11-27",
+      "observed": "script-rendered flip-book; the fetch tool sees only a topic list. Karen supplied the PDF instead",
+      "worksInstead": null,
+      "humanNeeds": "download the PDF and drop it in the plant's review folder"
+    },
+    {
+      "host": "illinoiswildflowers.info",
+      "kind": "individual-run wildflower site",
+      "reputable": false,
+      "access": "ok",
+      "cause": "agent-error",
+      "seen": "2026-11-27",
+      "observed": "a guessed address 404'd; the working path is /prairie/plantx/ne_asterx.htm",
+      "worksInstead": null,
+      "humanNeeds": null
+    },
+    {
+      "host": "bluedynamo.msu.edu",
+      "kind": "university site",
+      "reputable": true,
+      "access": "always-blocked",
+      "cause": "unknown",
+      "seen": "2026-11-27",
+      "observed": "host does not resolve (DNS failure)",
+      "worksInstead": null,
+      "humanNeeds": null
     }
   ]
 }
