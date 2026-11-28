@@ -196,6 +196,39 @@ const TYPES = {
     const m = mean(r);
     return [f(m), inRange(m, range), range.join(' to '), 'culm tip height over the 95th percentile leaf tip'];
   },
+  // Stem shape of a clump: the more-leaning half of the main stems lean out from near the ground and keep leaning
+  // outward (an inverted cone). A stem that bends back toward the crown axis in its upper part is wrong.
+  // Needs _snapshot axes of kind 'main' with points {x,y,z}.
+  stemCurve({ ages, day = PD, lowerLean, upperMin = 0, maxBentIn = 0.1, straighter }) {
+    const deg = (a, b) => Math.atan2(Math.hypot(b.x - a.x, b.z - a.z), Math.max(b.y - a.y, 1e-6)) * 180 / Math.PI;
+    const at = (pts, f) => { const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y, pts[i].z - pts[i - 1].z)); const t = f * cum[cum.length - 1]; let i = cum.findIndex((c) => c >= t); if (i < 0) i = pts.length - 1; return pts[i]; };
+    const stems = (age, d) => each(SEEDS.slice(0, 8), age, d, (p) => {
+      const ax = p._snapshot?.axes; if (!ax) throw new NotChecked('_snapshot has no axes');
+      return ax.filter((a) => a.kind === 'main' && a.visible !== false && a.points?.length > 3).map((a) => {
+        const pts = a.points, m = at(pts, 0.5), u = at(pts, 2 / 3), t = pts[pts.length - 1];
+        const lx = m.x - pts[0].x, lz = m.z - pts[0].z, ux = t.x - u.x, uz = t.z - u.z;
+        return { lo: deg(pts[0], m), up: deg(u, t), bentIn: lx * ux + lz * uz < 0 };
+      });
+    }).flat();
+    const rows = ages.map((age) => { const all = stems(age, day).sort((x, y) => y.lo - x.lo); const top = all.slice(0, Math.max(1, Math.floor(all.length / 2))); return { age, lo: median(top.map((x) => x.lo)), up: median(top.map((x) => x.up)), bent: top.filter((x) => x.bentIn).length / top.length }; });
+    const ok = rows.every((r) => inRange(r.lo, lowerLean) && r.up >= upperMin && r.bent <= maxBentIn);
+    let note = rows.map((r) => `age ${r.age}: lower ${f(r.lo, 0)} deg, upper ${f(r.up, 0)} deg, ${f(r.bent * 100, 0)}% bent back in`).join('; ');
+    let good = ok;
+    if (straighter) { const a = median(stems(straighter[0], day).map((x) => x.lo)), b = median(stems(straighter[1], day).map((x) => x.lo)); good = ok && a < b; note += `; all stems age ${straighter[0]} ${f(a, 0)} < age ${straighter[1]} ${f(b, 0)}`; }
+    return [note, good, `lower ${lowerLean.join(' to ')} deg, upper >= ${upperMin} deg, <= ${maxBentIn * 100}% bent back in${straighter ? `, age ${straighter[0]} straighter than age ${straighter[1]}` : ''}`, 'more-leaning half of the main stems'];
+  },
+  // Width of the crown where the stems leave the ground (the first point of each stem), as the diameter holding 90 percent of
+  // the roots around their centre. Needs _snapshot axes of kind 'main' with points.
+  crownDiameter({ ages, range, day = PD }) {
+    const rows = ages.map((age) => median(each(SEEDS.slice(0, 8), age, day, (p) => {
+      const ax = p._snapshot?.axes?.filter((a) => a.kind === 'main' && a.visible !== false && a.points?.length); if (!ax?.length) throw new NotChecked('_snapshot has no main axes with points');
+      const cx = mean(ax.map((a) => a.points[0].x)), cz = mean(ax.map((a) => a.points[0].z));
+      const r = ax.map((a) => Math.hypot(a.points[0].x - cx, a.points[0].z - cz)).sort((x, y) => x - y);
+      return 2 * r[Math.floor(0.9 * (r.length - 1))] * 39.37;
+    })));
+    const ok = rows.every((v, i) => inRange(v, range[i]));
+    return [rows.map((v, i) => `age ${ages[i]}: ${f(v, 1)} in`).join('; '), ok, ages.map((a, i) => `age ${a}: ${range[i].join(' to ')} in`).join('; '), 'diameter of the ground footprint of the stems'];
+  },
   // Leaves left on the plant or on the ground in winter. The owner does not tidy beds, so a plant that sheds
   // its leaves keeps them as litter until spring, and a basal rosette stays. Needs _snapshot leaves.
   winterLeaves({ day = 20, minCount = 10, maxHeightM, minShare = 0.9 }) {

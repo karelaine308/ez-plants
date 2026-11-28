@@ -12,7 +12,7 @@
     "height": "dimensions.heightM",
     "spread": "dimensions.spreadM"
   },
-  "note": "Draft ground truth, review of a plant whose model was built before the process existed; written blind (no model code read) on 2026-11-27 by a research agent. Ranges are sourced overlaps with tolerances I chose; every check records its origin. Karen's chart gives height 4-6 ft and bloom July to September; the sourced height overlap is 4.9-6 ft so the two agree. Age 0 is a plug. No source gives stem or array counts by age; counts are from four photographs of unknown age and are advisory. Bloom checks are advisory because only 21 annotated flowering observations exist for Ohio. peakDay 218 is August 6, the iNaturalist median week. Stats are left for the orchestrator. Owner statement 27 Nov 2026: her clump is about 10 years old, divided about 5 years ago; the 15 Nov bed photograph shows roughly 15 to 25 stems splayed wide (a rough reading, not a count). The model holds flat from age 5, so age 5 is the right model age for this plant. Review changes 27 Nov 2026: stems range now 10 to 30 from the owner's photograph; array check reworded to side clusters per stem; leaf-whorl check moved to by-eye; bloom end moved in the model from 9 Sep to 20 Sep. The winter-leaves check was added after the leaf-litter fix; its 0.8 share was set after measuring 0.87, because dried leaves hang on the standing stems.",
+  "note": "Draft ground truth, review of a plant whose model was built before the process existed; written blind (no model code read) on 2026-11-27 by a research agent. Ranges are sourced overlaps with tolerances I chose; every check records its origin. Karen's chart gives height 4-6 ft and bloom July to September; the sourced height overlap is 4.9-6 ft so the two agree. Age 0 is a plug. No source gives stem or array counts by age; counts are from four photographs of unknown age and are advisory. Bloom checks are advisory because only 21 annotated flowering observations exist for Ohio. peakDay 218 is August 6, the iNaturalist median week. Stats are left for the orchestrator. Owner statement 27 Nov 2026: her clump is about 10 years old, divided about 5 years ago; the 15 Nov bed photograph shows roughly 15 to 25 stems splayed wide (a rough reading, not a count). The model holds flat from age 5, so age 5 is the right model age for this plant. Review changes 27 Nov 2026: stems range now 10 to 30 from the owner's photograph; array check reworded to side clusters per stem; leaf-whorl check moved to by-eye; bloom end moved in the model from 9 Sep to 20 Sep. The winter-leaves check was added after the leaf-litter fix; its 0.8 share was set after measuring 0.87, because dried leaves hang on the standing stems. The stem-curve check was written 27 Nov 2026 before the vase-shape build, from two undated photographs (a cultivar from a nursery, and an RHS photograph) read by eye; angles are estimates. The owner reports her mature, part-shade clumps lean more than this; the check covers ages 3 to 5 in full sun only. The crown-diameter check (8 to 14 inches at age 5, 5 to 10 at age 3) was set 27 Nov 2026 from the owner saying a 5-year clump has a clearly wider crown than the first vase build (about 6 inches); the figures are an estimate, not sourced. REVISED 27 Nov 2026 after the owner saw the first vase build: the first stem-curve check wrongly asked for the upper third to return toward vertical (lower 18 to 32 deg, upper at most 15), which bent stems back toward the crown; the owner says stems must not bend back in. The revised check (lower half 12 to 28 deg, upper third at least 8 deg outward, at most 10 percent of stems bent back in) was written before the rebuild, from the owner's description and the two photographs.",
   "sources": [
     {
       "id": "ncsu",
@@ -333,6 +333,28 @@
       "published": "2026-11",
       "checked": "2026-11-27",
       "status": "ok"
+    },
+    {
+      "id": "rhs-eutrochium",
+      "name": "RHS plant profile, Eutrochium maculatum (photograph by visionspictures.com, undated)",
+      "url": "https://www.rhs.org.uk/plants/248226/eutrochium-maculatum/details",
+      "reputable": true,
+      "shows": "mature clump: narrow footprint widening to a dome, stems fanning out from near the ground; lists height 1.5-2.5 m, spread 0.5-1 m",
+      "license": "look only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "viewed"
+    },
+    {
+      "id": "bluestone-gateway",
+      "name": "Bluestone Perennials, Eupatorium 'Gateway' (cultivar; nursery photographs, undated)",
+      "url": "https://www.bluestoneperennials.com/EUGW.html",
+      "reputable": false,
+      "shows": "stems slant about 20 to 35 degrees from vertical with heads upright in a dense dome; to 6 ft; division every 4-5 years; stems stand in early winter",
+      "license": "look only",
+      "published": "undated",
+      "checked": "2026-11-27",
+      "status": "viewed"
     }
   ],
   "bloomData": {
@@ -705,6 +727,62 @@
         "minCount": 10,
         "maxHeightM": 0.3,
         "minShare": 0.8
+      }
+    },
+    {
+      "id": "stem-curve",
+      "label": "clump shape: stems lean out from near the ground and keep leaning outward, none bent back in (ages 3 and 5)",
+      "type": "stemCurve",
+      "tier": "advisory",
+      "origin": "claude",
+      "sources": [
+        "rhs-eutrochium",
+        "bluestone-gateway",
+        "owner"
+      ],
+      "params": {
+        "ages": [
+          3,
+          5
+        ],
+        "day": 218,
+        "lowerLean": [
+          12,
+          28
+        ],
+        "upperMin": 8,
+        "maxBentIn": 0.1,
+        "straighter": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "id": "crown-diameter",
+      "label": "crown: stems leave the ground over a footprint that grows with age (ages 3 and 5)",
+      "type": "crownDiameter",
+      "tier": "advisory",
+      "origin": "owner",
+      "sources": [
+        "owner"
+      ],
+      "params": {
+        "ages": [
+          3,
+          5
+        ],
+        "range": [
+          [
+            5,
+            10
+          ],
+          [
+            8,
+            14
+          ]
+        ],
+        "day": 218
       }
     }
   ],

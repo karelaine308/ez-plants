@@ -29,6 +29,34 @@ import {
 
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const UP = vector(0, 1, 0);
+/** Largest summer bow, the share of stems that stay straight, and winter droop (assumed). */
+const BOW_MIN_RADIANS = 0.04;
+const BOW_MAX_RADIANS = 0.08;
+const BOW_STRAIGHT_SHARE = 0.15;
+const VASE_LENGTHENING = 0.01;
+/**
+ * Radius of the circle holding about 90% of the stem bases, by age (assumed
+ * from the owner's description of a 5-year clump: about 8-14 in across at
+ * age 5, 5-10 in at age 3, 2-4 in at age 1, a plug at age 0).
+ */
+const FOOTPRINT_RADIUS_ANCHORS_M = [
+  [0, 0.04],
+  [1, 0.037],
+  [2, 0.065],
+  [3, 0.095],
+  [5, 0.14],
+  [50, 0.14],
+];
+
+/** Scale that puts the 90th-percentile stem base on the footprint radius for this age. */
+function stemRootScale(shoots, age) {
+  if (shoots.length === 0) return 1;
+  const radii = shoots.map((s) => Math.hypot(s.axes[0].shootRoot.x, s.axes[0].shootRoot.z)).sort((a, b) => a - b);
+  const p90 = radii[Math.max(0, Math.ceil(0.9 * radii.length) - 1)] || 1;
+  return sampleAnchors(FOOTPRINT_RADIUS_ANCHORS_M, age) / p90;
+}
+const DROOP_MAX_RADIANS = 1.9;
+const DROOP_UPRIGHT_SHARE = 0.15;
 const MODEL_KIND = 'eutrochium-maculatum-growth-model';
 
 function ageAtCount(anchors, target) {
@@ -159,13 +187,12 @@ function makeShoot(seed, sequence, birthAgeYears) {
     Math.sin(azimuth) * rootRadius,
   );
   const outward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
-  // A vase: stems leave a tight crown and splay outward, the outer ones
-  // furthest, about 20 degrees from vertical (botanic-garden photograph of
-  // E. maculatum 'Phantom'; owner's photograph). The axis grower's upward
-  // pull then curves each stem gently back toward vertical near its top.
-  const lean =
-    randomRange(seed, [id, 'lean'], 0.04, 0.1) + 0.12 * radialFraction * radialFraction;
-  const direction = normalize(add(UP, scale(outward, lean)));
+  // A vase (owner's photographs of a mature clump and a nursery cultivar):
+  // stems leave one small spot and slant out from near the ground, the outer
+  // ones 20-30 degrees from vertical, then curve back toward upright so the
+  // heads merge into one dome. The axis itself grows near-vertical and the
+  // vase curve is applied at evaluation time, scaled by crowding (vasePoints).
+  const direction = UP;
   const height = randomRange(seed, [id, 'height'], ...stem.targetHeightM);
   const radius = randomRange(seed, [id, 'radius'], ...stem.baseRadiusM);
   const mainId = `${id}:axis:main`;
@@ -179,6 +206,33 @@ function makeShoot(seed, sequence, birthAgeYears) {
     parentPointIndex: null,
     // Purple spotting differs from stem to stem.
     spotting: randomRange(seed, [id, 'spotting'], 0.35, 1),
+    bend: {
+      vase: {
+        // Lean at the base: inner stems near vertical, outer stems 20-30 degrees.
+        thetaBase:
+          (3 + 12 * Math.pow(radialFraction, 1.3)) * (Math.PI / 180) * randomRange(seed, [id, 'vase-lean'], 0.85, 1.15),
+        // The tip keeps most of the base lean: stems never bend back in.
+        thetaTipShare: randomRange(seed, [id, 'vase-tip'], 0.55, 0.75),
+        azimuth: azimuth + randomRange(seed, [id, 'vase-azimuth'], -0.35, 0.35),
+      },
+      // Summer: the upper stem bows under the weight of its flower head (see
+      // headLoad), by its own amount and in its own direction.
+      bowRadians:
+        keyedRandom(seed, id, 'bow-straight') < BOW_STRAIGHT_SHARE
+          ? randomRange(seed, [id, 'bow'], 0, 0.1)
+          : BOW_MIN_RADIANS + (BOW_MAX_RADIANS - BOW_MIN_RADIANS) * Math.pow(keyedRandom(seed, id, 'bow'), 1.4),
+      // Mostly outward-ish but any direction is possible.
+      // Outer stems bow a little less, which keeps the vase inside its width.
+      bowOuterScale: 1.1 - 0.25 * radialFraction,
+      bowStart: randomRange(seed, [id, 'bow-start'], 0.4, 0.7),
+      bowAzimuth: azimuth + randomRange(seed, [id, 'bow-azimuth'], -0.5, 0.5),
+      // Winter: each stem droops by its own amount, mostly outward; a few stay near upright.
+      droopRadians:
+        keyedRandom(seed, id, 'droop-upright') < DROOP_UPRIGHT_SHARE
+          ? randomRange(seed, [id, 'droop'], 0.05, 0.4)
+          : randomRange(seed, [id, 'droop'], 1, DROOP_MAX_RADIANS),
+      droopAzimuth: azimuth + randomRange(seed, [id, 'droop-azimuth'], -1.1, 1.1),
+    },
     ...axisFromGrowth({
       seed,
       id: mainId,
@@ -342,6 +396,89 @@ function overwinterWeathering(phenology) {
   const elapsed =
     day >= calendar.dryFull ? day - calendar.dryFull : day + 365 - calendar.dryFull;
   return clamp01(elapsed / 120);
+}
+
+/**
+ * Bend a stem by turning each segment toward a horizontal azimuth, the turn
+ * growing along the stem from `start` (fraction of its length). Segment
+ * lengths are kept, so a bent stem is lower, not shorter.
+ */
+function bendPoints(points, azimuth, radians, start, power) {
+  if (radians <= 1e-4) return points;
+  const toward = vector(Math.cos(azimuth), 0, Math.sin(azimuth));
+  const last = points.length - 1;
+  const bent = [points[0]];
+  for (let i = 1; i <= last; i += 1) {
+    const segment = subtract(points[i], points[i - 1]);
+    const length = Math.hypot(segment.x, segment.y, segment.z);
+    const t = (i - 0.5) / last;
+    const theta = radians * Math.pow(clamp01((t - start) / (1 - start)), power);
+    const direction = normalize(segment);
+    const turned = normalize(add(scale(direction, Math.cos(theta)), scale(toward, Math.sin(theta))));
+    bent.push(add(bent[i - 1], scale(turned, length)));
+  }
+  return bent;
+}
+
+/**
+ * How heavy a stem's head is, 0 to 1. Joe Pye heads are big, dense and wet
+ * when in bud and bloom, so the load rises with size and openness and peaks
+ * at full bloom. Stems do not perk back up once curved (owner), so the load
+ * is held at its peak through seed set and winter (assumed).
+ */
+function headLoad(array, phenology) {
+  const state = localArrayState(array, phenology, false);
+  if (!state.visible) return 0;
+  const openness = 0.4 * state.budProgress + 0.6 * state.openProgress;
+  return lerp(0.1, 1, openness * openness);
+}
+
+/** How crowded the clump is by age, 0 to 1: young plants stay upright (assumed). */
+const crowdingAt = (age) =>
+  sampleAnchors(
+    [
+      [0, 0],
+      [1, 0.12],
+      [2, 0.5],
+      [3, 1],
+      [50, 1],
+    ],
+    age,
+  );
+
+/**
+ * The vase: each segment is turned from vertical by an angle that holds at the
+ * stem's base lean for the first part of its length, then eases back toward
+ * upright at the top. Stems are lengthened a little to make up the height an
+ * arc loses. Crowding scales the whole curve.
+ */
+function vasePoints(points, vase, crowd) {
+  if (crowd <= 0.001) return points;
+  const toward = vector(Math.cos(vase.azimuth), 0, Math.sin(vase.azimuth));
+  const last = points.length - 1;
+  const out = [points[0]];
+  for (let i = 1; i <= last; i += 1) {
+    const segment = subtract(points[i], points[i - 1]);
+    const length = Math.hypot(segment.x, segment.y, segment.z) * (1 + VASE_LENGTHENING * crowd);
+    const t = (i - 0.5) / last;
+    const theta = crowd * lerp(vase.thetaBase, vase.thetaBase * vase.thetaTipShare, smoothstep01(progress(t, 0.2, 1)));
+    const wiggle = subtract(normalize(segment), UP);
+    const direction = normalize(
+      add(add(scale(UP, Math.cos(theta)), scale(toward, Math.sin(theta))), wiggle),
+    );
+    out.push(add(out[i - 1], scale(direction, length)));
+  }
+  return out;
+}
+
+/** Vase curve, summer bow and winter droop of one stem. */
+function bendPrimary(axis, { stemGrowth, weathering, headLoad = 0, crowd = 0 }) {
+  const { bend } = axis;
+  const growth = smoothstep01(stemGrowth);
+  const weather = smoothstep01(clamp01(weathering / 0.75));
+  let points = bendPoints(vasePoints(axis.points, bend.vase, crowd), bend.bowAzimuth, bend.bowRadians * bend.bowOuterScale * headLoad * growth, 0.4, 1.3);
+  points = bendPoints(points, bend.droopAzimuth, bend.droopRadians * weather, 0.4, 1.3);
+  return { ...axis, points };
 }
 
 function transformPrimaryAxis(axis, crownScale, stemScale) {
@@ -585,7 +722,12 @@ export function evaluateMaculatumModel(
     MACULATUM_PROFILE.architecture.crownRadiusAnchorsM,
     cohortAgeYears,
   );
-  const crownScale = crownRadius / MACULATUM_PROFILE.architecture.matureCrownRadiusM;
+  const crowd = crowdingAt(cohortAgeYears);
+  // Stem bases fill a disc of about 8-14 in across at maturity (see FOOTPRINT_RADIUS_ANCHORS_M).
+  const crownScale = stemRootScale(
+    model.shoots.filter((shoot) => shoot.birthAgeYears <= cohortAgeYears),
+    cohortAgeYears,
+  );
   const dryMode = mode === 'previous-dry' || mode === 'current-dry';
   const stemGrowth = dryMode
     ? 1
@@ -613,7 +755,14 @@ export function evaluateMaculatumModel(
     }
     if (mode === 'dormant') continue;
     const primary = shoot.axes[0];
-    const evaluated = transformPrimaryAxis(primary, crownScale, primaryScale);
+    const terminal = shoot.arrays.find((a) => a.axisId === primary.id);
+    const evaluated = bendPrimary(transformPrimaryAxis(primary, crownScale, primaryScale), {
+      stemGrowth,
+      weathering,
+      // Once the stand is dry the curve set at bloom is kept.
+      headLoad: !terminal ? 0 : dryMode ? 1 : headLoad(terminal, phenology),
+      crowd,
+    });
     Object.assign(evaluated, {
       visible: true,
       cohort: dryMode ? 'dry' : 'current',
@@ -646,7 +795,13 @@ export function evaluateMaculatumModel(
       const primary = shoot.axes[0];
       groundAxes.set(
         primary.id,
-        axisMap.get(primary.id) ?? transformPrimaryAxis(primary, crownScale, primaryScale),
+        axisMap.get(primary.id) ??
+          bendPrimary(transformPrimaryAxis(primary, crownScale, primaryScale), {
+            stemGrowth,
+            weathering,
+            headLoad: dryMode ? 1 : 0,
+            crowd,
+          }),
       );
     }
   }
@@ -670,14 +825,21 @@ export function evaluateMaculatumModel(
   if (mode === 'dormant' && ageYears > 0 && phenology.dayOfYear < phenology.calendar.emergenceStart) {
     const litterAge = ageYears - 1;
     const litterAgeScale = sampleAnchors(MACULATUM_PROFILE.growth.plantAgeScaleAnchors, litterAge);
-    const litterCrownScale =
-      sampleAnchors(MACULATUM_PROFILE.architecture.crownRadiusAnchorsM, litterAge) /
-      MACULATUM_PROFILE.architecture.matureCrownRadiusM;
+    const litterCrowd = crowdingAt(litterAge);
     const litterShoots = model.shoots.filter((shoot) => shoot.birthAgeYears <= litterAge);
+    const litterCrownScale = stemRootScale(litterShoots, litterAge);
     const litterAxes = new Map();
     for (const shoot of litterShoots) {
       const primary = shoot.axes[0];
-      litterAxes.set(primary.id, transformPrimaryAxis(primary, litterCrownScale, litterAgeScale));
+      litterAxes.set(
+        primary.id,
+        bendPrimary(transformPrimaryAxis(primary, litterCrownScale, litterAgeScale), {
+          stemGrowth: 1,
+          weathering: 1,
+          headLoad: 1,
+          crowd: litterCrowd,
+        }),
+      );
     }
     for (const shoot of litterShoots) {
       for (const leaf of shoot.leaves) {
